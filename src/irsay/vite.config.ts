@@ -1,29 +1,31 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path'
+import { resolve } from 'path'
 
 export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
   server: {
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
-      },
-    },
-  },
-  preview: {
-    host: true,
-    allowedHosts: ['lightningcar.up.railway.app'],
+    watch: {
+      usePolling: true,
+      interval: 100
+    }
   },
   build: {
-    outDir: 'dist',
-    sourcemap: true,
+    target: 'esnext',
+    minify: 'esbuild',
+    cssMinify: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          mapbox: ['mapbox-gl']
+        }
+      }
+    }
   },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src')
+    }
+  },
+  optimizeDeps: {
+    include: ['mapbox-gl']
+  }
 })

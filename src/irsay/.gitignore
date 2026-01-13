@@ -18,11 +18,6 @@ dist-ssr
 /build
 /out
 
-# Environment files
-.env
-.env*.local
-*.local
-
 # Misc
 .DS_Store
 *.pem

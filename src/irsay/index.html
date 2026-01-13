@@ -1,14 +1,327 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/Logo.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="The Jim Irsay Collection" />
-    <title>The Jim Irsay Collection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="An immersive 3D journey through iconic New York City music and entertainment landmarks" />
+    <meta name="theme-color" content="#0a0a0f" />
+    <title>NYC Landmarks | The Jim Irsay Collection</title>
+    <link rel="preconnect" href="https://api.mapbox.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet" />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="app">
+      <div id="map-container"></div>
+
+      <header class="header">
+        <div class="header__brand">
+          <span class="header__icon">&#9830;</span>
+          <h1 class="header__title">The Jim Irsay Collection</h1>
+        </div>
+        <p class="header__subtitle">NYC Landmarks</p>
+      </header>
+
+      <aside class="location-panel" id="location-panel">
+        <div class="location-panel__header">
+          <span class="location-panel__eyebrow">Now Viewing</span>
+          <h2 class="location-panel__title" id="current-location">Ed Sullivan Theatre</h2>
+        </div>
+        <p class="location-panel__description" id="current-description">
+          Home of The Late Show and the legendary Ed Sullivan Show where The Beatles made their historic American debut.
+        </p>
+        <div class="location-panel__footer">
+          <span class="location-panel__coords" id="current-coords">40.7638°N, 73.9829°W</span>
+          <button class="location-panel__learn-more" id="learn-more-btn">
+            <span>Learn More</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Detail overlay -->
+      <div class="detail-overlay" id="detail-overlay">
+        <!-- Morph box for FLIP animation -->
+        <div class="morph-box" id="morph-box"></div>
+        <div class="detail-overlay__content" id="detail-content">
+          <button class="detail-overlay__close" id="detail-close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+          </button>
+
+          <!-- Default layout (hidden when special layout active) -->
+          <div class="detail-overlay__inner detail-overlay__inner--default" id="detail-default">
+            <header class="detail-header">
+              <span class="detail-header__eyebrow" id="detail-eyebrow">Historic Venue</span>
+              <h1 class="detail-header__title" id="detail-title">Ed Sullivan Theatre</h1>
+              <p class="detail-header__year" id="detail-year">Est. 1927</p>
+            </header>
+            <div class="detail-body">
+              <p class="detail-body__intro" id="detail-intro"></p>
+              <div class="detail-body__history" id="detail-history"></div>
+              <aside class="detail-body__note" id="detail-note"></aside>
+            </div>
+          </div>
+
+          <!-- Ed Sullivan special layout -->
+          <div class="detail-overlay__inner detail-overlay__inner--edsullivan" id="detail-edsullivan">
+            <div class="edsullivan-bg" id="edsullivan-bg"></div>
+
+            <!-- Floating images -->
+            <div class="edsullivan-image edsullivan-image--top-left">
+              <img src="/edsullivan/14.webp" alt="Beatles at Ed Sullivan" />
+            </div>
+            <div class="edsullivan-image edsullivan-image--bottom-center">
+              <img src="/edsullivan/15.webp" alt="Ed Sullivan Theatre" />
+            </div>
+            <div class="edsullivan-image edsullivan-image--bottom-right">
+              <img src="/edsullivan/16.webp" alt="Historic performance" />
+            </div>
+
+            <!-- Center content -->
+            <div class="edsullivan-center">
+              <h1 class="edsullivan-title">Ed Sullivan Theatre</h1>
+              <p class="edsullivan-description">
+                Historically it was the most important performance of The Beatles' careers. Beatlemania began in the US that evening, permanently changing not only music but pop culture. Starr didn't bring his entire drum kit from London to the US, only a few pieces of his kit along with this drumhead.
+              </p>
+            </div>
+          </div>
+
+          <!-- Carnegie Hall special layout -->
+          <div class="detail-overlay__inner detail-overlay__inner--carnegiehall" id="detail-carnegiehall">
+            <!-- Background shift layers with images -->
+            <div class="carnegiehall-shift" id="carnegiehall-shift">
+              <div class="carnegiehall-shift__layer">
+                <div class="carnegiehall-shift__layer-inner">
+                  <img src="/edsullivan/17.webp" alt="Historic performance" />
+                </div>
+              </div>
+              <div class="carnegiehall-shift__layer">
+                <div class="carnegiehall-shift__layer-inner">
+                  <img src="/edsullivan/14.webp" alt="Carnegie Hall" />
+                </div>
+              </div>
+              <div class="carnegiehall-shift__layer">
+                <div class="carnegiehall-shift__layer-inner">
+                  <img src="/edsullivan/15.webp" alt="Concert venue" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Center content -->
+            <div class="carnegiehall-content">
+              <h1 class="carnegiehall-title">Carnegie Hall</h1>
+              <p class="carnegiehall-description">
+                Historically it was the most important performance of The Beatles' careers. Beatlemania began in the US that evening, permanently changing not only music but pop culture. Starr didn't bring his entire drum kit from London to the US, only a few pieces of his kit along with this drumhead.
+              </p>
+            </div>
+
+            <!-- Right side text -->
+            <div class="carnegiehall-aside">
+              <span class="carnegiehall-aside__label">heeeeey</span>
+              <p class="carnegiehall-aside__text">something<br/>incredible goes<br/>here</p>
+            </div>
+          </div>
+
+          <!-- Madison Square Garden special layout - Jumbotron/LED Style -->
+          <div class="detail-overlay__inner detail-overlay__inner--msg" id="detail-msg">
+            <!-- LED pixel grid background -->
+            <div class="msg-led-grid" id="msg-led-grid"></div>
+
+            <!-- Scanline overlay for CRT/LED effect -->
+            <div class="msg-scanlines"></div>
+
+            <!-- Main jumbotron screen -->
+            <div class="msg-jumbotron" id="msg-jumbotron">
+              <!-- Screen border with LED chase lights -->
+              <div class="msg-jumbotron__border">
+                <div class="msg-jumbotron__chase-lights" id="msg-chase-lights"></div>
+              </div>
+
+              <!-- Screen content -->
+              <div class="msg-jumbotron__screen" id="msg-screen">
+                <!-- Background image layer -->
+                <div class="msg-jumbotron__bg" id="msg-bg">
+                  <img src="/edsullivan/18.webp" alt="" />
+                </div>
+
+                <!-- Content overlay -->
+                <div class="msg-jumbotron__content">
+                  <!-- Eyebrow text -->
+                  <div class="msg-jumbotron__eyebrow" id="msg-eyebrow">THE WORLD'S MOST FAMOUS ARENA</div>
+
+                  <!-- Main title with pixel reveal -->
+                  <h1 class="msg-jumbotron__title" id="msg-title">
+                    <span class="msg-title-line">MADISON</span>
+                    <span class="msg-title-line">SQUARE</span>
+                    <span class="msg-title-line">GARDEN</span>
+                  </h1>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description panel slides up from bottom -->
+            <div class="msg-info-panel" id="msg-info-panel">
+              <div class="msg-info-panel__content">
+                <p>Historically it was the most important performance of The Beatles' careers. Beatlemania began in the US that evening, permanently changing not only music but pop culture. Starr didn't bring his entire drum kit from London to the US, only a few pieces of his kit along with this drumhead.</p>
+              </div>
+              <div class="msg-info-panel__stats">
+                <div class="msg-stat">
+                  <span class="msg-stat__value">1968</span>
+                  <span class="msg-stat__label">OPENED</span>
+                </div>
+                <div class="msg-stat">
+                  <span class="msg-stat__value">20K</span>
+                  <span class="msg-stat__label">CAPACITY</span>
+                </div>
+                <div class="msg-stat">
+                  <span class="msg-stat__value">∞</span>
+                  <span class="msg-stat__label">LEGENDS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RKO Theatre special layout -->
+          <div class="detail-overlay__inner detail-overlay__inner--rko" id="detail-rko">
+            <!-- Decorative spotlight rays -->
+            <div class="rko-rays">
+              <div class="rko-rays__beam rko-rays__beam--1"></div>
+              <div class="rko-rays__beam rko-rays__beam--2"></div>
+              <div class="rko-rays__beam rko-rays__beam--3"></div>
+              <div class="rko-rays__beam rko-rays__beam--4"></div>
+              <div class="rko-rays__beam rko-rays__beam--5"></div>
+            </div>
+
+            <!-- Film strip columns -->
+            <div class="rko-filmstrip rko-filmstrip--left" id="rko-filmstrip-left">
+              <div class="rko-filmstrip__frame">
+                <img src="/edsullivan/14.webp" alt="Historic performance" />
+              </div>
+              <div class="rko-filmstrip__frame">
+                <img src="/edsullivan/17.webp" alt="Historic performance" />
+              </div>
+              <div class="rko-filmstrip__frame">
+                <img src="/edsullivan/15.webp" alt="Historic performance" />
+              </div>
+            </div>
+
+            <div class="rko-filmstrip rko-filmstrip--right" id="rko-filmstrip-right">
+              <div class="rko-filmstrip__frame">
+                <img src="/edsullivan/16.webp" alt="Historic performance" />
+              </div>
+              <div class="rko-filmstrip__frame">
+                <img src="/edsullivan/18.webp" alt="Historic performance" />
+              </div>
+              <div class="rko-filmstrip__frame">
+                <img src="/edsullivan/19.webp" alt="Historic performance" />
+              </div>
+            </div>
+
+            <!-- Center content -->
+            <div class="rko-center">
+              <span class="rko-eyebrow">Est. 1932</span>
+              <h1 class="rko-title">RKO Theatre</h1>
+              <p class="rko-description">
+                Historically it was the most important performance of The Beatles' careers. Beatlemania began in the US that evening, permanently changing not only music but pop culture. Starr didn't bring his entire drum kit from London to the US, only a few pieces of his kit along with this drumhead.
+              </p>
+            </div>
+
+            <!-- Decorative star -->
+            <div class="rko-star">★</div>
+          </div>
+
+          <!-- CBS Studios special layout - Broadcast Collage -->
+          <div class="detail-overlay__inner detail-overlay__inner--cbs" id="detail-cbs">
+            <!-- ON AIR indicator -->
+            <div class="cbs-onair" id="cbs-onair">
+              <span class="cbs-onair__dot"></span>
+              <span class="cbs-onair__text">ON AIR</span>
+            </div>
+
+            <!-- Scattered images at different sizes/positions -->
+            <div class="cbs-image cbs-image--1" id="cbs-img-1">
+              <img src="/edsullivan/14.webp" alt="CBS broadcast" />
+            </div>
+            <div class="cbs-image cbs-image--2" id="cbs-img-2">
+              <img src="/edsullivan/17.webp" alt="CBS studio" />
+            </div>
+            <div class="cbs-image cbs-image--3" id="cbs-img-3">
+              <img src="/edsullivan/18.webp" alt="CBS performance" />
+            </div>
+            <div class="cbs-image cbs-image--4" id="cbs-img-4">
+              <img src="/edsullivan/15.webp" alt="CBS history" />
+            </div>
+            <div class="cbs-image cbs-image--5" id="cbs-img-5">
+              <img src="/edsullivan/16.webp" alt="CBS legacy" />
+            </div>
+
+            <!-- Content area - bottom left -->
+            <div class="cbs-content" id="cbs-content">
+              <h1 class="cbs-title">CBS Studios</h1>
+              <p class="cbs-description">
+                The CBS Broadcast Center served as the nerve center of American television, where Walter Cronkite delivered the news and countless historic moments were captured and transmitted to millions of homes across the nation.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="location-nav" id="location-nav">
+        <button class="location-nav__btn active" data-index="0">
+          <span class="location-nav__indicator"></span>
+          <span class="location-nav__label">Ed Sullivan</span>
+        </button>
+        <button class="location-nav__btn" data-index="1">
+          <span class="location-nav__indicator"></span>
+          <span class="location-nav__label">CBS Studios</span>
+        </button>
+        <button class="location-nav__btn" data-index="2">
+          <span class="location-nav__indicator"></span>
+          <span class="location-nav__label">Carnegie Hall</span>
+        </button>
+        <button class="location-nav__btn" data-index="3">
+          <span class="location-nav__indicator"></span>
+          <span class="location-nav__label">RKO Theatre</span>
+        </button>
+        <button class="location-nav__btn" data-index="4">
+          <span class="location-nav__indicator"></span>
+          <span class="location-nav__label">Manny's</span>
+        </button>
+        <button class="location-nav__btn" data-index="5">
+          <span class="location-nav__indicator"></span>
+          <span class="location-nav__label">MSG</span>
+        </button>
+        <button class="location-nav__btn" data-index="6">
+          <span class="location-nav__indicator"></span>
+          <span class="location-nav__label">Christie's</span>
+        </button>
+      </nav>
+
+      <div class="controls">
+        <button class="controls__btn" id="play-pause" aria-label="Play or pause rotation">
+          <svg class="controls__icon controls__icon--pause" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="6" y="4" width="4" height="16" rx="1"/>
+            <rect x="14" y="4" width="4" height="16" rx="1"/>
+          </svg>
+          <svg class="controls__icon controls__icon--play hidden" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="loading-overlay" id="loading">
+        <div class="loading-overlay__content">
+          <div class="loading-overlay__spinner"></div>
+          <p class="loading-overlay__text">Loading NYC Experience</p>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
