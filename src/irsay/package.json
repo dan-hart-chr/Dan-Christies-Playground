@@ -1,0 +1,29 @@
+{
+  "name": "jim-irsay-nyc-map",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "start": "serve dist -s -l $PORT",
+    "preview": "vite preview",
+    "lint": "eslint src --max-warnings 0"
+  },
+  "dependencies": {
+    "@types/three": "^0.182.0",
+    "gsap": "^3.14.2",
+    "hls.js": "^1.6.15",
+    "mapbox-gl": "^3.8.0",
+    "serve": "^14.2.5",
+    "three": "^0.182.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@typescript-eslint/eslint-plugin": "^8.53.0",
+    "@typescript-eslint/parser": "^8.53.0",
+    "eslint": "^9.39.2",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  }
+}

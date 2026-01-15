@@ -1,0 +1,40 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+/.pnp
+.pnp.*
+
+# Build output
+dist
+dist-ssr
+/build
+/out
+
+# Misc
+.DS_Store
+*.pem
+*.tsbuildinfo
+
+# Testing
+/coverage
+
+# ide
+.idea
+.vscode
+.mcp.json
+.claude/skills/webapp-testing/SKILL.md
+.claude/skills/webapp-testing/scripts/with_server.py
+.claude/skills/webapp-testing/LICENSE.txt
+.claude/skills/webapp-testing/examples/static_html_automation.py
+.claude/skills/webapp-testing/examples/element_discovery.py
+.claude/skills/webapp-testing/examples/console_logging.py
+.claude/settings.local.json
+.claude/agents/frontend-developer.md
