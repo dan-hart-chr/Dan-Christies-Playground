@@ -62,7 +62,7 @@ jobs:
     runs-on: [self-hosted, linux, x64]
     name: Deploy to Staging
     needs: build
-    # if: github.ref == 'refs/heads/feature/irsay-sale'
+    if: github.ref == 'refs/heads/feature/irsay-sale' || github.ref == 'refs/head/main'
     environment:
       name: IRSAY_STG
 
@@ -117,7 +117,7 @@ jobs:
   deploy-production:
     runs-on: ubuntu-latest
     name: Deploy to Production
-    needs: build
+    needs: [build, deploy-staging]
     if: github.ref == 'refs/heads/main'
     environment:
       name: IRSAY_PROD
