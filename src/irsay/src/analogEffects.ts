@@ -118,12 +118,12 @@ interface AnalogUniforms {
 }
 
 export class AnalogEffects {
-  private renderer: THREE.WebGLRenderer
-  private scene: THREE.Scene
-  private camera: THREE.OrthographicCamera
-  private material: THREE.ShaderMaterial
-  private uniforms: AnalogUniforms
-  private clock: THREE.Clock
+  private renderer: THREE.WebGLRenderer | null = null
+  private scene!: THREE.Scene
+  private camera!: THREE.OrthographicCamera
+  private material: THREE.ShaderMaterial | null = null
+  private uniforms!: AnalogUniforms
+  private clock!: THREE.Clock
   private canvas: HTMLCanvasElement
   private container: HTMLElement
   private animationId: number | null = null
@@ -146,7 +146,11 @@ export class AnalogEffects {
     const gl = this.canvas.getContext('webgl2', {
       alpha: true,
       premultipliedAlpha: false
-    })!
+    })
+    if (!gl) {
+      console.warn('WebGL2 not supported, analog effects disabled')
+      return
+    }
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
@@ -209,12 +213,20 @@ export class AnalogEffects {
     this.canvas.style.width = w + 'px'
     this.canvas.style.height = h + 'px'
 
+    if (!this.renderer) return
     this.renderer.setSize(w, h, false)
     this.renderer.setPixelRatio(dpr)
     this.uniforms.uResolution.value.set(w * dpr, h * dpr)
   }
 
   private animate() {
+    if (document.hidden) {
+      this.animationId = requestAnimationFrame(this.animate)
+      return
+    }
+
+    if (!this.renderer || !this.material) return
+
     this.uniforms.uTime.value = this.clock.getElapsedTime()
     this.renderer.render(this.scene, this.camera)
     this.animationId = requestAnimationFrame(this.animate)
@@ -266,8 +278,14 @@ export class AnalogEffects {
       cancelAnimationFrame(this.animationId)
     }
     window.removeEventListener('resize', this.handleResize)
-    this.renderer.dispose()
-    this.material.dispose()
+    if (this.renderer) {
+      this.renderer.dispose()
+      this.renderer = null
+    }
+    if (this.material) {
+      this.material.dispose()
+      this.material = null
+    }
     if (this.canvas.parentNode) {
       this.canvas.parentNode.removeChild(this.canvas)
     }

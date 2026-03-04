@@ -3,95 +3,58 @@ import { animateTextWithFilter, resetTextFilter } from './textFilterEffect'
 import {
   splitText,
   createMouseParallax,
-  animateClipPathReveal,
   animate3DText,
   easingPresets,
   type SplitTextResult,
   type ParallaxController
 } from './edSullivanEffects'
 import { createBackgroundShift, type ShiftController } from './carnegieHallEffects'
+import { NassauLaserEffect } from './nassauLasers'
 import gsap from 'gsap'
 
-// Extended location content for detail pages
-interface LocationDetail {
-  eyebrow: string
-  intro: string
-  historyParagraphs: string[]
-  note: string
+// Locations that have detail overlays (all except Christie's)
+const OVERLAY_LOCATION_IDS = [
+  'mannys-music',
+  'rko-theatre',
+  'carnegie-hall',
+  'madison-square-garden',
+  'shea-stadium',
+  'town-hall',
+  'radio-city',
+  'hendrix-apartment',
+  'apollo-theatre',
+  'belmont-park',
+  'nassau-coliseum'
+]
+
+// Map location IDs to layout attribute values
+const LAYOUT_MAP: Record<string, string> = {
+  'mannys-music': 'mannys',
+  'rko-theatre': 'rko',
+  'carnegie-hall': 'carnegiehall',
+  'madison-square-garden': 'msg',
+  'shea-stadium': 'shea',
+  'town-hall': 'townhall',
+  'radio-city': 'radiocity',
+  'hendrix-apartment': 'hendrix',
+  'apollo-theatre': 'apollo',
+  'belmont-park': 'belmont',
+  'nassau-coliseum': 'nassau'
 }
 
-
-const LOCATION_DETAILS: Record<string, LocationDetail> = {
-  'ed-sullivan': {
-    eyebrow: 'Historic Theatre',
-    intro: 'The Ed Sullivan Theater stands as one of America\'s most iconic entertainment venues, forever linked to the moment that changed music history when The Beatles performed on February 9, 1964.',
-    historyParagraphs: [
-      'Originally opened as Hammerstein\'s Theatre in 1927, this Broadway landmark was designed by architect Herbert J. Krapp in a neo-Gothic style. The theater seated 1,697 people and quickly became one of New York\'s premier venues.',
-      'CBS acquired the theater in 1936, renaming it Studio 50. It became the home of The Ed Sullivan Show in 1948, broadcasting some of the most memorable moments in television history for the next 23 years.',
-      'The Beatles\' appearance drew an estimated 73 million viewers—the largest TV audience in American history at that time. Elvis Presley, The Rolling Stones, and countless other legends graced this stage.'
-    ],
-    note: 'Today, the theater continues its legacy as the home of The Late Show with Stephen Colbert, maintaining its place at the heart of American entertainment.'
-  },
-  'cbs-studios': {
-    eyebrow: 'Broadcast Landmark',
-    intro: 'The CBS Broadcast Center served as the nerve center of American television news and entertainment, where countless historic moments were captured and transmitted to millions of homes.',
-    historyParagraphs: [
-      'Located at 524 West 57th Street, the CBS Broadcast Center opened in 1964 as a state-of-the-art production facility. The massive complex housed studios, control rooms, and the technical infrastructure that powered CBS\'s programming.',
-      'For decades, this facility produced some of television\'s most beloved shows and broke major news stories that shaped public consciousness. The building represented the golden age of network television.',
-      'News anchors like Walter Cronkite and Dan Rather delivered historic broadcasts from these studios, from moon landings to presidential elections.'
-    ],
-    note: 'The facility was sold in 2019 as broadcast technology evolved, marking the end of an era in television production.'
-  },
-  'carnegie-hall': {
-    eyebrow: 'Concert Hall',
-    intro: 'Carnegie Hall has stood for over 130 years as the pinnacle of musical achievement, where the world\'s greatest artists have performed in one of the most acoustically perfect venues ever constructed.',
-    historyParagraphs: [
-      'Industrialist Andrew Carnegie funded the construction of this magnificent concert hall, which opened on May 5, 1891. The opening night concert was conducted by Tchaikovsky himself, establishing the venue\'s reputation for excellence.',
-      'The hall\'s exceptional acoustics were achieved through a combination of architectural genius and fortunate accident—the elliptical ceiling and narrow rectangular shape create a warm, resonant sound that has never been duplicated.',
-      'From classical legends like Rachmaninoff and Horowitz to rock icons like The Beatles and Led Zeppelin, Carnegie Hall has welcomed every genre of music to its hallowed stage.'
-    ],
-    note: 'The famous answer to "How do you get to Carnegie Hall?" remains: "Practice, practice, practice."'
-  },
-  'rko-theatre': {
-    eyebrow: 'Historic Site',
-    intro: 'The RKO Proctor\'s 58th Street Theatre was Manhattan\'s first atmospheric-style movie palace, creating the illusion of watching films under a Mediterranean night sky.',
-    historyParagraphs: [
-      'Opening in 1929, this remarkable theater was designed by Thomas W. Lamb to transport audiences to a Spanish courtyard beneath twinkling stars. The 3,163-seat venue featured an elaborate Mediterranean village setting with towers, balconies, and a ceiling that mimicked a twilight sky.',
-      'The theater represented the height of movie palace opulence, where going to the pictures was a complete escape from everyday life. Audiences dressed in their finest to experience films in surroundings fit for royalty.',
-      'As television rose and attendance declined, the grand theater struggled. Despite preservation efforts, it was demolished in 1967 to make way for luxury apartments.'
-    ],
-    note: 'Though the building is gone, the RKO Proctor\'s represents an irreplaceable era of theatrical grandeur that will never be replicated.'
-  },
-  'mannys-music': {
-    eyebrow: 'Music Store Legend',
-    intro: 'Manny\'s Music Store was the sacred ground where generations of rock legends bought their first guitars and where the sound of rock and roll was literally shaped.',
-    historyParagraphs: [
-      'Founded in 1935 by Manny Goldrich on West 48th Street—the heart of "Music Row"—Manny\'s became the most famous music store in the world. Its cramped, chaotic interior was a treasure trove where musicians could find any instrument imaginable.',
-      'The store\'s "Wall of Fame" featured photos of virtually every major musician of the 20th century. Jimi Hendrix bought his first American guitar here. The Beatles, Rolling Stones, Eric Clapton, and countless others were regular customers.',
-      'Staff members were legendary musicians themselves, offering expertise and stories that couldn\'t be found anywhere else. Walking into Manny\'s meant walking into rock history.'
-    ],
-    note: 'After 74 years, Manny\'s closed in 2009, but its legacy lives on in the countless songs played on instruments that passed through its doors.'
-  },
-  'madison-square-garden': {
-    eyebrow: 'The World\'s Most Famous Arena',
-    intro: 'Madison Square Garden has hosted the most legendary concerts in rock history, from John Lennon\'s last full concert to countless performances that have become the stuff of legend.',
-    historyParagraphs: [
-      'The current Madison Square Garden, the fourth venue to bear the name, opened in 1968 atop Penn Station. Designed by Charles Luckman, the distinctive circular arena can hold up to 20,000 people for concerts.',
-      'MSG has witnessed historic moments: John Lennon\'s surprise appearance with Elton John in 1974 (his last full concert), George Harrison\'s Concert for Bangladesh, and hundreds of sold-out runs by artists from Elvis to The Rolling Stones to Billy Joel.',
-      'The arena has maintained its status as the ultimate venue for rock musicians—a place where careers are cemented and legends are made. Playing MSG remains every musician\'s dream.'
-    ],
-    note: 'Billy Joel has performed more consecutive sold-out shows at MSG than any other artist, with over 100 lifetime performances at the venue.'
-  },
-  'christies': {
-    eyebrow: 'Auction House',
-    intro: 'Christie\'s at Rockefeller Center has become the world\'s premier destination for the auction of historic musical instruments, memorabilia, and artifacts that tell the story of popular music.',
-    historyParagraphs: [
-      'Founded in London in 1766 by James Christie, the auction house established its Rockefeller Center salesroom in 1997. The location at 20 Rockefeller Plaza has become synonymous with record-breaking sales of musical heritage.',
-      'Christie\'s has auctioned some of the most valuable instruments in history: John Lennon\'s guitars, Eric Clapton\'s "Blackie" Stratocaster, and countless pieces that connect collectors to musical history.',
-      'The auction house\'s music memorabilia sales have helped establish the field as a serious area of collecting, preserving artifacts that might otherwise be lost to time.'
-    ],
-    note: 'The Jim Irsay Collection represents one of the most significant private collections of rock and roll memorabilia ever assembled, preserving instruments that shaped musical history.'
-  }
+// Background colors for each layout's morph box
+const MORPH_COLORS: Record<string, string> = {
+  'mannys-music': '#0a0a0f',
+  'rko-theatre': '#000000',
+  'carnegie-hall': '#d65430',
+  'madison-square-garden': '#000000',
+  'shea-stadium': '#0a1628',
+  'town-hall': '#0a0e2a',
+  'radio-city': '#08080c',
+  'hendrix-apartment': '#000000',
+  'apollo-theatre': '#1a0505',
+  'belmont-park': '#0a1a0a',
+  'nassau-coliseum': '#0a0a1a'
 }
 
 // Detail overlay controller
@@ -103,253 +66,82 @@ class DetailOverlay {
   private currentLocationId: string | null = null
   private isOpen = false
   private isAnimating = false
-
-  // Store source element rect for close animation
   private sourceRect: DOMRect | null = null
+  private triggerElement: HTMLElement | null = null
+  private focusTrapHandler: ((e: KeyboardEvent) => void) | null = null
+  private escapeHandler: ((e: KeyboardEvent) => void) | null = null
 
-  // Enhanced effects - VWLab inspired
-  private titleSplitText: SplitTextResult | null = null
+  // Split text instances for each location
+  private splitTexts: Record<string, SplitTextResult | null> = {}
+
+  // Effect controllers
   private mouseParallax: ParallaxController | null = null
-
-  // Carnegie Hall specific
   private carnegieShiftController: ShiftController | null = null
-  private carnegieTitleSplitText: SplitTextResult | null = null
 
-  // MSG specific - chase light and spark animations
+  // MSG specific
   private chaseLightInterval: ReturnType<typeof setInterval> | null = null
   private sparkInterval: ReturnType<typeof setInterval> | null = null
+  private msgChaseLights: HTMLElement[] | null = null
 
-  // RKO Theatre specific
-  private rkoTitleSplitText: SplitTextResult | null = null
+  // Apollo specific
+  private apolloMarqueeInterval: ReturnType<typeof setInterval> | null = null
+  private apolloMarqueeBulbs: HTMLElement[] | null = null
+  private apolloMarqueeGroups: HTMLElement[][] = []
 
-  // CBS Studios specific
-  private cbsTitleSplitText: SplitTextResult | null = null
+  // Nassau specific
+  private nassauLaserEffect: NassauLaserEffect | null = null
 
   constructor() {
     this.overlay = document.getElementById('detail-overlay')!
     this.closeBtn = document.getElementById('detail-close')!
     this.morphBox = document.getElementById('morph-box')!
     this.contentEl = document.getElementById('detail-content')!
-
     this.bindEvents()
   }
 
   private bindEvents() {
     this.closeBtn.addEventListener('click', () => this.close())
-
-    // Close on escape key
-    document.addEventListener('keydown', e => {
+    this.escapeHandler = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && this.isOpen) {
         this.close()
       }
-    })
+    }
+    document.addEventListener('keydown', this.escapeHandler)
   }
 
-  open(locationId: string, fromElement: HTMLElement) {
-    if (this.isOpen || this.isAnimating) return
-
-    // Only these locations have full screen modals
-    if (locationId !== 'ed-sullivan' && locationId !== 'carnegie-hall' && locationId !== 'madison-square-garden' && locationId !== 'rko-theatre' && locationId !== 'cbs-studios') return
-
-    this.isAnimating = true
-    this.isOpen = true
-    this.currentLocationId = locationId
-
-    // Get location data
-    const location = NYC_LOCATIONS.find(l => l.id === locationId)
-    const details = LOCATION_DETAILS[locationId]
-
-    if (!location || !details) return
-
-    // Store source rect for close animation
-    this.sourceRect = fromElement.getBoundingClientRect()
-
-    // Route to appropriate layout handler
-    if (locationId === 'carnegie-hall') {
-      this.openCarnegieHall()
-      return
-    }
-
-    if (locationId === 'madison-square-garden') {
-      this.openMSG()
-      return
-    }
-
-    if (locationId === 'rko-theatre') {
-      this.openRKO()
-      return
-    }
-
-    if (locationId === 'cbs-studios') {
-      this.openCBS()
-      return
-    }
-
-    // Set Ed Sullivan layout
-    this.overlay.setAttribute('data-layout', 'edsullivan')
-
-    // Set initial states - use pixel values throughout for reliable animation
-    const rect = this.sourceRect
-    const windowW = window.innerWidth
-    const windowH = window.innerHeight
-
-    gsap.set(this.morphBox, {
-      left: rect.left + 'px',
-      top: rect.top + 'px',
-      width: rect.width + 'px',
-      height: rect.height + 'px',
-      borderRadius: 16,
-      opacity: 1
-    })
-
-    const images = document.querySelectorAll('.edsullivan-image') as NodeListOf<HTMLElement>
-    const title = document.querySelector('.edsullivan-title') as HTMLElement
-    const desc = document.querySelector('.edsullivan-description') as HTMLElement
-
-    // Split title text for 3D character animation
-    if (title && !this.titleSplitText) {
-      this.titleSplitText = splitText(title, { type: 'chars,words' })
-    }
-
-    // Content container visible (so shader can render), but elements hidden
-    gsap.set(this.contentEl, { opacity: 1 })
-
-    // Images start with clip-path for circular reveal
-    gsap.set(images, {
-      opacity: 1,
-      clipPath: 'circle(0% at 50% 100%)',
-      y: 0,
-      scale: 1
-    })
-
-    // Title chars hidden for 3D reveal
-    if (this.titleSplitText) {
-      gsap.set(this.titleSplitText.chars, {
-        opacity: 0,
-        rotateY: 90,
-        xPercent: -40,
-        yPercent: 60,
-        scale: 0.6
-      })
-    }
-    gsap.set(title, { opacity: 1 })
-    gsap.set(desc, { opacity: 0, y: 40 })
-    gsap.set(this.closeBtn, { opacity: 0, scale: 0.5, rotate: -180 })
-
-
-    // Show overlay
-    this.overlay.classList.add('active')
-
-    // Create master timeline with VWLab-inspired curves
-    const tl = gsap.timeline({
-      defaults: { ease: 'expo.inOut' },
-      onComplete: () => {
-        this.isAnimating = false
-
-        // Enable mouse parallax after animation completes
-        if (!this.mouseParallax) {
-          this.mouseParallax = createMouseParallax({
-            elements: images,
-            depths: [1.2, 0.7, 1.5],  // Different depth per image
-            maxMovement: 20,
-            maxRotation: 3,
-            smoothness: 0.85
-          })
-        }
-        this.mouseParallax.enable()
+  private enableFocusTrap() {
+    this.focusTrapHandler = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return
+      const focusable = this.overlay.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+      if (focusable.length === 0) return
+      const first = focusable[0]!
+      const last = focusable[focusable.length - 1]!
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus() }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus() }
       }
-    })
-
-    // Phase 1: Morph box expands to fullscreen
-    tl.to(this.morphBox, {
-      duration: 0.7,
-      left: '0px',
-      top: '0px',
-      width: windowW + 'px',
-      height: windowH + 'px',
-      borderRadius: 0,
-      ease: 'power3.inOut'
-    })
-
-    // Phase 2: Morph box fades out - shader is already rendering underneath
-    tl.to(this.morphBox, {
-      duration: 0.3,
-      opacity: 0,
-      ease: 'power2.out'
-    }, '-=0.15')
-
-    // Phase 3: Clip-path circular reveal for images - MORE PARALLEL
-    // All images start at nearly the same time with slight stagger
-    images.forEach((img, i) => {
-      const directions: Array<'bottom' | 'center' | 'bottom'> = ['bottom', 'center', 'bottom']
-
-      tl.add(
-        animateClipPathReveal({
-          element: img,
-          type: 'circle',
-          direction: directions[i % 3],
-          duration: 0.9,  // Faster
-          ease: easingPresets.vwlabSnap
-        }),
-        i === 0 ? '-=0.2' : `<${i * 0.08}`  // Nearly parallel with tiny stagger
-      )
-    })
-
-    // Phase 4: 3D Character reveal for title - starts with images
-    if (this.titleSplitText && this.titleSplitText.chars.length > 0) {
-      tl.add(
-        animate3DText({
-          element: title,
-          splitResult: this.titleSplitText,
-          duration: 1,
-          ease: easingPresets.lookbookText,
-          stagger: 0.02
-        }),
-        '<0.1'  // Start just after images begin
-      )
-    } else if (title) {
-      // Fallback to SVG filter if split failed
-      tl.add(() => {
-        animateTextWithFilter(title, {
-          duration: 1,
-          ease: 'expo.out',
-          startBlur: 60,
-          startScale: 180
-        })
-      }, '<0.1')
     }
-
-    // Phase 5: Description slides up with bounce - overlaps with title
-    tl.to(desc, {
-      duration: 0.8,
-      opacity: 1,
-      y: 0,
-      ease: easingPresets.vwlabSnap
-    }, '<0.3')
-
-    // Phase 6: Close button spins in - overlaps
-    tl.to(this.closeBtn, {
-      duration: 0.5,
-      opacity: 1,
-      scale: 1,
-      rotate: 0,
-      ease: 'back.out(2.5)'
-    }, '<0.2')
+    document.addEventListener('keydown', this.focusTrapHandler)
   }
 
-  /**
-   * Open Carnegie Hall layout with background shift effect
-   */
-  private openCarnegieHall() {
-    // Set Carnegie Hall layout
-    this.overlay.setAttribute('data-layout', 'carnegiehall')
+  private disableFocusTrap() {
+    if (this.focusTrapHandler) {
+      document.removeEventListener('keydown', this.focusTrapHandler)
+      this.focusTrapHandler = null
+    }
+  }
 
-    // Get dimensions
+  // ─── COMMON ANIMATION HELPERS ───────────────────────────────────────
+
+  private morphOpen(color: string, onLayoutReady?: () => void): gsap.core.Timeline {
     const rect = this.sourceRect!
     const windowW = window.innerWidth
     const windowH = window.innerHeight
 
-    // Set morph box color to match Carnegie Hall background
+    // Position morphBox over the source element
     gsap.set(this.morphBox, {
       left: rect.left + 'px',
       top: rect.top + 'px',
@@ -357,58 +149,17 @@ class DetailOverlay {
       height: rect.height + 'px',
       borderRadius: 16,
       opacity: 1,
-      background: '#d65430'
+      background: color
     })
 
-    // Get Carnegie Hall elements
-    const shiftContainer = document.getElementById('carnegiehall-shift')
-    const title = document.querySelector('.carnegiehall-title') as HTMLElement
-    const desc = document.querySelector('.carnegiehall-description') as HTMLElement
-    const aside = document.querySelector('.carnegiehall-aside') as HTMLElement
-
-    // Initialize background shift controller
-    if (shiftContainer && !this.carnegieShiftController) {
-      this.carnegieShiftController = createBackgroundShift({
-        container: shiftContainer,
-        duration: 0.9
-      })
-    }
-
-    // Split title text for character animation
-    if (title && !this.carnegieTitleSplitText) {
-      this.carnegieTitleSplitText = splitText(title, { type: 'chars,words' })
-    }
-
-    // Content container visible but elements hidden
-    gsap.set(this.contentEl, { opacity: 1 })
-
-    // Title chars hidden for reveal
-    if (this.carnegieTitleSplitText) {
-      gsap.set(this.carnegieTitleSplitText.chars, {
-        opacity: 0,
-        rotateY: 90,
-        xPercent: -40,
-        yPercent: 60,
-        scale: 0.6
-      })
-    }
-    gsap.set(title, { opacity: 1 })
-    gsap.set(desc, { opacity: 0, y: 40 })
-    gsap.set(aside, { opacity: 0, x: 40 })
-    gsap.set(this.closeBtn, { opacity: 0, scale: 0.5, rotate: -180 })
-
-    // Show overlay
+    // Keep content hidden — layout and content are set up AFTER the morphBox
+    // has expanded to cover the screen, so the background never flashes in early
+    gsap.set(this.contentEl, { opacity: 0 })
     this.overlay.classList.add('active')
+    this.overlay.removeAttribute('aria-hidden')
 
-    // Create master timeline
-    const tl = gsap.timeline({
-      defaults: { ease: 'expo.inOut' },
-      onComplete: () => {
-        this.isAnimating = false
-      }
-    })
+    const tl = gsap.timeline()
 
-    // Phase 1: Morph box expands to fullscreen
     tl.to(this.morphBox, {
       duration: 0.7,
       left: '0px',
@@ -419,43 +170,323 @@ class DetailOverlay {
       ease: 'power3.inOut'
     })
 
-    // Phase 2: Morph box fades out as content becomes visible
+    // MorphBox now covers the screen — safe to set layout and reveal content behind it
+    tl.call(() => {
+      this.overlay.setAttribute('data-layout', LAYOUT_MAP[this.currentLocationId!]!)
+      if (onLayoutReady) onLayoutReady()
+      gsap.set(this.contentEl, { opacity: 1 })
+    }, undefined, '-=0.15')
+
     tl.to(this.morphBox, {
       duration: 0.3,
       opacity: 0,
       ease: 'power2.out'
     }, '-=0.15')
 
-    // Phase 3: Background shift layers animate in
-    if (this.carnegieShiftController) {
-      tl.add(this.carnegieShiftController.animateIn(), '-=0.3')
-    }
+    return tl
+  }
 
-    // Phase 4: Title characters animate in with 3D effect
-    if (this.carnegieTitleSplitText && this.carnegieTitleSplitText.chars.length > 0) {
+  private morphClose(color: string): gsap.core.Timeline {
+    const windowW = window.innerWidth
+    const windowH = window.innerHeight
+    const rect = this.sourceRect
+
+    const tl = gsap.timeline()
+
+    // Set morphBox to full screen but invisible
+    tl.set(this.morphBox, {
+      left: '0px',
+      top: '0px',
+      width: windowW + 'px',
+      height: windowH + 'px',
+      borderRadius: 0,
+      opacity: 0,
+      background: color
+    })
+
+    // Fade morphBox in to cover the content
+    tl.to(this.morphBox, {
+      duration: 0.3,
+      opacity: 1,
+      ease: 'power2.in'
+    })
+
+    // Now that morphBox covers everything, hide content and remove layout
+    tl.call(() => {
+      gsap.set(this.contentEl, { opacity: 0 })
+      this.overlay.removeAttribute('data-layout')
+    })
+
+    // Shrink morphBox back to the button
+    tl.to(this.morphBox, {
+      duration: 0.7,
+      left: rect ? rect.left + 'px' : '50%',
+      top: rect ? rect.top + 'px' : '50%',
+      width: rect ? rect.width + 'px' : '200px',
+      height: rect ? rect.height + 'px' : '60px',
+      borderRadius: 16,
+      ease: 'power3.inOut'
+    })
+
+    tl.to(this.morphBox, {
+      duration: 0.3,
+      opacity: 0,
+      ease: 'power2.out'
+    }, '-=0.15')
+
+    return tl
+  }
+
+  private closeButtonIn(tl: gsap.core.Timeline) {
+    gsap.set(this.closeBtn, { opacity: 0 })
+    tl.to(this.closeBtn, {
+      duration: 0.3,
+      opacity: 1,
+      ease: 'power2.out'
+    }, 0.4)
+  }
+
+  private closeButtonOut(tl: gsap.core.Timeline) {
+    tl.to(this.closeBtn, {
+      duration: 0.2,
+      opacity: 0,
+      ease: 'power2.in'
+    })
+  }
+
+  private titleAnimateIn(
+    tl: gsap.core.Timeline,
+    titleEl: HTMLElement,
+    splitKey: string,
+    offset = '-=0.3'
+  ) {
+    if (!this.splitTexts[splitKey]) {
+      this.splitTexts[splitKey] = splitText(titleEl, { type: 'chars,words' })
+    }
+    const split = this.splitTexts[splitKey]!
+
+    gsap.set(split.chars, {
+      opacity: 0,
+      rotateY: 90,
+      xPercent: -40,
+      yPercent: 60,
+      scale: 0.6
+    })
+    gsap.set(titleEl, { opacity: 1 })
+
+    if (split.chars.length > 0) {
       tl.add(
         animate3DText({
-          element: title,
-          splitResult: this.carnegieTitleSplitText,
+          element: titleEl,
+          splitResult: split,
           duration: 1,
           ease: easingPresets.lookbookText,
           stagger: 0.02
         }),
-        '-=0.6'
+        offset
       )
-    } else if (title) {
-      // Fallback to filter animation
+    } else {
       tl.add(() => {
-        animateTextWithFilter(title, {
+        animateTextWithFilter(titleEl, {
           duration: 1,
           ease: 'expo.out',
           startBlur: 60,
           startScale: 180
         })
-      }, '-=0.6')
+      }, offset)
+    }
+  }
+
+  private titleAnimateOut(tl: gsap.core.Timeline, splitKey: string, titleEl: HTMLElement, offset = '-=0.3') {
+    const split = this.splitTexts[splitKey]
+    if (split && split.chars.length > 0) {
+      tl.to(split.chars, {
+        duration: 0.4,
+        opacity: 0,
+        rotateY: -90,
+        yPercent: -50,
+        scale: 0.7,
+        stagger: { each: 0.015, from: 'end' },
+        ease: 'power2.in'
+      }, offset)
+    } else {
+      tl.to(titleEl, {
+        duration: 0.5,
+        opacity: 0,
+        y: -30,
+        ease: 'power2.in'
+      }, offset)
+    }
+  }
+
+  private resetState(elements: (HTMLElement | NodeListOf<HTMLElement> | null)[], splitKeys: string[]) {
+    // Kill any in-flight tweens (e.g. parallax reset) before clearing props
+    elements.forEach(el => {
+      if (el) gsap.killTweensOf(el)
+    })
+
+    gsap.set(this.morphBox, { clearProps: 'all' })
+    gsap.set(this.contentEl, { clearProps: 'all' })
+    gsap.set(this.closeBtn, { clearProps: 'all' })
+
+    elements.forEach(el => {
+      if (el) gsap.set(el, { clearProps: 'all' })
+    })
+
+    splitKeys.forEach(key => {
+      if (this.splitTexts[key]) {
+        this.splitTexts[key]!.revert()
+        this.splitTexts[key] = null
+      }
+    })
+
+    // Clean up Nassau laser effect
+    if (this.nassauLaserEffect) {
+      this.nassauLaserEffect.stop()
+      this.nassauLaserEffect.destroy()
+      this.nassauLaserEffect = null
     }
 
-    // Phase 5: Description slides up
+    // Disable focus trap
+    this.disableFocusTrap()
+
+    // Set aria-hidden when closed
+    this.overlay.setAttribute('aria-hidden', 'true')
+
+    // Restore aria-hidden on background
+    const app = document.getElementById('app')
+    if (app) {
+      Array.from(app.children).forEach(child => {
+        (child as HTMLElement).removeAttribute('aria-hidden')
+      })
+    }
+
+    // Restore focus to trigger element
+    if (this.triggerElement) {
+      this.triggerElement.focus()
+      this.triggerElement = null
+    }
+
+    this.overlay.removeAttribute('data-layout')
+    this.overlay.classList.remove('active')
+    this.isOpen = false
+    this.isAnimating = false
+    this.currentLocationId = null
+    this.sourceRect = null
+  }
+
+  // ─── OPEN ENTRY POINT ──────────────────────────────────────────────
+
+  open(locationId: string, fromElement: HTMLElement) {
+    if (this.isOpen || this.isAnimating) return
+    if (!OVERLAY_LOCATION_IDS.includes(locationId)) return
+
+    this.isAnimating = true
+    this.isOpen = true
+    this.currentLocationId = locationId
+    this.triggerElement = fromElement
+
+    const location = NYC_LOCATIONS.find(l => l.id === locationId)
+    if (!location) return
+
+    this.sourceRect = fromElement.getBoundingClientRect()
+
+    // Set aria-label to current location name
+    this.overlay.setAttribute('aria-label', `${location.name} details`)
+
+    // Hide background from screen readers
+    const app = document.getElementById('app')
+    if (app) {
+      Array.from(app.children).forEach(child => {
+        if (child !== this.overlay) {
+          (child as HTMLElement).setAttribute('aria-hidden', 'true')
+        }
+      })
+    }
+
+    // Enable focus trap and focus close button after animation
+    this.enableFocusTrap()
+
+    switch (locationId) {
+      case 'mannys-music': this.openMannys(); break
+      case 'rko-theatre': this.openRKO(); break
+      case 'carnegie-hall': this.openCarnegieHall(); break
+      case 'madison-square-garden': this.openMSG(); break
+      case 'shea-stadium': this.openShea(); break
+      case 'town-hall': this.openTownHall(); break
+      case 'radio-city': this.openRadioCity(); break
+      case 'hendrix-apartment': this.openHendrix(); break
+      case 'apollo-theatre': this.openApollo(); break
+      case 'belmont-park': this.openBelmont(); break
+      case 'nassau-coliseum': this.openNassau(); break
+    }
+  }
+
+  // ─── CLOSE ENTRY POINT ─────────────────────────────────────────────
+
+  close() {
+    if (!this.isOpen || this.isAnimating) return
+    this.isAnimating = true
+
+    switch (this.currentLocationId) {
+      case 'mannys-music': this.closeMannys(); break
+      case 'rko-theatre': this.closeRKO(); break
+      case 'carnegie-hall': this.closeCarnegieHall(); break
+      case 'madison-square-garden': this.closeMSG(); break
+      case 'shea-stadium': this.closeShea(); break
+      case 'town-hall': this.closeTownHall(); break
+      case 'radio-city': this.closeRadioCity(); break
+      case 'hendrix-apartment': this.closeHendrix(); break
+      case 'apollo-theatre': this.closeApollo(); break
+      case 'belmont-park': this.closeBelmont(); break
+      case 'nassau-coliseum': this.closeNassau(); break
+    }
+  }
+
+  // ─── MANNY'S MUSIC ─────────────────────────────────────────────────
+
+  private openMannys() {
+    const color = MORPH_COLORS['mannys-music']!
+    const title = document.querySelector('.mannys-title') as HTMLElement
+    const desc = document.querySelector('.mannys-description') as HTMLElement
+    const eyebrow = document.querySelector('.mannys-eyebrow') as HTMLElement
+    const images = document.querySelectorAll('.mannys-image') as NodeListOf<HTMLElement>
+    const viewLot = document.querySelector('#detail-mannys .view-lot-btn') as HTMLElement
+
+    const tl = this.morphOpen(color, () => {
+      gsap.set(eyebrow, { opacity: 0, y: -20 })
+      gsap.set(desc, { opacity: 0, y: 30 })
+      gsap.set(images, {
+        opacity: 0,
+        x: 0,
+        xPercent: 0,
+        yPercent: 0,
+        rotation: 0,
+        rotateX: 0,
+        rotateY: 0
+      })
+      if (viewLot) gsap.set(viewLot, { opacity: 0, y: 20 })
+      gsap.set(this.closeBtn, { opacity: 0 })
+    })
+
+    tl.defaults = { ease: 'expo.out' }
+
+    tl.to(images, {
+      duration: 0.9,
+      opacity: 1,
+      stagger: 0.15,
+      ease: 'power2.out'
+    }, '-=0.2')
+
+    tl.to(eyebrow, {
+      duration: 0.5,
+      opacity: 1,
+      y: 0,
+      ease: 'power3.out'
+    }, '-=0.6')
+
+    this.titleAnimateIn(tl, title, 'mannys', '-=0.4')
+
     tl.to(desc, {
       duration: 0.8,
       opacity: 1,
@@ -463,352 +494,132 @@ class DetailOverlay {
       ease: 'back.out(1.7)'
     }, '-=0.5')
 
-    // Phase 6: Aside fades in from right
-    tl.to(aside, {
-      duration: 0.6,
-      opacity: 1,
-      x: 0,
-      ease: 'power2.out'
-    }, '-=0.4')
-
-    // Phase 7: Close button spins in
-    tl.to(this.closeBtn, {
-      duration: 0.5,
-      opacity: 1,
-      scale: 1,
-      rotate: 0,
-      ease: 'back.out(2.5)'
-    }, '-=0.3')
-  }
-
-  close() {
-    if (!this.isOpen || this.isAnimating) return
-
-    this.isAnimating = true
-
-    // Route to appropriate close handler
-    if (this.currentLocationId === 'carnegie-hall') {
-      this.closeCarnegieHall()
-      return
-    }
-
-    if (this.currentLocationId === 'madison-square-garden') {
-      this.closeMSG()
-      return
-    }
-
-    if (this.currentLocationId === 'rko-theatre') {
-      this.closeRKO()
-      return
-    }
-
-    if (this.currentLocationId === 'cbs-studios') {
-      this.closeCBS()
-      return
-    }
-
-    // Disable parallax immediately
-    if (this.mouseParallax) {
-      this.mouseParallax.disable()
-    }
-
-    // Get Ed Sullivan elements
-    const images = document.querySelectorAll('.edsullivan-image') as NodeListOf<HTMLElement>
-    const title = document.querySelector('.edsullivan-title') as HTMLElement
-    const desc = document.querySelector('.edsullivan-description') as HTMLElement
-
-    // Create close timeline
-    const tl = gsap.timeline({
-      defaults: { ease: 'expo.inOut' },
-      onComplete: () => {
-        // Destroy parallax controller
-        if (this.mouseParallax) {
-          this.mouseParallax.destroy()
-          this.mouseParallax = null
-        }
-
-        // Revert split text
-        if (this.titleSplitText) {
-          this.titleSplitText.revert()
-          this.titleSplitText = null
-        }
-
-        // Reset all animated elements for next open
-        gsap.set(this.morphBox, { clearProps: 'all' })
-        gsap.set(this.contentEl, { clearProps: 'all' })
-        gsap.set(this.closeBtn, { clearProps: 'all' })
-        gsap.set(images, { clearProps: 'all' })
-        gsap.set(desc, { clearProps: 'all' })
-
-        // Reset title filter
-        if (title) {
-          resetTextFilter(title)
-          gsap.set(title, { clearProps: 'all' })
-        }
-
-        this.overlay.removeAttribute('data-layout')
-        this.overlay.classList.remove('active')
-        this.isOpen = false
-        this.isAnimating = false
-        this.currentLocationId = null
-        this.sourceRect = null
-
-      }
-    })
-
-    // Phase 1: Close button spins out
-    tl.to(this.closeBtn, {
-      duration: 0.3,
-      opacity: 0,
-      scale: 0.5,
-      rotate: 180,
-      ease: 'power2.in'
-    })
-
-    // Phase 2: Description fades up and out
-    .to(desc, {
-      duration: 0.4,
-      opacity: 0,
-      y: -30,
-      ease: 'power2.in'
-    }, '-=0.2')
-
-    // Phase 3: Title characters fly out (if split text exists)
-    if (this.titleSplitText && this.titleSplitText.chars.length > 0) {
-      // Animate chars out with stagger from end
-      tl.to(this.titleSplitText.chars, {
-        duration: 0.4,
-        opacity: 0,
-        rotateY: -90,
-        yPercent: -50,
-        scale: 0.7,
-        stagger: {
-          each: 0.015,
-          from: 'end'
-        },
-        ease: 'power2.in'
-      }, '-=0.3')
-    } else {
-      tl.to(title, {
-        duration: 0.5,
-        opacity: 0,
-        y: -30,
-        ease: 'power2.in'
-      }, '-=0.3')
-    }
-
-    // Phase 4: Images shrink back with clip-path
-    images.forEach((img, i) => {
-      tl.to(img, {
-        clipPath: 'circle(0% at 50% 50%)',
-        scale: 0.9,
-        duration: 0.5,
-        ease: 'power3.in'
-      }, i === 0 ? '-=0.4' : '-=0.35')
-    })
-
-    // Fade out the content container so morph box is visible
-    tl.to(this.contentEl, {
-      duration: 0.3,
-      opacity: 0,
-      ease: 'power2.in'
-    }, '-=0.2')
-
-    // Phase 5: Morph back to source
-    if (this.sourceRect) {
-      const windowW = window.innerWidth
-      const windowH = window.innerHeight
-      const rect = this.sourceRect
-
-      // Set morph box to fullscreen (pixel values)
-      tl.set(this.morphBox, {
-        left: '0px',
-        top: '0px',
-        width: windowW + 'px',
-        height: windowH + 'px',
-        borderRadius: 0,
-        opacity: 1
-      })
-
-      // Animate to source position (pixel values)
-      tl.to(this.morphBox, {
-        duration: 0.7,
-        left: rect.left + 'px',
-        top: rect.top + 'px',
-        width: rect.width + 'px',
-        height: rect.height + 'px',
-        borderRadius: 16,
-        ease: 'power3.inOut'
-      })
-
-      // Fade out morph box
-      tl.to(this.morphBox, {
-        duration: 0.3,
-        opacity: 0,
-        ease: 'power2.out'
-      }, '-=0.15')
-    }
-  }
-
-  /**
-   * Close Carnegie Hall layout
-   */
-  private closeCarnegieHall() {
-    // Get Carnegie Hall elements
-    const shiftLayers = document.querySelectorAll('.carnegiehall-shift__layer-inner') as NodeListOf<HTMLElement>
-    const title = document.querySelector('.carnegiehall-title') as HTMLElement
-    const desc = document.querySelector('.carnegiehall-description') as HTMLElement
-    const aside = document.querySelector('.carnegiehall-aside') as HTMLElement
-
-    // Create close timeline
-    const tl = gsap.timeline({
-      defaults: { ease: 'expo.inOut' },
-      onComplete: () => {
-        // Destroy shift controller
-        if (this.carnegieShiftController) {
-          this.carnegieShiftController.destroy()
-          this.carnegieShiftController = null
-        }
-
-        // Revert split text
-        if (this.carnegieTitleSplitText) {
-          this.carnegieTitleSplitText.revert()
-          this.carnegieTitleSplitText = null
-        }
-
-        // Reset all animated elements
-        gsap.set(this.morphBox, { clearProps: 'all' })
-        gsap.set(this.contentEl, { clearProps: 'all' })
-        gsap.set(this.closeBtn, { clearProps: 'all' })
-        gsap.set(shiftLayers, { clearProps: 'all' })
-        gsap.set(desc, { clearProps: 'all' })
-        gsap.set(aside, { clearProps: 'all' })
-
-        if (title) {
-          resetTextFilter(title)
-          gsap.set(title, { clearProps: 'all' })
-        }
-
-        this.overlay.removeAttribute('data-layout')
-        this.overlay.classList.remove('active')
-        this.isOpen = false
-        this.isAnimating = false
-        this.currentLocationId = null
-        this.sourceRect = null
-
-      }
-    })
-
-    // Phase 1: Close button spins out
-    tl.to(this.closeBtn, {
-      duration: 0.3,
-      opacity: 0,
-      scale: 0.5,
-      rotate: 180,
-      ease: 'power2.in'
-    })
-
-    // Phase 2: Aside fades out
-    .to(aside, {
-      duration: 0.3,
-      opacity: 0,
-      x: 30,
-      ease: 'power2.in'
-    }, '-=0.2')
-
-    // Phase 3: Description fades up and out
-    .to(desc, {
-      duration: 0.4,
-      opacity: 0,
-      y: -30,
-      ease: 'power2.in'
-    }, '-=0.2')
-
-    // Phase 4: Title characters fly out
-    if (this.carnegieTitleSplitText && this.carnegieTitleSplitText.chars.length > 0) {
-      tl.to(this.carnegieTitleSplitText.chars, {
-        duration: 0.4,
-        opacity: 0,
-        rotateY: -90,
-        yPercent: -50,
-        scale: 0.7,
-        stagger: {
-          each: 0.015,
-          from: 'end'
-        },
-        ease: 'power2.in'
-      }, '-=0.3')
-    } else {
-      tl.to(title, {
-        duration: 0.5,
-        opacity: 0,
-        y: -30,
-        ease: 'power2.in'
-      }, '-=0.3')
-    }
-
-    // Phase 5: Shift layers animate out
-    if (this.carnegieShiftController) {
-      tl.add(this.carnegieShiftController.animateOut(), '-=0.3')
-    }
-
-    // Fade out content container
-    tl.to(this.contentEl, {
-      duration: 0.3,
-      opacity: 0,
-      ease: 'power2.in'
-    }, '-=0.4')
-
-    // Phase 6: Morph back to source
-    if (this.sourceRect) {
-      const windowW = window.innerWidth
-      const windowH = window.innerHeight
-      const rect = this.sourceRect
-
-      // Set morph box to fullscreen with Carnegie Hall color
-      tl.set(this.morphBox, {
-        left: '0px',
-        top: '0px',
-        width: windowW + 'px',
-        height: windowH + 'px',
-        borderRadius: 0,
+    if (viewLot) {
+      tl.to(viewLot, {
+        duration: 0.6,
         opacity: 1,
-        background: '#d65430'
-      })
-
-      // Animate to source position
-      tl.to(this.morphBox, {
-        duration: 0.7,
-        left: rect.left + 'px',
-        top: rect.top + 'px',
-        width: rect.width + 'px',
-        height: rect.height + 'px',
-        borderRadius: 16,
-        ease: 'power3.inOut'
-      })
-
-      // Fade out morph box
-      tl.to(this.morphBox, {
-        duration: 0.3,
-        opacity: 0,
-        ease: 'power2.out'
-      }, '-=0.15')
+        y: 0,
+        ease: 'power3.out'
+      }, '-=0.3')
     }
+
+    this.closeButtonIn(tl)
+
+    tl.eventCallback('onComplete', () => {
+      this.isAnimating = false
+      this.closeBtn.focus()
+      if (!this.mouseParallax) {
+        this.mouseParallax = createMouseParallax({
+          elements: images,
+          depths: [1.2],
+          maxMovement: 20,
+          maxRotation: 3,
+          smoothness: 0.85
+        })
+      }
+      this.mouseParallax.enable()
+    })
   }
 
-  /**
-   * Open Madison Square Garden layout - Jumbotron/LED Style
-   */
-  private openMSG() {
-    // Set MSG layout
-    this.overlay.setAttribute('data-layout', 'msg')
+  private closeMannys() {
+    if (this.mouseParallax) this.mouseParallax.disable()
 
-    // Get dimensions
+    const title = document.querySelector('.mannys-title') as HTMLElement
+    const desc = document.querySelector('.mannys-description') as HTMLElement
+    const eyebrow = document.querySelector('.mannys-eyebrow') as HTMLElement
+    const images = document.querySelectorAll('.mannys-image') as NodeListOf<HTMLElement>
+    const viewLot = document.querySelector('#detail-mannys .view-lot-btn') as HTMLElement
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'power2.in' },
+      onComplete: () => {
+        if (this.mouseParallax) { this.mouseParallax.destroy(); this.mouseParallax = null }
+        if (title) resetTextFilter(title)
+        this.resetState([images, desc, eyebrow, title, viewLot], ['mannys'])
+      }
+    })
+
+    this.closeButtonOut(tl)
+    if (viewLot) tl.to(viewLot, { duration: 0.5, opacity: 0, y: 20, ease: 'power2.in' }, 0.15)
+    tl.to(desc, { duration: 0.4, opacity: 0, y: -30 }, '-=0.2')
+    this.titleAnimateOut(tl, 'mannys', title, '-=0.3')
+    tl.to(eyebrow, { duration: 0.3, opacity: 0, y: -20 }, '-=0.3')
+    tl.to(images, { duration: 0.5, opacity: 0, stagger: 0.08 }, '-=0.3')
+    tl.add(this.morphClose(MORPH_COLORS['mannys-music']!), '+=0.1')
+  }
+
+  // ─── RKO THEATRE ───────────────────────────────────────────────────
+
+  private openRKO() {
+    const color = MORPH_COLORS['rko-theatre']!
+    const heroImage = document.getElementById('rko-hero-image')
+    const title = document.querySelector('.rko-title') as HTMLElement
+    const eyebrow = document.querySelector('.rko-eyebrow') as HTMLElement
+    const desc = document.querySelector('.rko-description') as HTMLElement
+    const rays = document.querySelectorAll('.rko-rays__beam') as NodeListOf<HTMLElement>
+    const star = document.querySelector('.rko-star') as HTMLElement
+    const viewLot = document.querySelector('#detail-rko .view-lot-btn') as HTMLElement
+
+    const tl = this.morphOpen(color, () => {
+      gsap.set(heroImage, { opacity: 0, scale: 0.85, rotate: -3 })
+      gsap.set(eyebrow, { opacity: 0, y: -20 })
+      gsap.set(desc, { opacity: 0, y: 30 })
+      gsap.set(rays, { opacity: 0 })
+      gsap.set(star, { opacity: 0, scale: 0 })
+      if (viewLot) gsap.set(viewLot, { opacity: 0, y: 20 })
+      gsap.set(this.closeBtn, { opacity: 0 })
+    })
+
+    tl.to(rays, { duration: 0.6, opacity: 1, stagger: 0.05, ease: 'power2.out' }, '-=0.2')
+    tl.to(heroImage, { duration: 1, opacity: 1, scale: 1, rotate: 0, ease: 'back.out(1.4)' }, '-=0.4')
+    tl.to(eyebrow, { duration: 0.5, opacity: 1, y: 0, ease: 'back.out(1.7)' }, '-=0.5')
+    this.titleAnimateIn(tl, title, 'rko', '-=0.3')
+    tl.to(desc, { duration: 0.8, opacity: 1, y: 0, ease: 'back.out(1.7)' }, '-=0.6')
+    if (viewLot) { tl.to(viewLot, { duration: 0.6, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.3') }
+    tl.to(star, { duration: 0.5, opacity: 1, scale: 1, ease: 'back.out(3)' }, '-=0.4')
+    this.closeButtonIn(tl)
+    tl.eventCallback('onComplete', () => { this.isAnimating = false; this.closeBtn.focus() })
+  }
+
+  private closeRKO() {
+    const heroImage = document.getElementById('rko-hero-image')
+    const title = document.querySelector('.rko-title') as HTMLElement
+    const eyebrow = document.querySelector('.rko-eyebrow') as HTMLElement
+    const desc = document.querySelector('.rko-description') as HTMLElement
+    const rays = document.querySelectorAll('.rko-rays__beam') as NodeListOf<HTMLElement>
+    const star = document.querySelector('.rko-star') as HTMLElement
+    const viewLot = document.querySelector('#detail-rko .view-lot-btn') as HTMLElement
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'power2.in' },
+      onComplete: () => {
+        if (title) resetTextFilter(title)
+        this.resetState(
+          [heroImage, rays, star, eyebrow, desc, title, viewLot],
+          ['rko']
+        )
+      }
+    })
+
+    this.closeButtonOut(tl)
+    if (viewLot) tl.to(viewLot, { duration: 0.5, opacity: 0, y: 20, ease: 'power2.in' }, 0.15)
+    tl.to(star, { duration: 0.3, opacity: 0, scale: 0 }, '-=0.2')
+    tl.to(desc, { duration: 0.4, opacity: 0, y: -30 }, '-=0.2')
+    tl.to(eyebrow, { duration: 0.3, opacity: 0, y: -20 }, '-=0.3')
+    this.titleAnimateOut(tl, 'rko', title, '-=0.2')
+    tl.to(rays, { duration: 0.3, opacity: 0 }, '-=0.3')
+    tl.to(heroImage, { duration: 0.6, opacity: 0, scale: 0.85, ease: 'power3.in' }, '-=0.2')
+    tl.add(this.morphClose(MORPH_COLORS['rko-theatre']!), '+=0.1')
+  }
+
+  // ─── CARNEGIE HALL ─────────────────────────────────────────────────
+
+  private openCarnegieHall() {
+    const color = MORPH_COLORS['carnegie-hall']!
     const rect = this.sourceRect!
     const windowW = window.innerWidth
     const windowH = window.innerHeight
 
-    // Set morph box color to match MSG background (dark)
     gsap.set(this.morphBox, {
       left: rect.left + 'px',
       top: rect.top + 'px',
@@ -816,10 +627,117 @@ class DetailOverlay {
       height: rect.height + 'px',
       borderRadius: 16,
       opacity: 1,
-      background: '#0a0a0a'
+      background: color
     })
 
-    // Get MSG elements
+    const shiftContainer = document.getElementById('carnegiehall-shift')
+    const title = document.querySelector('.carnegiehall-title') as HTMLElement
+    const desc = document.querySelector('.carnegiehall-description') as HTMLElement
+
+    if (shiftContainer && !this.carnegieShiftController) {
+      this.carnegieShiftController = createBackgroundShift({
+        container: shiftContainer,
+        duration: 0.9
+      })
+    }
+
+    if (!this.splitTexts['carnegiehall']) {
+      this.splitTexts['carnegiehall'] = splitText(title, { type: 'chars,words' })
+    }
+
+    gsap.set(this.contentEl, { opacity: 0 })
+
+    if (this.splitTexts['carnegiehall']) {
+      gsap.set(this.splitTexts['carnegiehall'].chars, {
+        opacity: 0, rotateY: 90, xPercent: -40, yPercent: 60, scale: 0.6
+      })
+    }
+    gsap.set(title, { opacity: 1 })
+    gsap.set(desc, { opacity: 0, y: 40 })
+    gsap.set(this.closeBtn, { opacity: 0 })
+
+    this.overlay.classList.add('active')
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'expo.inOut' },
+      onComplete: () => { this.isAnimating = false; this.closeBtn.focus() }
+    })
+
+    tl.to(this.morphBox, {
+      duration: 0.7,
+      left: '0px', top: '0px',
+      width: windowW + 'px', height: windowH + 'px',
+      borderRadius: 0, ease: 'power3.inOut'
+    })
+
+    // Set layout and reveal content only after morphBox covers the screen
+    tl.call(() => {
+      this.overlay.setAttribute('data-layout', 'carnegiehall')
+      gsap.set(this.contentEl, { opacity: 1 })
+    }, undefined, '-=0.15')
+
+    tl.to(this.morphBox, { duration: 0.3, opacity: 0, ease: 'power2.out' }, '-=0.15')
+
+    if (this.carnegieShiftController) {
+      tl.add(this.carnegieShiftController.animateIn(), '-=0.3')
+    }
+
+    if (this.splitTexts['carnegiehall'] && this.splitTexts['carnegiehall'].chars.length > 0) {
+      tl.add(animate3DText({
+        element: title,
+        splitResult: this.splitTexts['carnegiehall'],
+        duration: 1,
+        ease: easingPresets.lookbookText,
+        stagger: 0.02
+      }), '-=0.6')
+    } else {
+      tl.add(() => {
+        animateTextWithFilter(title, { duration: 1, ease: 'expo.out', startBlur: 60, startScale: 180 })
+      }, '-=0.6')
+    }
+
+    tl.to(desc, { duration: 0.8, opacity: 1, y: 0, ease: 'back.out(1.7)' }, '-=0.5')
+    this.closeButtonIn(tl)
+  }
+
+  private closeCarnegieHall() {
+    const shiftLayers = document.querySelectorAll('.carnegiehall-shift__layer-inner') as NodeListOf<HTMLElement>
+    const title = document.querySelector('.carnegiehall-title') as HTMLElement
+    const desc = document.querySelector('.carnegiehall-description') as HTMLElement
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'expo.inOut' },
+      onComplete: () => {
+        if (this.carnegieShiftController) { this.carnegieShiftController.destroy(); this.carnegieShiftController = null }
+        if (title) resetTextFilter(title)
+        this.resetState([shiftLayers, desc, title], ['carnegiehall'])
+      }
+    })
+
+    this.closeButtonOut(tl)
+    tl.to(desc, { duration: 0.4, opacity: 0, y: -30 }, '-=0.2')
+    this.titleAnimateOut(tl, 'carnegiehall', title, '-=0.3')
+
+    if (this.carnegieShiftController) {
+      tl.add(this.carnegieShiftController.animateOut(), '-=0.3')
+    }
+
+    tl.add(this.morphClose(MORPH_COLORS['carnegie-hall']!))
+  }
+
+  // ─── MADISON SQUARE GARDEN ─────────────────────────────────────────
+
+  private openMSG() {
+    const rect = this.sourceRect!
+    const windowW = window.innerWidth
+    const windowH = window.innerHeight
+
+    gsap.set(this.morphBox, {
+      left: rect.left + 'px', top: rect.top + 'px',
+      width: rect.width + 'px', height: rect.height + 'px',
+      borderRadius: 16, opacity: 1, background: '#000000'
+    })
+
     const ledGrid = document.getElementById('msg-led-grid')
     const scanlines = document.querySelector('.msg-scanlines') as HTMLElement
     const jumbotron = document.getElementById('msg-jumbotron')
@@ -830,37 +748,26 @@ class DetailOverlay {
     const stats = document.querySelectorAll('.msg-stat') as NodeListOf<HTMLElement>
     const chaseLightsContainer = document.getElementById('msg-chase-lights')
 
-    // Create chase lights around the border
+    // Create chase lights
     if (chaseLightsContainer && chaseLightsContainer.children.length === 0) {
-      const totalLights = 60
-      for (let i = 0; i < totalLights; i++) {
+      for (let i = 0; i < 60; i++) {
         const light = document.createElement('div')
         light.className = 'msg-chase-light'
-        const progress = i / totalLights
-        // Position lights around the perimeter
+        const progress = i / 60
         if (progress < 0.25) {
-          // Top edge
-          light.style.top = '0'
-          light.style.left = `${(progress / 0.25) * 100}%`
+          light.style.top = '0'; light.style.left = `${(progress / 0.25) * 100}%`
         } else if (progress < 0.5) {
-          // Right edge
-          light.style.right = '0'
-          light.style.top = `${((progress - 0.25) / 0.25) * 100}%`
+          light.style.right = '0'; light.style.top = `${((progress - 0.25) / 0.25) * 100}%`
         } else if (progress < 0.75) {
-          // Bottom edge
-          light.style.bottom = '0'
-          light.style.right = `${((progress - 0.5) / 0.25) * 100}%`
+          light.style.bottom = '0'; light.style.right = `${((progress - 0.5) / 0.25) * 100}%`
         } else {
-          // Left edge
-          light.style.left = '0'
-          light.style.bottom = `${((progress - 0.75) / 0.25) * 100}%`
+          light.style.left = '0'; light.style.bottom = `${((progress - 0.75) / 0.25) * 100}%`
         }
         chaseLightsContainer.appendChild(light)
       }
     }
 
-    // Content container visible but elements hidden
-    gsap.set(this.contentEl, { opacity: 1 })
+    gsap.set(this.contentEl, { opacity: 0 })
     gsap.set(ledGrid, { opacity: 0 })
     gsap.set(scanlines, { opacity: 0 })
     gsap.set(jumbotron, { opacity: 0, scale: 0.9 })
@@ -869,243 +776,155 @@ class DetailOverlay {
     gsap.set(titleLines, { opacity: 0, y: 40 })
     gsap.set(infoPanel, { opacity: 0, y: 50 })
     gsap.set(stats, { opacity: 0, y: 20 })
-    gsap.set(this.closeBtn, { opacity: 0, scale: 0.5, rotate: -180 })
+    gsap.set(this.closeBtn, { opacity: 0 })
 
-    // Show overlay
     this.overlay.classList.add('active')
 
-    // Create master timeline
     const tl = gsap.timeline({
       defaults: { ease: 'expo.out' },
       onComplete: () => {
         this.isAnimating = false
-        // Start chase light and spark animations
+        this.closeBtn.focus()
         this.startChaseLightAnimation()
         this.startSparkAnimation()
       }
     })
 
-    // Phase 1: Morph box expands to fullscreen
     tl.to(this.morphBox, {
       duration: 0.7,
-      left: '0px',
-      top: '0px',
-      width: windowW + 'px',
-      height: windowH + 'px',
-      borderRadius: 0,
-      ease: 'power3.inOut'
+      left: '0px', top: '0px',
+      width: windowW + 'px', height: windowH + 'px',
+      borderRadius: 0, ease: 'power3.inOut'
     })
 
-    // Phase 2: Morph box fades out, LED grid fades in
-    tl.to(this.morphBox, {
-      duration: 0.3,
-      opacity: 0,
-      ease: 'power2.out'
-    }, '-=0.15')
+    // Set layout and reveal content only after morphBox covers the screen
+    tl.call(() => {
+      this.overlay.setAttribute('data-layout', 'msg')
+      gsap.set(this.contentEl, { opacity: 1 })
+    }, undefined, '-=0.15')
 
-    tl.to(ledGrid, {
-      duration: 0.5,
-      opacity: 0.6,
-      ease: 'power2.out'
-    }, '-=0.2')
-
-    // Phase 3: Jumbotron screen appears with scale
-    tl.to(jumbotron, {
-      duration: 0.8,
-      opacity: 1,
-      scale: 1,
-      ease: 'back.out(1.4)'
-    }, '-=0.3')
-
-    // Phase 4: Scanlines fade in
-    tl.to(scanlines, {
-      duration: 0.4,
-      opacity: 1,
-      ease: 'power2.out'
-    }, '-=0.5')
-
-    // Phase 5: Eyebrow text types in
-    tl.to(eyebrow, {
-      duration: 0.6,
-      opacity: 1,
-      y: 0,
-      ease: 'power3.out'
-    }, '-=0.3')
-
-    // Phase 6: Background image zooms in with Ken Burns effect
-    tl.to(bgImage, {
-      duration: 1.5,
-      opacity: 1,
-      scale: 1,
-      ease: 'power2.out'
-    }, '-=0.5')
-
-    // Phase 7: Title lines animate in with stagger
-    tl.to(titleLines, {
-      duration: 0.8,
-      opacity: 1,
-      y: 0,
-      stagger: 0.12,
-      ease: 'power3.out'
-    }, '-=1.2')
-
-    // Phase 8: Info panel slides up
-    tl.to(infoPanel, {
-      duration: 0.7,
-      opacity: 1,
-      y: 0,
-      ease: 'power3.out'
-    }, '-=0.4')
-
-    // Phase 9: Stats animate in
-    tl.to(stats, {
-      duration: 0.5,
-      opacity: 1,
-      y: 0,
-      stagger: 0.1,
-      ease: 'back.out(2)'
-    }, '-=0.3')
-
-    // Phase 10: Close button spins in
-    tl.to(this.closeBtn, {
-      duration: 0.5,
-      opacity: 1,
-      scale: 1,
-      rotate: 0,
-      ease: 'back.out(2.5)'
-    }, '-=0.3')
+    tl.to(this.morphBox, { duration: 0.3, opacity: 0, ease: 'power2.out' }, '-=0.15')
+    tl.to(ledGrid, { duration: 0.5, opacity: 0.6, ease: 'power2.out' }, '-=0.2')
+    tl.to(jumbotron, { duration: 0.8, opacity: 1, scale: 1, ease: 'back.out(1.4)' }, '-=0.3')
+    tl.to(scanlines, { duration: 0.4, opacity: 1, ease: 'power2.out' }, '-=0.5')
+    tl.to(eyebrow, { duration: 0.6, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.3')
+    tl.to(bgImage, { duration: 1.5, opacity: 1, scale: 1, ease: 'power2.out' }, '-=0.5')
+    tl.to(titleLines, { duration: 0.8, opacity: 1, y: 0, stagger: 0.12, ease: 'power3.out' }, '-=1.2')
+    tl.to(infoPanel, { duration: 0.7, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.4')
+    tl.to(stats, { duration: 0.5, opacity: 1, y: 0, stagger: 0.1, ease: 'back.out(2)' }, '-=0.3')
+    this.closeButtonIn(tl)
   }
 
   private startChaseLightAnimation() {
-    const lights = document.querySelectorAll('.msg-chase-light') as NodeListOf<HTMLElement>
-    if (lights.length === 0) return
+    if (!this.msgChaseLights) {
+      const lights = document.querySelectorAll('.msg-chase-light') as NodeListOf<HTMLElement>
+      this.msgChaseLights = Array.from(lights)
+    }
 
-    let activeIndex = 0
+    const lights = this.msgChaseLights
+    if (!lights || lights.length === 0) return
+
     const trailLength = 8
+    let activeIndex = 0
+    let previousTrail: number[] = []
 
-    this.chaseLightInterval = setInterval(() => {
-      lights.forEach((light, i) => {
-        light.classList.remove('active')
-        // Create a trail effect
-        const distance = (i - activeIndex + lights.length) % lights.length
-        if (distance < trailLength) {
-          light.style.opacity = String(0.3 + (0.7 * (1 - distance / trailLength)))
-        } else {
-          light.style.opacity = '0.2'
+    const applyTrail = (centerIndex: number) => {
+      const nextTrail: number[] = []
+      for (let distance = 0; distance < trailLength; distance++) {
+        nextTrail.push((centerIndex - distance + lights.length) % lights.length)
+      }
+
+      const nextSet = new Set(nextTrail)
+      previousTrail.forEach(index => {
+        if (!nextSet.has(index)) {
+          const light = lights[index]
+          if (light) {
+            light.classList.remove('active')
+            light.style.opacity = '0.2'
+          }
         }
       })
-      const activeLight = lights[activeIndex]
-      if (activeLight) activeLight.classList.add('active')
-      activeIndex = (activeIndex + 1) % lights.length
-    }, 50)
-  }
 
-  private stopChaseLightAnimation() {
-    if (this.chaseLightInterval) {
-      clearInterval(this.chaseLightInterval)
-      this.chaseLightInterval = null
+      nextTrail.forEach((index, distance) => {
+        const light = lights[index]
+        if (!light) return
+        const isActive = distance === 0
+        light.classList.toggle('active', isActive)
+        light.style.opacity = isActive
+          ? '1'
+          : String(0.3 + (0.7 * (1 - distance / trailLength)))
+      })
+
+      previousTrail = nextTrail
     }
+
+    applyTrail(activeIndex)
+    activeIndex = (activeIndex + 1) % lights.length
+
+    this.chaseLightInterval = setInterval(() => {
+      applyTrail(activeIndex)
+      activeIndex = (activeIndex + 1) % lights.length
+    }, 80)
   }
 
   private startSparkAnimation() {
-    const chaseLightsContainer = document.getElementById('msg-chase-lights')
-    if (!chaseLightsContainer) return
+    const container = document.getElementById('msg-chase-lights')
+    if (!container) return
 
-    // Create a spark at random position along the border
     const createSpark = () => {
-      const containerRect = chaseLightsContainer.getBoundingClientRect()
-      const perimeter = 2 * (containerRect.width + containerRect.height)
-      const randomPos = Math.random() * perimeter
-
+      const rect = container.getBoundingClientRect()
+      const perimeter = 2 * (rect.width + rect.height)
+      const pos = Math.random() * perimeter
       let x: number, y: number
 
-      if (randomPos < containerRect.width) {
-        // Top edge
-        x = randomPos
-        y = 0
-      } else if (randomPos < containerRect.width + containerRect.height) {
-        // Right edge
-        x = containerRect.width
-        y = randomPos - containerRect.width
-      } else if (randomPos < 2 * containerRect.width + containerRect.height) {
-        // Bottom edge
-        x = containerRect.width - (randomPos - containerRect.width - containerRect.height)
-        y = containerRect.height
-      } else {
-        // Left edge
-        x = 0
-        y = containerRect.height - (randomPos - 2 * containerRect.width - containerRect.height)
-      }
+      if (pos < rect.width) { x = pos; y = 0 }
+      else if (pos < rect.width + rect.height) { x = rect.width; y = pos - rect.width }
+      else if (pos < 2 * rect.width + rect.height) { x = rect.width - (pos - rect.width - rect.height); y = rect.height }
+      else { x = 0; y = rect.height - (pos - 2 * rect.width - rect.height) }
 
-      // Create main spark
       const spark = document.createElement('div')
       spark.className = 'msg-spark'
       spark.style.left = `${x}px`
       spark.style.top = `${y}px`
-      chaseLightsContainer.appendChild(spark)
+      container.appendChild(spark)
+      requestAnimationFrame(() => spark.classList.add('flash'))
 
-      // Trigger animation
-      requestAnimationFrame(() => {
-        spark.classList.add('flash')
-      })
-
-      // Create trail particles
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 3; i++) {
         setTimeout(() => {
           const trail = document.createElement('div')
           trail.className = 'msg-spark-trail'
           trail.style.left = `${x}px`
           trail.style.top = `${y}px`
-          // Random direction for each particle
           const angle = Math.random() * Math.PI * 2
           const distance = 20 + Math.random() * 30
           trail.style.setProperty('--tx', `${Math.cos(angle) * distance}px`)
           trail.style.setProperty('--ty', `${Math.sin(angle) * distance}px`)
-          chaseLightsContainer.appendChild(trail)
-
-          requestAnimationFrame(() => {
-            trail.classList.add('animate')
-          })
-
-          // Clean up trail
-          setTimeout(() => {
-            trail.remove()
-          }, 600)
+          container.appendChild(trail)
+          requestAnimationFrame(() => trail.classList.add('animate'))
+          setTimeout(() => trail.remove(), 600)
         }, i * 30)
       }
-
-      // Clean up spark
-      setTimeout(() => {
-        spark.remove()
-      }, 400)
+      setTimeout(() => spark.remove(), 450)
     }
 
-    // Create sparks at random intervals
-    this.sparkInterval = setInterval(() => {
-      // Random chance to create 1-3 sparks
-      const numSparks = Math.random() < 0.3 ? Math.floor(Math.random() * 2) + 2 : 1
+    const createSparkBurst = () => {
+      const shouldDouble = Math.random() < 0.25
+      const numSparks = shouldDouble ? 2 : 1
       for (let i = 0; i < numSparks; i++) {
-        setTimeout(() => createSpark(), i * 50)
+        setTimeout(() => createSpark(), i * 45)
       }
-    }, 200 + Math.random() * 300)
-  }
-
-  private stopSparkAnimation() {
-    if (this.sparkInterval) {
-      clearInterval(this.sparkInterval)
-      this.sparkInterval = null
     }
+
+    this.sparkInterval = setInterval(() => {
+      createSparkBurst()
+    }, 280 + Math.random() * 260)
   }
 
-  /**
-   * Close Madison Square Garden layout - Jumbotron/LED Style
-   */
   private closeMSG() {
-    // Stop chase light and spark animations
-    this.stopChaseLightAnimation()
-    this.stopSparkAnimation()
+    if (this.chaseLightInterval) { clearInterval(this.chaseLightInterval); this.chaseLightInterval = null }
+    if (this.sparkInterval) { clearInterval(this.sparkInterval); this.sparkInterval = null }
+    this.msgChaseLights = null
 
-    // Get MSG elements
     const ledGrid = document.getElementById('msg-led-grid')
     const scanlines = document.querySelector('.msg-scanlines') as HTMLElement
     const jumbotron = document.getElementById('msg-jumbotron')
@@ -1116,830 +935,637 @@ class DetailOverlay {
     const stats = document.querySelectorAll('.msg-stat') as NodeListOf<HTMLElement>
     const chaseLights = document.querySelectorAll('.msg-chase-light') as NodeListOf<HTMLElement>
 
-    // Helper to safely clear all children from an element
-    const clearChildren = (element: HTMLElement | null) => {
-      if (!element) return
-      while (element.firstChild) {
-        element.removeChild(element.firstChild)
-      }
+    const clearChildren = (el: HTMLElement | null) => {
+      if (!el) return
+      while (el.firstChild) el.removeChild(el.firstChild)
     }
 
-    // Create close timeline
     const tl = gsap.timeline({
       defaults: { ease: 'power2.in' },
       onComplete: () => {
-        // Reset all animated elements
-        gsap.set(this.morphBox, { clearProps: 'all' })
-        gsap.set(this.contentEl, { clearProps: 'all' })
-        gsap.set(this.closeBtn, { clearProps: 'all' })
-        gsap.set(ledGrid, { clearProps: 'all' })
-        gsap.set(scanlines, { clearProps: 'all' })
-        gsap.set(jumbotron, { clearProps: 'all' })
-        gsap.set(bgImage, { clearProps: 'all' })
-        gsap.set(eyebrow, { clearProps: 'all' })
-        gsap.set(titleLines, { clearProps: 'all' })
-        gsap.set(infoPanel, { clearProps: 'all' })
-        gsap.set(stats, { clearProps: 'all' })
-
-        // Remove dynamically created chase lights
         clearChildren(document.getElementById('msg-chase-lights'))
-
-        // data-layout already removed before morph animation
-        this.overlay.classList.remove('active')
-        this.isOpen = false
-        this.isAnimating = false
-        this.currentLocationId = null
-        this.sourceRect = null
+        this.resetState(
+          [ledGrid, scanlines, jumbotron, bgImage, eyebrow, titleLines, infoPanel, stats],
+          []
+        )
       }
     })
 
-    // Phase 1: Close button spins out
-    tl.to(this.closeBtn, {
-      duration: 0.3,
-      opacity: 0,
-      scale: 0.5,
-      rotate: 180,
-      ease: 'power2.in'
-    })
-
-    // Phase 2: Stats fade out
-    .to(stats, {
-      duration: 0.3,
-      opacity: 0,
-      y: 20,
-      stagger: { each: 0.05, from: 'end' },
-      ease: 'power2.in'
-    }, '-=0.2')
-
-    // Phase 3: Info panel slides down
-    .to(infoPanel, {
-      duration: 0.4,
-      opacity: 0,
-      y: 50,
-      ease: 'power2.in'
-    }, '-=0.2')
-
-    // Phase 4: Title lines fade out
-    .to(titleLines, {
-      duration: 0.4,
-      opacity: 0,
-      y: -20,
-      stagger: { each: 0.08, from: 'end' },
-      ease: 'power2.in'
-    }, '-=0.3')
-
-    // Phase 5: Eyebrow fades
-    .to(eyebrow, {
-      duration: 0.3,
-      opacity: 0,
-      y: -15,
-      ease: 'power2.in'
-    }, '-=0.3')
-
-    // Phase 6: Background image zooms out
-    .to(bgImage, {
-      duration: 0.5,
-      opacity: 0,
-      scale: 1.1,
-      ease: 'power2.in'
-    }, '-=0.3')
-
-    // Phase 7: Jumbotron scales down
-    .to(jumbotron, {
-      duration: 0.5,
-      opacity: 0,
-      scale: 0.9,
-      ease: 'power3.in'
-    }, '-=0.2')
-
-    // Phase 8: Chase lights fade
-    .to(chaseLights, {
-      duration: 0.3,
-      opacity: 0,
-      ease: 'power2.in'
-    }, '-=0.4')
-
-    // Phase 9: Scanlines and LED grid fade
-    .to([scanlines, ledGrid], {
-      duration: 0.3,
-      opacity: 0,
-      ease: 'power2.in'
-    }, '-=0.3')
-
-    // Fade out content container
-    .to(this.contentEl, {
-      duration: 0.2,
-      opacity: 0,
-      ease: 'power2.in'
-    }, '-=0.2')
-
-    // Phase 10: Morph back to source
-    const windowW = window.innerWidth
-    const windowH = window.innerHeight
-    const rect = this.sourceRect
-
-    // Remove layout attribute so overlay background disappears
-    // This makes the morph box visible against transparent background
-    tl.call(() => {
-      this.overlay.removeAttribute('data-layout')
-    })
-
-    // Set morph box to fullscreen with MSG dark color
-    tl.set(this.morphBox, {
-      left: '0px',
-      top: '0px',
-      width: windowW + 'px',
-      height: windowH + 'px',
-      borderRadius: 0,
-      opacity: 1,
-      background: '#0a0a0a'
-    })
-
-    // Animate to source position (or center if no rect)
-    tl.to(this.morphBox, {
-      duration: 0.7,
-      left: rect ? rect.left + 'px' : '50%',
-      top: rect ? rect.top + 'px' : '50%',
-      width: rect ? rect.width + 'px' : '200px',
-      height: rect ? rect.height + 'px' : '60px',
-      borderRadius: 16,
-      ease: 'power3.inOut'
-    })
-
-    // Fade out morph box
-    tl.to(this.morphBox, {
-      duration: 0.3,
-      opacity: 0,
-      ease: 'power2.out'
-    }, '-=0.15')
+    this.closeButtonOut(tl)
+    tl.to(stats, { duration: 0.3, opacity: 0, y: 20, stagger: { each: 0.05, from: 'end' } }, '-=0.2')
+    tl.to(infoPanel, { duration: 0.4, opacity: 0, y: 50 }, '-=0.2')
+    tl.to(titleLines, { duration: 0.4, opacity: 0, y: -20, stagger: { each: 0.08, from: 'end' } }, '-=0.3')
+    tl.to(eyebrow, { duration: 0.3, opacity: 0, y: -15 }, '-=0.3')
+    tl.to(bgImage, { duration: 0.5, opacity: 0, scale: 1.1 }, '-=0.3')
+    tl.to(jumbotron, { duration: 0.5, opacity: 0, scale: 0.9, ease: 'power3.in' }, '-=0.2')
+    tl.to(chaseLights, { duration: 0.3, opacity: 0 }, '-=0.4')
+    tl.to([scanlines, ledGrid], { duration: 0.3, opacity: 0 }, '-=0.3')
+    tl.add(this.morphClose('#000000'))
   }
 
-  /**
-   * Open RKO Theatre layout
-   */
-  private openRKO() {
-    // Get dimensions
-    const rect = this.sourceRect!
-    const windowW = window.innerWidth
-    const windowH = window.innerHeight
+  // ─── SHEA STADIUM ──────────────────────────────────────────────────
 
-    // Get RKO elements upfront (they exist in DOM but may not be styled yet)
-    const filmstripLeft = document.getElementById('rko-filmstrip-left')
-    const filmstripRight = document.getElementById('rko-filmstrip-right')
-    const title = document.querySelector('.rko-title') as HTMLElement
-    const eyebrow = document.querySelector('.rko-eyebrow') as HTMLElement
-    const desc = document.querySelector('.rko-description') as HTMLElement
-    const rays = document.querySelectorAll('.rko-rays__beam') as NodeListOf<HTMLElement>
-    const star = document.querySelector('.rko-star') as HTMLElement
+  private openShea() {
+    const color = MORPH_COLORS['shea-stadium']!
+    const scoreboard = document.getElementById('shea-scoreboard')
+    const title = document.querySelector('.shea-title') as HTMLElement
+    const desc = document.querySelector('.shea-description') as HTMLElement
+    const ticker = document.getElementById('shea-ticker')
+    const viewLot = document.querySelector('#detail-shea .view-lot-btn') as HTMLElement
 
-    // Set morph box color to match RKO background
-    gsap.set(this.morphBox, {
-      left: rect.left + 'px',
-      top: rect.top + 'px',
-      width: rect.width + 'px',
-      height: rect.height + 'px',
-      borderRadius: 16,
-      opacity: 1,
-      background: '#4a1a2e'
+    const tl = this.morphOpen(color, () => {
+      gsap.set(scoreboard, { opacity: 0, scale: 0.85 })
+      gsap.set(desc, { opacity: 0, y: 30 })
+      gsap.set(ticker, { opacity: 0 })
+      if (viewLot) gsap.set(viewLot, { opacity: 0, y: 20 })
+      gsap.set(this.closeBtn, { opacity: 0 })
     })
 
-    // Content starts hidden
-    gsap.set(this.contentEl, { opacity: 0 })
+    tl.to(scoreboard, { duration: 0.8, opacity: 1, scale: 1, ease: 'back.out(1.4)' }, '-=0.2')
+    tl.to(ticker, { duration: 0.5, opacity: 1, ease: 'power2.out' }, '-=0.4')
+    this.titleAnimateIn(tl, title, 'shea', '-=0.3')
+    tl.to(desc, { duration: 0.8, opacity: 1, y: 0, ease: 'back.out(1.7)' }, '-=0.5')
+    if (viewLot) { tl.to(viewLot, { duration: 0.6, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.3') }
+    this.closeButtonIn(tl)
+    tl.eventCallback('onComplete', () => { this.isAnimating = false; this.closeBtn.focus() })
+  }
 
-    // Show overlay (without layout attribute yet - so no background)
-    this.overlay.classList.add('active')
+  private closeShea() {
+    const color = MORPH_COLORS['shea-stadium']!
+    const scoreboard = document.getElementById('shea-scoreboard')
+    const title = document.querySelector('.shea-title') as HTMLElement
+    const desc = document.querySelector('.shea-description') as HTMLElement
+    const ticker = document.getElementById('shea-ticker')
+    const viewLot = document.querySelector('#detail-shea .view-lot-btn') as HTMLElement
 
-    // Create master timeline
     const tl = gsap.timeline({
-      defaults: { ease: 'expo.inOut' },
+      defaults: { ease: 'power2.in' },
       onComplete: () => {
-        this.isAnimating = false
+        if (title) resetTextFilter(title)
+        this.resetState([scoreboard, desc, ticker, title, viewLot], ['shea'])
       }
     })
 
-    // Phase 1: Morph box expands to fullscreen
-    tl.to(this.morphBox, {
-      duration: 0.7,
-      left: '0px',
-      top: '0px',
-      width: windowW + 'px',
-      height: windowH + 'px',
-      borderRadius: 0,
-      ease: 'power3.inOut'
+    this.closeButtonOut(tl)
+    if (viewLot) tl.to(viewLot, { duration: 0.5, opacity: 0, y: 20, ease: 'power2.in' }, 0.15)
+    tl.to(desc, { duration: 0.4, opacity: 0, y: -30 }, '-=0.2')
+    this.titleAnimateOut(tl, 'shea', title, '-=0.3')
+    tl.to(ticker, { duration: 0.3, opacity: 0 }, '-=0.3')
+    tl.to(scoreboard, { duration: 0.5, opacity: 0, scale: 0.9 }, '-=0.2')
+    tl.add(this.morphClose(color), '+=0.1')
+  }
+
+  // ─── TOWN HALL ─────────────────────────────────────────────────────
+
+  private openTownHall() {
+    const color = MORPH_COLORS['town-hall']!
+    const handbill = document.getElementById('townhall-handbill')
+    const rings = document.querySelectorAll('.townhall-ring') as NodeListOf<HTMLElement>
+    const title = document.querySelector('.townhall-title') as HTMLElement
+    const eyebrow = document.querySelector('.townhall-eyebrow') as HTMLElement
+    const desc = document.querySelector('.townhall-description') as HTMLElement
+    const viewLot = document.querySelector('#detail-townhall .view-lot-btn') as HTMLElement
+
+    const tl = this.morphOpen(color, () => {
+      gsap.set(handbill, { opacity: 0, scale: 0.8, rotateY: -15 })
+      gsap.set(rings, { opacity: 0, scale: 0.6 })
+      gsap.set(eyebrow, { opacity: 0, y: -15 })
+      gsap.set(desc, { opacity: 0, y: 30 })
+      if (viewLot) gsap.set(viewLot, { opacity: 0, y: 20 })
+      gsap.set(this.closeBtn, { opacity: 0 })
     })
 
-    // Set layout attribute when morph reaches fullscreen (before it fades)
-    tl.call(() => {
-      this.overlay.setAttribute('data-layout', 'rko')
+    tl.to(rings, { duration: 1.2, opacity: 1, scale: 1, stagger: 0.15, ease: 'power2.out' }, '-=0.3')
+    tl.to(handbill, { duration: 1, opacity: 1, scale: 1, rotateY: 0, ease: 'back.out(1.4)' }, '-=0.9')
+    tl.to(eyebrow, { duration: 0.5, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.6')
+    this.titleAnimateIn(tl, title, 'townhall', '-=0.4')
+    tl.to(desc, { duration: 0.8, opacity: 1, y: 0, ease: 'back.out(1.7)' }, '-=0.5')
+    if (viewLot) { tl.to(viewLot, { duration: 0.6, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.3') }
+    this.closeButtonIn(tl)
+    tl.eventCallback('onComplete', () => { this.isAnimating = false; this.closeBtn.focus() })
+  }
 
-      // Split title text for character animation
-      if (title && !this.rkoTitleSplitText) {
-        this.rkoTitleSplitText = splitText(title, { type: 'chars,words' })
-      }
+  private closeTownHall() {
+    const color = MORPH_COLORS['town-hall']!
+    const handbill = document.getElementById('townhall-handbill')
+    const rings = document.querySelectorAll('.townhall-ring') as NodeListOf<HTMLElement>
+    const title = document.querySelector('.townhall-title') as HTMLElement
+    const eyebrow = document.querySelector('.townhall-eyebrow') as HTMLElement
+    const desc = document.querySelector('.townhall-description') as HTMLElement
+    const viewLot = document.querySelector('#detail-townhall .view-lot-btn') as HTMLElement
 
-      // Title chars hidden for reveal
-      if (this.rkoTitleSplitText) {
-        gsap.set(this.rkoTitleSplitText.chars, {
-          opacity: 0,
-          rotateY: 90,
-          xPercent: -40,
-          yPercent: 60,
-          scale: 0.6
-        })
+    const tl = gsap.timeline({
+      defaults: { ease: 'power2.in' },
+      onComplete: () => {
+        if (title) resetTextFilter(title)
+        this.resetState([handbill, rings, eyebrow, desc, title, viewLot], ['townhall'])
       }
-      gsap.set(title, { opacity: 1 })
+    })
+
+    this.closeButtonOut(tl)
+    if (viewLot) tl.to(viewLot, { duration: 0.5, opacity: 0, y: 20, ease: 'power2.in' }, 0.15)
+    tl.to(desc, { duration: 0.4, opacity: 0, y: -30 }, '-=0.2')
+    this.titleAnimateOut(tl, 'townhall', title, '-=0.3')
+    tl.to(eyebrow, { duration: 0.3, opacity: 0, y: -15 }, '-=0.3')
+    tl.to(handbill, { duration: 0.5, opacity: 0, scale: 0.85, rotateY: 15 }, '-=0.3')
+    tl.to(rings, { duration: 0.6, opacity: 0, scale: 0.8, stagger: 0.05 }, '-=0.4')
+    tl.add(this.morphClose(color), '+=0.1')
+  }
+
+  // ─── RADIO CITY ────────────────────────────────────────────────────
+
+  private openRadioCity() {
+    const color = MORPH_COLORS['radio-city']!
+    const images = document.querySelectorAll('.radiocity-image') as NodeListOf<HTMLElement>
+    const title = document.querySelector('.radiocity-title') as HTMLElement
+    const subtitle = document.querySelector('.radiocity-subtitle') as HTMLElement
+    const eyebrow = document.querySelector('.radiocity-eyebrow') as HTMLElement
+    const desc = document.querySelector('.radiocity-description') as HTMLElement
+    const viewLot = document.querySelector('#detail-radiocity .view-lot-btn') as HTMLElement
+
+    const tl = this.morphOpen(color, () => {
+      gsap.set(images, { opacity: 0, y: 40 })
+      gsap.set(subtitle, { opacity: 0, y: 15 })
       gsap.set(eyebrow, { opacity: 0, y: -20 })
       gsap.set(desc, { opacity: 0, y: 30 })
-      gsap.set(filmstripLeft, { y: '-100%' })
-      gsap.set(filmstripRight, { y: '100%' })
-      gsap.set(rays, { opacity: 0 })
-      gsap.set(star, { opacity: 0, scale: 0 })
-      gsap.set(this.closeBtn, { opacity: 0, scale: 0.5, rotate: -180 })
-
-      // Now show content
-      gsap.set(this.contentEl, { opacity: 1 })
+      if (viewLot) gsap.set(viewLot, { opacity: 0, y: 20 })
+      gsap.set(this.closeBtn, { opacity: 0 })
     })
 
-    // Phase 2: Morph box fades out
-    tl.to(this.morphBox, {
-      duration: 0.3,
-      opacity: 0,
-      ease: 'power2.out'
-    }, '-=0.1')
-
-    // Phase 3: Film strips slide in from top and bottom
-    tl.to(filmstripLeft, {
-      duration: 0.9,
-      y: '0%',
-      ease: 'power3.out'
-    }, '-=0.2')
-
-    tl.to(filmstripRight, {
-      duration: 0.9,
-      y: '0%',
-      ease: 'power3.out'
-    }, '-=0.8')
-
-    // Phase 4: Spotlight rays fade in
-    tl.to(rays, {
-      duration: 0.6,
-      opacity: 1,
-      stagger: 0.05,
-      ease: 'power2.out'
-    }, '-=0.6')
-
-    // Phase 5: Eyebrow drops in
-    tl.to(eyebrow, {
-      duration: 0.5,
-      opacity: 1,
-      y: 0,
-      ease: 'back.out(1.7)'
-    }, '-=0.4')
-
-    // Phase 6: Title characters animate in - use call since splitText happens in callback
-    tl.call(() => {
-      if (this.rkoTitleSplitText && this.rkoTitleSplitText.chars.length > 0) {
-        animate3DText({
-          element: title,
-          splitResult: this.rkoTitleSplitText,
-          duration: 1,
-          ease: easingPresets.lookbookText,
-          stagger: 0.02
-        })
-      } else if (title) {
-        animateTextWithFilter(title, {
-          duration: 1,
-          ease: 'expo.out',
-          startBlur: 60,
-          startScale: 180
-        })
-      }
-    }, [], '-=0.3')
-
-    // Phase 7: Description fades in
-    tl.to(desc, {
-      duration: 0.8,
-      opacity: 1,
-      y: 0,
-      ease: 'back.out(1.7)'
-    }, '-=0.6')
-
-    // Phase 8: Star pops in
-    tl.to(star, {
-      duration: 0.5,
-      opacity: 1,
-      scale: 1,
-      ease: 'back.out(3)'
-    }, '-=0.4')
-
-    // Phase 9: Close button spins in
-    tl.to(this.closeBtn, {
-      duration: 0.5,
-      opacity: 1,
-      scale: 1,
-      rotate: 0,
-      ease: 'back.out(2.5)'
-    }, '-=0.3')
+    tl.to(images, { duration: 1, opacity: 1, y: 0, stagger: 0.18, ease: 'power3.out' }, '-=0.2')
+    tl.to(eyebrow, { duration: 0.5, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.6')
+    this.titleAnimateIn(tl, title, 'radiocity', '-=0.4')
+    tl.to(subtitle, { duration: 0.6, opacity: 1, y: 0, ease: 'power2.out' }, '-=0.5')
+    tl.to(desc, { duration: 0.8, opacity: 1, y: 0, ease: 'power2.out' }, '-=0.4')
+    if (viewLot) { tl.to(viewLot, { duration: 0.6, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.3') }
+    this.closeButtonIn(tl)
+    tl.eventCallback('onComplete', () => { this.isAnimating = false; this.closeBtn.focus() })
   }
 
-  /**
-   * Close RKO Theatre layout
-   */
-  private closeRKO() {
-    // Get RKO elements
-    const filmstripLeft = document.getElementById('rko-filmstrip-left')
-    const filmstripRight = document.getElementById('rko-filmstrip-right')
-    const title = document.querySelector('.rko-title') as HTMLElement
-    const eyebrow = document.querySelector('.rko-eyebrow') as HTMLElement
-    const desc = document.querySelector('.rko-description') as HTMLElement
-    const rays = document.querySelectorAll('.rko-rays__beam') as NodeListOf<HTMLElement>
-    const star = document.querySelector('.rko-star') as HTMLElement
+  private closeRadioCity() {
+    const color = MORPH_COLORS['radio-city']!
+    const images = document.querySelectorAll('.radiocity-image') as NodeListOf<HTMLElement>
+    const title = document.querySelector('.radiocity-title') as HTMLElement
+    const subtitle = document.querySelector('.radiocity-subtitle') as HTMLElement
+    const eyebrow = document.querySelector('.radiocity-eyebrow') as HTMLElement
+    const desc = document.querySelector('.radiocity-description') as HTMLElement
+    const viewLot = document.querySelector('#detail-radiocity .view-lot-btn') as HTMLElement
 
-    // Create close timeline
     const tl = gsap.timeline({
-      defaults: { ease: 'expo.inOut' },
+      defaults: { ease: 'power2.in' },
       onComplete: () => {
-        // Revert split text
-        if (this.rkoTitleSplitText) {
-          this.rkoTitleSplitText.revert()
-          this.rkoTitleSplitText = null
-        }
-
-        // Reset all animated elements
-        gsap.set(this.morphBox, { clearProps: 'all' })
-        gsap.set(this.contentEl, { clearProps: 'all' })
-        gsap.set(this.closeBtn, { clearProps: 'all' })
-        gsap.set(filmstripLeft, { clearProps: 'all' })
-        gsap.set(filmstripRight, { clearProps: 'all' })
-        gsap.set(rays, { clearProps: 'all' })
-        gsap.set(star, { clearProps: 'all' })
-        gsap.set(eyebrow, { clearProps: 'all' })
-        gsap.set(desc, { clearProps: 'all' })
-
-        if (title) {
-          resetTextFilter(title)
-          gsap.set(title, { clearProps: 'all' })
-        }
-
-        // data-layout already removed before morph animation
-        this.overlay.classList.remove('active')
-        this.isOpen = false
-        this.isAnimating = false
-        this.currentLocationId = null
-        this.sourceRect = null
-
+        if (title) resetTextFilter(title)
+        this.resetState(
+          [images, subtitle, eyebrow, desc, title, viewLot],
+          ['radiocity']
+        )
       }
     })
 
-    // Phase 1: Close button spins out
-    tl.to(this.closeBtn, {
-      duration: 0.3,
-      opacity: 0,
-      scale: 0.5,
-      rotate: 180,
-      ease: 'power2.in'
-    })
-
-    // Phase 2: Star shrinks out
-    tl.to(star, {
-      duration: 0.3,
-      opacity: 0,
-      scale: 0,
-      ease: 'power2.in'
-    }, '-=0.2')
-
-    // Phase 3: Description fades out
-    tl.to(desc, {
-      duration: 0.4,
-      opacity: 0,
-      y: -30,
-      ease: 'power2.in'
-    }, '-=0.2')
-
-    // Phase 4: Eyebrow fades out
-    tl.to(eyebrow, {
-      duration: 0.3,
-      opacity: 0,
-      y: -20,
-      ease: 'power2.in'
-    }, '-=0.3')
-
-    // Phase 5: Title characters fly out
-    if (this.rkoTitleSplitText && this.rkoTitleSplitText.chars.length > 0) {
-      tl.to(this.rkoTitleSplitText.chars, {
-        duration: 0.4,
-        opacity: 0,
-        rotateY: -90,
-        yPercent: -50,
-        scale: 0.7,
-        stagger: {
-          each: 0.015,
-          from: 'end'
-        },
-        ease: 'power2.in'
-      }, '-=0.2')
-    } else {
-      tl.to(title, {
-        duration: 0.5,
-        opacity: 0,
-        y: -30,
-        ease: 'power2.in'
-      }, '-=0.2')
-    }
-
-    // Phase 6: Rays fade out
-    tl.to(rays, {
-      duration: 0.3,
-      opacity: 0,
-      ease: 'power2.in'
-    }, '-=0.3')
-
-    // Phase 7: Film strips slide out
-    tl.to(filmstripLeft, {
-      duration: 0.7,
-      y: '-100%',
-      ease: 'power3.in'
-    }, '-=0.2')
-
-    tl.to(filmstripRight, {
-      duration: 0.7,
-      y: '100%',
-      ease: 'power3.in'
-    }, '-=0.6')
-
-    // Fade out content container
-    tl.to(this.contentEl, {
-      duration: 0.3,
-      opacity: 0,
-      ease: 'power2.in'
-    }, '-=0.4')
-
-    // Phase 8: Morph back to source
-    if (this.sourceRect) {
-      const windowW = window.innerWidth
-      const windowH = window.innerHeight
-      const rect = this.sourceRect
-
-      // Remove layout attribute so overlay background disappears
-      // This makes the morph box visible against transparent background
-      tl.call(() => {
-        this.overlay.removeAttribute('data-layout')
-      })
-
-      // Set morph box to fullscreen with RKO color
-      tl.set(this.morphBox, {
-        left: '0px',
-        top: '0px',
-        width: windowW + 'px',
-        height: windowH + 'px',
-        borderRadius: 0,
-        opacity: 1,
-        background: '#4a1a2e'
-      })
-
-      // Animate to source position
-      tl.to(this.morphBox, {
-        duration: 0.7,
-        left: rect.left + 'px',
-        top: rect.top + 'px',
-        width: rect.width + 'px',
-        height: rect.height + 'px',
-        borderRadius: 16,
-        ease: 'power3.inOut'
-      })
-
-      // Fade out morph box
-      tl.to(this.morphBox, {
-        duration: 0.3,
-        opacity: 0,
-        ease: 'power2.out'
-      }, '-=0.15')
-    }
+    this.closeButtonOut(tl)
+    if (viewLot) tl.to(viewLot, { duration: 0.5, opacity: 0, y: 20, ease: 'power2.in' }, 0.15)
+    tl.to(desc, { duration: 0.4, opacity: 0, y: -30 }, '-=0.2')
+    tl.to(subtitle, { duration: 0.3, opacity: 0, y: -15 }, '-=0.3')
+    this.titleAnimateOut(tl, 'radiocity', title, '-=0.3')
+    tl.to(eyebrow, { duration: 0.3, opacity: 0, y: -20 }, '-=0.3')
+    tl.to(images, { duration: 0.5, opacity: 0, y: -30, stagger: 0.08 }, '-=0.3')
+    tl.add(this.morphClose(color), '+=0.1')
   }
 
-  /**
-   * Open CBS Studios layout - Scattered collage with overlapping images
-   */
-  private openCBS() {
-    // Get dimensions
-    const rect = this.sourceRect!
-    const windowW = window.innerWidth
-    const windowH = window.innerHeight
+  // ─── HENDRIX APARTMENT ─────────────────────────────────────────────
 
-    // Get CBS elements upfront
-    const images = document.querySelectorAll('.cbs-image') as NodeListOf<HTMLElement>
-    const title = document.querySelector('.cbs-title') as HTMLElement
-    const desc = document.querySelector('.cbs-description') as HTMLElement
-    const onAir = document.getElementById('cbs-onair') as HTMLElement
+  private openHendrix() {
+    const color = MORPH_COLORS['hendrix-apartment']!
+    const heroImage = document.querySelector('.hendrix-image--hero') as HTMLElement
+    const reelLeft = document.getElementById('hendrix-reel-left')
+    const reelRight = document.getElementById('hendrix-reel-right')
+    const title = document.querySelector('.hendrix-title') as HTMLElement
+    const eyebrow = document.querySelector('.hendrix-eyebrow') as HTMLElement
+    const desc = document.querySelector('.hendrix-description') as HTMLElement
+    const viewLot = document.querySelector('#detail-hendrix .view-lot-btn') as HTMLElement
 
-    // Set morph box color to match CBS background
-    gsap.set(this.morphBox, {
-      left: rect.left + 'px',
-      top: rect.top + 'px',
-      width: rect.width + 'px',
-      height: rect.height + 'px',
-      borderRadius: 16,
-      opacity: 1,
-      background: '#1e3a5f'
-    })
+    const isMobile = window.innerWidth <= 768
 
-    // Content starts hidden
-    gsap.set(this.contentEl, { opacity: 0 })
-
-    // Show overlay (without layout attribute yet - so no background)
-    this.overlay.classList.add('active')
-
-    // Create master timeline
-    const tl = gsap.timeline({
-      defaults: { ease: 'expo.inOut' },
-      onComplete: () => {
-        this.isAnimating = false
-      }
-    })
-
-    // Phase 1: Morph box expands to fullscreen
-    tl.to(this.morphBox, {
-      duration: 0.7,
-      left: '0px',
-      top: '0px',
-      width: windowW + 'px',
-      height: windowH + 'px',
-      borderRadius: 0,
-      ease: 'power3.inOut'
-    })
-
-    // Set layout attribute when morph reaches fullscreen (before it fades)
-    tl.call(() => {
-      this.overlay.setAttribute('data-layout', 'cbs')
-
-      // Split title text for character animation
-      if (title && !this.cbsTitleSplitText) {
-        this.cbsTitleSplitText = splitText(title, { type: 'chars,words' })
-      }
-
-      // Title chars hidden for reveal
-      if (this.cbsTitleSplitText) {
-        gsap.set(this.cbsTitleSplitText.chars, {
-          opacity: 0,
-          rotateY: 90,
-          xPercent: -40,
-          yPercent: 60,
-          scale: 0.6
-        })
-      }
-      gsap.set(title, { opacity: 1 })
+    const tl = this.morphOpen(color, () => {
+      gsap.set(heroImage, {
+        opacity: 0, y: 40,
+        yPercent: 0,
+        xPercent: 0,
+        rotation: 0
+      })
+      gsap.set(reelLeft, { opacity: 0, scale: 0.5 })
+      gsap.set(reelRight, { opacity: 0, scale: 0.5 })
+      gsap.set(eyebrow, { opacity: 0, y: -20 })
       gsap.set(desc, { opacity: 0, y: 30 })
-      gsap.set(onAir, { opacity: 0, x: -20 })
-      gsap.set(images, { opacity: 0 })
-      gsap.set(this.closeBtn, { opacity: 0, scale: 0.5, rotate: -180 })
-
-      // Now show content
-      gsap.set(this.contentEl, { opacity: 1 })
+      if (viewLot) gsap.set(viewLot, { opacity: 0, y: 20 })
+      gsap.set(this.closeBtn, { opacity: 0 })
     })
 
-    // Phase 2: Morph box fades out
-    tl.to(this.morphBox, {
-      duration: 0.3,
-      opacity: 0,
-      ease: 'power2.out'
-    }, '-=0.15')
+    // Hero image fades up into place
+    tl.to(heroImage, {
+      duration: 1,
+      opacity: 1, y: 0,
+      ease: 'power3.out'
+    }, '-=0.3')
 
-    // Phase 3: ON AIR indicator fades in
-    tl.to(onAir, {
-      duration: 0.5,
-      opacity: 1,
-      x: 0,
-      ease: 'power2.out'
-    }, '-=0.2')
+    // Reels fade in and start spinning
+    tl.to(reelLeft, {
+      duration: 0.8, opacity: 1, scale: 1,
+      ease: 'power2.out',
+      onComplete: () => reelLeft?.classList.add('spinning')
+    }, '-=0.9')
+    tl.to(reelRight, {
+      duration: 0.8, opacity: 1, scale: 1,
+      ease: 'power2.out',
+      onComplete: () => reelRight?.classList.add('spinning')
+    }, '-=0.7')
 
-    // Phase 4: Images fly in from different directions with stagger
-    // Each image has its own unique entrance
-    const imageAnimations = [
-      { x: 0, y: 0, rotate: 3, scale: 1 },   // Image 1 - from top right
-      { x: 0, y: 0, rotate: -2, scale: 1 },  // Image 2 - from right
-      { x: 0, y: 0, rotate: 6, scale: 1 },   // Image 3 - from top
-      { x: 0, y: 0, rotate: -4, scale: 1 },  // Image 4 - from bottom right
-      { x: 0, y: 0, rotate: 2, scale: 1 },   // Image 5 - from bottom
-    ]
+    tl.to(eyebrow, { duration: 0.5, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.5')
+    this.titleAnimateIn(tl, title, 'hendrix', '-=0.3')
+    tl.to(desc, { duration: 0.8, opacity: 1, y: 0, ease: 'back.out(1.7)' }, '-=0.5')
+    if (viewLot) { tl.to(viewLot, { duration: 0.6, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.3') }
+    this.closeButtonIn(tl)
 
-    images.forEach((img, i) => {
-      const anim = imageAnimations[i] ?? { x: 0, y: 0, rotate: 0, scale: 1 }
-      tl.to(img, {
-        duration: 0.9,
-        opacity: 1,
-        x: anim.x,
-        y: anim.y,
-        rotate: anim.rotate,
-        scale: anim.scale,
-        ease: 'back.out(1.2)'
-      }, i === 0 ? '-=0.25' : `-=${0.75 - i * 0.08}`)
-    })
-
-    // Phase 5: Title characters animate in - use call since splitText happens in callback
-    tl.call(() => {
-      if (this.cbsTitleSplitText && this.cbsTitleSplitText.chars.length > 0) {
-        animate3DText({
-          element: title,
-          splitResult: this.cbsTitleSplitText,
-          duration: 1,
-          ease: easingPresets.lookbookText,
-          stagger: 0.02
-        })
-      } else if (title) {
-        animateTextWithFilter(title, {
-          duration: 1,
-          ease: 'expo.out',
-          startBlur: 60,
-          startScale: 180
+    tl.eventCallback('onComplete', () => {
+      this.isAnimating = false
+      this.closeBtn.focus()
+      const images = document.querySelectorAll('.hendrix-image') as NodeListOf<HTMLElement>
+      if (!this.mouseParallax && !isMobile) {
+        this.mouseParallax = createMouseParallax({
+          elements: images,
+          depths: [0.4],
+          maxMovement: 12,
+          maxRotation: 1.5,
+          smoothness: 0.9
         })
       }
-    }, [], '-=0.6')
-
-    // Phase 6: Description fades up
-    tl.to(desc, {
-      duration: 0.8,
-      opacity: 1,
-      y: 0,
-      ease: 'power2.out'
-    }, '-=0.5')
-
-    // Phase 7: Close button spins in
-    tl.to(this.closeBtn, {
-      duration: 0.5,
-      opacity: 1,
-      scale: 1,
-      rotate: 0,
-      ease: 'back.out(2.5)'
-    }, '-=0.3')
+      if (!isMobile) this.mouseParallax?.enable()
+    })
   }
 
-  /**
-   * Close CBS Studios layout
-   */
-  private closeCBS() {
-    // Get CBS elements
-    const images = document.querySelectorAll('.cbs-image') as NodeListOf<HTMLElement>
-    const title = document.querySelector('.cbs-title') as HTMLElement
-    const desc = document.querySelector('.cbs-description') as HTMLElement
-    const onAir = document.getElementById('cbs-onair') as HTMLElement
+  private closeHendrix() {
+    const color = MORPH_COLORS['hendrix-apartment']!
+    if (this.mouseParallax) this.mouseParallax.disable()
 
-    // Create close timeline
+    const heroImage = document.querySelector('.hendrix-image--hero') as HTMLElement
+    const reelLeft = document.getElementById('hendrix-reel-left')
+    const reelRight = document.getElementById('hendrix-reel-right')
+    const title = document.querySelector('.hendrix-title') as HTMLElement
+    const eyebrow = document.querySelector('.hendrix-eyebrow') as HTMLElement
+    const desc = document.querySelector('.hendrix-description') as HTMLElement
+    const viewLot = document.querySelector('#detail-hendrix .view-lot-btn') as HTMLElement
+
     const tl = gsap.timeline({
-      defaults: { ease: 'expo.inOut' },
+      defaults: { ease: 'power2.in' },
       onComplete: () => {
-        // Revert split text
-        if (this.cbsTitleSplitText) {
-          this.cbsTitleSplitText.revert()
-          this.cbsTitleSplitText = null
-        }
-
-        // Reset all animated elements
-        gsap.set(this.morphBox, { clearProps: 'all' })
-        gsap.set(this.contentEl, { clearProps: 'all' })
-        gsap.set(this.closeBtn, { clearProps: 'all' })
-        gsap.set(images, { clearProps: 'all' })
-        gsap.set(desc, { clearProps: 'all' })
-        gsap.set(onAir, { clearProps: 'all' })
-
-        if (title) {
-          resetTextFilter(title)
-          gsap.set(title, { clearProps: 'all' })
-        }
-
-        // data-layout already removed before morph animation
-        this.overlay.classList.remove('active')
-        this.isOpen = false
-        this.isAnimating = false
-        this.currentLocationId = null
-        this.sourceRect = null
+        reelLeft?.classList.remove('spinning')
+        reelRight?.classList.remove('spinning')
+        if (this.mouseParallax) { this.mouseParallax.destroy(); this.mouseParallax = null }
+        if (title) resetTextFilter(title)
+        this.resetState([heroImage, reelLeft, reelRight, eyebrow, desc, title, viewLot], ['hendrix'])
       }
     })
 
-    // Phase 1: Close button spins out
-    tl.to(this.closeBtn, {
-      duration: 0.3,
-      opacity: 0,
-      scale: 0.5,
-      rotate: 180,
-      ease: 'power2.in'
+    this.closeButtonOut(tl)
+    if (viewLot) tl.to(viewLot, { duration: 0.5, opacity: 0, y: 20, ease: 'power2.in' }, 0.15)
+    tl.to(desc, { duration: 0.4, opacity: 0, y: -30 }, '-=0.2')
+    this.titleAnimateOut(tl, 'hendrix', title, '-=0.3')
+    tl.to(eyebrow, { duration: 0.3, opacity: 0, y: -20 }, '-=0.3')
+    tl.to(heroImage, { duration: 0.6, opacity: 0, y: -30 }, '-=0.3')
+    tl.to([reelLeft, reelRight], { duration: 0.4, opacity: 0, scale: 0.5 }, '-=0.4')
+    tl.add(this.morphClose(color), '+=0.1')
+  }
+
+  // ─── APOLLO THEATRE ────────────────────────────────────────────────
+
+  private openApollo() {
+    const color = MORPH_COLORS['apollo-theatre']!
+    const images = document.querySelectorAll('.apollo-image') as NodeListOf<HTMLElement>
+    const title = document.querySelector('.apollo-title') as HTMLElement
+    const eyebrow = document.querySelector('.apollo-eyebrow') as HTMLElement
+    const desc = document.querySelector('.apollo-description') as HTMLElement
+    const marqueeLights = document.getElementById('apollo-marquee-lights')
+    const viewLot = document.querySelector('#detail-apollo .view-lot-btn') as HTMLElement
+
+    const tl = this.morphOpen(color, () => {
+      gsap.set(images, { opacity: 0, scale: 0.8 })
+      gsap.set(eyebrow, { opacity: 0, y: -20 })
+      gsap.set(desc, { opacity: 0, y: 30 })
+      gsap.set(marqueeLights, { opacity: 0 })
+      if (viewLot) gsap.set(viewLot, { opacity: 0, y: 20 })
+      gsap.set(this.closeBtn, { opacity: 0 })
     })
 
-    // Phase 2: Description fades down
-    tl.to(desc, {
-      duration: 0.4,
-      opacity: 0,
-      y: 30,
-      ease: 'power2.in'
-    }, '-=0.2')
+    tl.to(marqueeLights, { duration: 0.5, opacity: 1, ease: 'power2.out' }, '-=0.2')
+    tl.to(images, { duration: 0.9, opacity: 1, scale: 1, stagger: 0.15, ease: 'back.out(1.4)' }, '-=0.3')
+    tl.to(eyebrow, { duration: 0.5, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.5')
+    this.titleAnimateIn(tl, title, 'apollo', '-=0.3')
+    tl.to(desc, { duration: 0.8, opacity: 1, y: 0, ease: 'back.out(1.7)' }, '-=0.5')
+    if (viewLot) { tl.to(viewLot, { duration: 0.6, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.3') }
+    this.closeButtonIn(tl)
 
-    // Phase 3: Title characters fly out
-    if (this.cbsTitleSplitText && this.cbsTitleSplitText.chars.length > 0) {
-      tl.to(this.cbsTitleSplitText.chars, {
-        duration: 0.4,
-        opacity: 0,
-        rotateY: -90,
-        yPercent: -50,
-        scale: 0.7,
-        stagger: {
-          each: 0.015,
-          from: 'end'
-        },
-        ease: 'power2.in'
-      }, '-=0.3')
-    } else {
-      tl.to(title, {
-        duration: 0.5,
-        opacity: 0,
-        y: -30,
-        ease: 'power2.in'
-      }, '-=0.3')
+    tl.eventCallback('onComplete', () => {
+      this.isAnimating = false
+      this.closeBtn.focus()
+      this.startApolloMarquee()
+    })
+  }
+
+  private startApolloMarquee() {
+    const container = document.getElementById('apollo-marquee-lights')
+    if (!container) return
+
+    if (!this.apolloMarqueeBulbs || this.apolloMarqueeBulbs.length === 0) {
+      const bulbsPerEdge = 20
+      const inset = 10 // px from edge
+      const bulbPositions: { x: string; y: string }[] = []
+
+      for (let i = 0; i < bulbsPerEdge; i++) {
+        bulbPositions.push({ y: `${(i / bulbsPerEdge) * 100}%`, x: `${inset}px` })
+        bulbPositions.push({ y: `${(i / bulbsPerEdge) * 100}%`, x: `calc(100% - ${inset}px)` })
+        bulbPositions.push({ x: `${(i / bulbsPerEdge) * 100}%`, y: `${inset}px` })
+        bulbPositions.push({ x: `${(i / bulbsPerEdge) * 100}%`, y: `calc(100% - ${inset}px)` })
+      }
+
+      this.apolloMarqueeBulbs = []
+      this.apolloMarqueeGroups = []
+      for (let i = 0; i < bulbPositions.length; i++) {
+        const bulb = document.createElement('div')
+        bulb.className = 'apollo-marquee-bulb'
+        bulb.style.position = 'absolute'
+        bulb.style.left = bulbPositions[i]!.x
+        bulb.style.top = bulbPositions[i]!.y
+        container.appendChild(bulb)
+        this.apolloMarqueeBulbs.push(bulb)
+      }
     }
 
-    // Phase 4: Images fly out in different directions
-    const imagesArray = Array.from(images).reverse()
-    imagesArray.forEach((img, i) => {
-      // Each flies back to its original off-screen position
-      const directions = [
-        { x: 80, y: 100, scale: 0.8 },
-        { x: 120, y: 60, scale: 0.8 },
-        { x: -50, y: -100, scale: 0.7 },
-        { x: 60, y: 100, scale: 0.8 },
-        { x: 100, y: -80, scale: 0.8 },
-      ]
-      const dir = directions[4 - i] ?? { x: 0, y: 0, scale: 0.8 }
-      tl.to(img, {
-        duration: 0.6,
-        opacity: 0,
-        x: dir.x,
-        y: dir.y,
-        scale: dir.scale,
-        ease: 'power3.in'
-      }, i === 0 ? '-=0.2' : '-=0.5')
+    const bulbs = this.apolloMarqueeBulbs
+    if (!bulbs || bulbs.length === 0) return
+
+    if (this.apolloMarqueeGroups.length === 0) {
+      for (let i = 0; i < 3; i++) {
+        this.apolloMarqueeGroups.push([])
+      }
+      for (let i = 0; i < bulbs.length; i++) {
+        const phase = i % 3
+        this.apolloMarqueeGroups[phase]!.push(bulbs[i]!)
+      }
+      for (const group of this.apolloMarqueeGroups) {
+        for (const bulb of group) {
+          bulb.classList.remove('on')
+          bulb.style.opacity = ''
+        }
+      }
+    }
+
+    let activePhase = 0
+    this.apolloMarqueeGroups[activePhase]!.forEach(bulb => {
+      bulb.classList.add('on')
+      bulb.style.opacity = '1'
     })
 
-    // Phase 5: ON AIR fades out
-    tl.to(onAir, {
-      duration: 0.3,
-      opacity: 0,
-      x: -20,
-      ease: 'power2.in'
-    }, '-=0.3')
+    this.apolloMarqueeInterval = setInterval(() => {
+      const nextPhase = (activePhase + 1) % 3
+      const offGroup = this.apolloMarqueeGroups[activePhase] ?? []
+      const onGroup = this.apolloMarqueeGroups[nextPhase] ?? []
 
-    // Fade out content container
-    tl.to(this.contentEl, {
-      duration: 0.3,
-      opacity: 0,
-      ease: 'power2.in'
-    }, '-=0.2')
+      offGroup.forEach(bulb => {
+        bulb.classList.remove('on')
+        bulb.style.opacity = '0.3'
+      })
+      onGroup.forEach(bulb => {
+        bulb.classList.add('on')
+        bulb.style.opacity = '1'
+      })
 
-    // Phase 6: Morph back to source - capture rect now before timeline runs
-    const windowW = window.innerWidth
-    const windowH = window.innerHeight
-    const rect = this.sourceRect
-
-    // Remove layout attribute so overlay background disappears
-    // This makes the morph box visible against transparent background
-    tl.call(() => {
-      this.overlay.removeAttribute('data-layout')
-    })
-
-    // Set morph box to fullscreen with CBS color
-    tl.set(this.morphBox, {
-      left: '0px',
-      top: '0px',
-      width: windowW + 'px',
-      height: windowH + 'px',
-      borderRadius: 0,
-      opacity: 1,
-      background: '#1e3a5f'
-    })
-
-    // Animate to source position (or center if no rect)
-    tl.to(this.morphBox, {
-      duration: 0.7,
-      left: rect ? rect.left + 'px' : '50%',
-      top: rect ? rect.top + 'px' : '50%',
-      width: rect ? rect.width + 'px' : '200px',
-      height: rect ? rect.height + 'px' : '60px',
-      borderRadius: 16,
-      ease: 'power3.inOut'
-    })
-
-    // Fade out morph box
-    tl.to(this.morphBox, {
-      duration: 0.3,
-      opacity: 0,
-      ease: 'power2.out'
-    }, '-=0.15')
+      activePhase = nextPhase
+    }, 220)
   }
 
-  getCurrentLocationId() {
-    return this.currentLocationId
+  private closeApollo() {
+    const color = MORPH_COLORS['apollo-theatre']!
+    if (this.apolloMarqueeInterval) { clearInterval(this.apolloMarqueeInterval); this.apolloMarqueeInterval = null }
+    if (this.apolloMarqueeBulbs) {
+      for (const bulb of this.apolloMarqueeBulbs) {
+        bulb.classList.remove('on')
+        bulb.style.opacity = ''
+      }
+    }
+    this.apolloMarqueeBulbs = null
+    this.apolloMarqueeGroups = []
+
+    const images = document.querySelectorAll('.apollo-image') as NodeListOf<HTMLElement>
+    const title = document.querySelector('.apollo-title') as HTMLElement
+    const eyebrow = document.querySelector('.apollo-eyebrow') as HTMLElement
+    const desc = document.querySelector('.apollo-description') as HTMLElement
+    const marqueeLights = document.getElementById('apollo-marquee-lights')
+    const viewLot = document.querySelector('#detail-apollo .view-lot-btn') as HTMLElement
+
+    const clearChildren = (el: HTMLElement | null) => {
+      if (!el) return
+      while (el.firstChild) el.removeChild(el.firstChild)
+    }
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'power2.in' },
+      onComplete: () => {
+        clearChildren(document.getElementById('apollo-marquee-lights'))
+        if (title) resetTextFilter(title)
+        this.resetState([images, eyebrow, desc, marqueeLights, title, viewLot], ['apollo'])
+      }
+    })
+
+    this.closeButtonOut(tl)
+    if (viewLot) tl.to(viewLot, { duration: 0.5, opacity: 0, y: 20, ease: 'power2.in' }, 0.15)
+    tl.to(desc, { duration: 0.4, opacity: 0, y: -30 }, '-=0.2')
+    this.titleAnimateOut(tl, 'apollo', title, '-=0.3')
+    tl.to(eyebrow, { duration: 0.3, opacity: 0, y: -20 }, '-=0.3')
+    tl.to(images, { duration: 0.5, opacity: 0, scale: 0.8, stagger: 0.08 }, '-=0.3')
+    tl.to(marqueeLights, { duration: 0.3, opacity: 0 }, '-=0.3')
+    tl.add(this.morphClose(color), '+=0.1')
   }
 
-  getIsOpen() {
-    return this.isOpen
+  // ─── BELMONT PARK ──────────────────────────────────────────────────
+
+  private openBelmont() {
+    const color = MORPH_COLORS['belmont-park']!
+    const images = document.querySelectorAll('.belmont-image') as NodeListOf<HTMLElement>
+    const title = document.querySelector('.belmont-title') as HTMLElement
+    const eyebrow = document.querySelector('.belmont-eyebrow') as HTMLElement
+    const desc = document.querySelector('.belmont-description') as HTMLElement
+    const rails = document.querySelectorAll('.belmont-rail') as NodeListOf<HTMLElement>
+    const viewLot = document.querySelector('#detail-belmont .view-lot-btn') as HTMLElement
+
+    const tl = this.morphOpen(color, () => {
+      gsap.set(images, { opacity: 0, scale: 0.8 })
+      gsap.set(eyebrow, { opacity: 0, y: -20 })
+      gsap.set(desc, { opacity: 0, y: 30 })
+      gsap.set(rails, { scaleX: 0 })
+      if (viewLot) gsap.set(viewLot, { opacity: 0, y: 20 })
+      gsap.set(this.closeBtn, { opacity: 0 })
+    })
+
+    tl.to(rails, { duration: 0.8, scaleX: 1, stagger: 0.1, ease: 'power3.out' }, '-=0.2')
+    tl.to(images, { duration: 0.8, opacity: 1, scale: 1, stagger: 0.15, ease: 'back.out(1.2)' }, '-=0.5')
+    tl.to(eyebrow, { duration: 0.5, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.4')
+    this.titleAnimateIn(tl, title, 'belmont', '-=0.3')
+    tl.to(desc, { duration: 0.8, opacity: 1, y: 0, ease: 'back.out(1.7)' }, '-=0.5')
+    if (viewLot) { tl.to(viewLot, { duration: 0.6, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.3') }
+    this.closeButtonIn(tl)
+    tl.eventCallback('onComplete', () => { this.isAnimating = false; this.closeBtn.focus() })
   }
+
+  private closeBelmont() {
+    const color = MORPH_COLORS['belmont-park']!
+    const images = document.querySelectorAll('.belmont-image') as NodeListOf<HTMLElement>
+    const title = document.querySelector('.belmont-title') as HTMLElement
+    const eyebrow = document.querySelector('.belmont-eyebrow') as HTMLElement
+    const desc = document.querySelector('.belmont-description') as HTMLElement
+    const rails = document.querySelectorAll('.belmont-rail') as NodeListOf<HTMLElement>
+    const viewLot = document.querySelector('#detail-belmont .view-lot-btn') as HTMLElement
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'power2.in' },
+      onComplete: () => {
+        if (title) resetTextFilter(title)
+        this.resetState([images, eyebrow, desc, rails, title, viewLot], ['belmont'])
+      }
+    })
+
+    this.closeButtonOut(tl)
+    if (viewLot) tl.to(viewLot, { duration: 0.5, opacity: 0, y: 20, ease: 'power2.in' }, 0.15)
+    tl.to(desc, { duration: 0.4, opacity: 0, y: -30 }, '-=0.2')
+    this.titleAnimateOut(tl, 'belmont', title, '-=0.3')
+    tl.to(eyebrow, { duration: 0.3, opacity: 0, y: -20 }, '-=0.3')
+    tl.to(images, { duration: 0.5, opacity: 0, scale: 0.8, stagger: 0.08 }, '-=0.3')
+    tl.to(rails, { duration: 0.5, scaleX: 0, stagger: 0.05 }, '-=0.3')
+    tl.add(this.morphClose(color), '+=0.1')
+  }
+
+  // ─── NASSAU COLISEUM ───────────────────────────────────────────────
+
+  private openNassau() {
+    const color = MORPH_COLORS['nassau-coliseum']!
+    const laserCanvas = document.getElementById('nassau-laser-canvas') as HTMLCanvasElement | null
+    const images = document.querySelectorAll('.nassau-image') as NodeListOf<HTMLElement>
+    const title = document.querySelector('.nassau-title') as HTMLElement
+    const eyebrow = document.querySelector('.nassau-eyebrow') as HTMLElement
+    const desc = document.querySelector('.nassau-description') as HTMLElement
+    const stageLight = document.querySelector('.nassau-stage-light') as HTMLElement
+    const haze = document.querySelector('.nassau-haze') as HTMLElement
+    const viewLot = document.querySelector('#detail-nassau .view-lot-btn') as HTMLElement
+    const nassauLasers = document.getElementById('nassau-lasers')
+
+    if (nassauLasers && !nassauLasers.querySelector('.nassau-laser')) {
+      for (let i = 1; i <= 12; i++) {
+        const beam = document.createElement('div')
+        beam.className = `nassau-laser nassau-laser--${i}`
+        nassauLasers.appendChild(beam)
+      }
+    }
+
+    const tl = this.morphOpen(color, () => {
+      if (laserCanvas) gsap.set(laserCanvas, { opacity: 0 })
+      gsap.set(stageLight, { opacity: 0 })
+      gsap.set(haze, { opacity: 0 })
+      if (nassauLasers) gsap.set(nassauLasers, { opacity: 0 })
+      gsap.set(images, { opacity: 0, scale: 0.8 })
+      gsap.set(eyebrow, { opacity: 0, y: -20 })
+      gsap.set(desc, { opacity: 0, y: 30 })
+      if (viewLot) gsap.set(viewLot, { opacity: 0, y: 20 })
+      gsap.set(this.closeBtn, { opacity: 0 })
+    })
+
+    tl.to(stageLight, { duration: 0.6, opacity: 1, ease: 'power2.out' }, '-=0.2')
+    // Fade in the WebGL laser canvas
+    if (laserCanvas) {
+      tl.to(laserCanvas, { duration: 1.0, opacity: 1, ease: 'power2.out' }, '-=0.4')
+    }
+    if (nassauLasers) {
+      tl.to(nassauLasers, { duration: 1.0, opacity: 1, ease: 'power2.out' }, '-=0.5')
+    }
+    tl.to(haze, { duration: 1.2, opacity: 0.8, ease: 'power2.out' }, '-=0.6')
+    tl.to(images, { duration: 0.8, opacity: 1, scale: 1, stagger: 0.15, ease: 'back.out(1.2)' }, '-=0.8')
+    tl.to(eyebrow, { duration: 0.5, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.4')
+    this.titleAnimateIn(tl, title, 'nassau', '-=0.3')
+    tl.to(desc, { duration: 0.8, opacity: 1, y: 0, ease: 'back.out(1.7)' }, '-=0.5')
+    if (viewLot) { tl.to(viewLot, { duration: 0.6, opacity: 1, y: 0, ease: 'power3.out' }, '-=0.3') }
+    this.closeButtonIn(tl)
+    tl.eventCallback('onComplete', () => {
+      this.isAnimating = false
+      this.closeBtn.focus()
+      // Start Three.js laser effect
+      if (laserCanvas && !this.nassauLaserEffect) {
+        this.nassauLaserEffect = new NassauLaserEffect(laserCanvas)
+        this.nassauLaserEffect.start()
+      }
+      if (nassauLasers && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        nassauLasers.classList.add('animating')
+      }
+      // Subtle haze opacity pulse
+      if (haze) {
+        gsap.to(haze, {
+          opacity: 0.5,
+          duration: 3,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut'
+        })
+      }
+    })
+  }
+
+  private closeNassau() {
+    const color = MORPH_COLORS['nassau-coliseum']!
+    const laserCanvas = document.getElementById('nassau-laser-canvas') as HTMLCanvasElement | null
+    const images = document.querySelectorAll('.nassau-image') as NodeListOf<HTMLElement>
+    const title = document.querySelector('.nassau-title') as HTMLElement
+    const eyebrow = document.querySelector('.nassau-eyebrow') as HTMLElement
+    const desc = document.querySelector('.nassau-description') as HTMLElement
+    const stageLight = document.querySelector('.nassau-stage-light') as HTMLElement
+    const haze = document.querySelector('.nassau-haze') as HTMLElement
+    const viewLot = document.querySelector('#detail-nassau .view-lot-btn') as HTMLElement
+    const nassauLasers = document.getElementById('nassau-lasers')
+
+    if (nassauLasers) {
+      nassauLasers.classList.remove('animating')
+    }
+
+    // Stop Three.js laser effect
+    if (this.nassauLaserEffect) {
+      this.nassauLaserEffect.stop()
+      this.nassauLaserEffect.destroy()
+      this.nassauLaserEffect = null
+    }
+    // Kill any running haze tweens
+    if (haze) gsap.killTweensOf(haze)
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'power2.in' },
+      onComplete: () => {
+        if (title) resetTextFilter(title)
+        this.resetState([stageLight, haze, images, eyebrow, desc, title, viewLot], ['nassau'])
+      }
+    })
+
+    this.closeButtonOut(tl)
+    if (viewLot) tl.to(viewLot, { duration: 0.5, opacity: 0, y: 20, ease: 'power2.in' }, 0.15)
+    tl.to(desc, { duration: 0.4, opacity: 0, y: -30 }, '-=0.2')
+    this.titleAnimateOut(tl, 'nassau', title, '-=0.3')
+    tl.to(eyebrow, { duration: 0.3, opacity: 0, y: -20 }, '-=0.3')
+    tl.to(images, { duration: 0.5, opacity: 0, scale: 0.8, stagger: 0.08 }, '-=0.3')
+    if (laserCanvas) {
+      tl.to(laserCanvas, { duration: 0.5, opacity: 0 }, '-=0.3')
+    }
+    tl.to([stageLight, haze], { duration: 0.3, opacity: 0 }, '-=0.3')
+    tl.add(this.morphClose(color), '+=0.1')
+  }
+
+  // ─── PUBLIC ACCESSORS ──────────────────────────────────────────────
+
+  getCurrentLocationId() { return this.currentLocationId }
+  getIsOpen() { return this.isOpen }
 }
 
 // Export singleton instance
@@ -1956,58 +1582,43 @@ export function getDetailOverlay(): DetailOverlay | null {
   return detailOverlayInstance
 }
 
-// HMR support - clean up on hot reload
+// HMR support
 if (import.meta.hot) {
   import.meta.hot.dispose(() => {
     if (detailOverlayInstance) {
-      // Force close and cleanup - cast to access private members for HMR
       const instance = detailOverlayInstance as unknown as {
         mouseParallax?: { destroy: () => void }
-        titleSplitText?: { revert: () => void }
+        splitTexts?: Record<string, { revert: () => void } | null>
         carnegieShiftController?: { destroy: () => void }
-        carnegieTitleSplitText?: { revert: () => void }
+        nassauLaserEffect?: { stop: () => void; destroy: () => void }
         chaseLightInterval?: ReturnType<typeof setInterval>
         sparkInterval?: ReturnType<typeof setInterval>
-        rkoTitleSplitText?: { revert: () => void }
-        cbsVuMeterInterval?: ReturnType<typeof setInterval>
+        msgChaseLights?: HTMLElement[] | null
+        apolloMarqueeInterval?: ReturnType<typeof setInterval>
+        apolloMarqueeBulbs?: HTMLElement[] | null
+        apolloMarqueeGroups?: HTMLElement[][]
         overlay?: HTMLElement
         morphBox?: HTMLElement
+        escapeHandler?: ((e: KeyboardEvent) => void) | null
       }
-      if (instance.mouseParallax) {
-        instance.mouseParallax.destroy()
+      if (instance.mouseParallax) instance.mouseParallax.destroy()
+      if (instance.carnegieShiftController) instance.carnegieShiftController.destroy()
+      if (instance.nassauLaserEffect) {
+        instance.nassauLaserEffect.stop()
+        instance.nassauLaserEffect.destroy()
       }
-      if (instance.titleSplitText) {
-        instance.titleSplitText.revert()
+      if (instance.chaseLightInterval) clearInterval(instance.chaseLightInterval)
+      if (instance.sparkInterval) clearInterval(instance.sparkInterval)
+      if (instance.apolloMarqueeInterval) clearInterval(instance.apolloMarqueeInterval)
+      if (instance.splitTexts) {
+        Object.values(instance.splitTexts).forEach(st => { if (st) st.revert() })
       }
-      // Carnegie Hall cleanup
-      if (instance.carnegieShiftController) {
-        instance.carnegieShiftController.destroy()
+      if (instance.escapeHandler) {
+        document.removeEventListener('keydown', instance.escapeHandler)
       }
-      if (instance.carnegieTitleSplitText) {
-        instance.carnegieTitleSplitText.revert()
-      }
-      // MSG cleanup
-      if (instance.chaseLightInterval) {
-        clearInterval(instance.chaseLightInterval)
-      }
-      if (instance.sparkInterval) {
-        clearInterval(instance.sparkInterval)
-      }
-      // RKO cleanup
-      if (instance.rkoTitleSplitText) {
-        instance.rkoTitleSplitText.revert()
-      }
-      // CBS cleanup
-      if (instance.cbsVuMeterInterval) {
-        clearInterval(instance.cbsVuMeterInterval)
-      }
-      // Reset overlay state
       instance.overlay?.classList.remove('active')
       instance.overlay?.removeAttribute('data-layout')
-      // Clear GSAP props
-      if (instance.morphBox) {
-        gsap.set(instance.morphBox, { clearProps: 'all' })
-      }
+      if (instance.morphBox) gsap.set(instance.morphBox, { clearProps: 'all' })
     }
     detailOverlayInstance = null
   })

@@ -52,6 +52,9 @@ export function createBackgroundShift(options: ShiftLayerOptions): ShiftControll
   function animateIn(): gsap.core.Timeline {
     const tl = gsap.timeline()
 
+    // Ensure layers start hidden above viewport
+    gsap.set(layers, { y: '-100%' })
+
     // Stagger the layers sliding down
     // First and third layers come down together, middle layer slightly delayed
     if (layers[0]) {
@@ -111,10 +114,9 @@ export function createBackgroundShift(options: ShiftLayerOptions): ShiftControll
    * Reset layers to initial hidden state
    */
   function reset(): void {
-    gsap.set(layers, {
-      y: '-100%',
-      clearProps: 'all'
-    })
+    gsap.killTweensOf(layers)
+    gsap.set(layers, { clearProps: 'all' })
+    gsap.set(layers, { y: '-100%' })
   }
 
   /**
