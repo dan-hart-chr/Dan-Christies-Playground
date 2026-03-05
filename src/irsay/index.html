@@ -2,173 +2,177 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="An immersive 3D journey through iconic New York City music and entertainment landmarks" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Explore the Jim Irsay Collection's iconic instruments and their connections to New York City's legendary music venues." />
     <meta name="theme-color" content="#0a0a0f" />
+    <meta property="og:title" content="The Jim Irsay Collection — New York City" />
+    <meta property="og:description" content="Explore iconic instruments and their connections to New York City's legendary music venues." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og-image.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The Jim Irsay Collection — New York City" />
+    <meta name="twitter:description" content="Explore iconic instruments and their connections to NYC's legendary music venues." />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <title>NYC Landmarks | The Jim Irsay Collection</title>
     <link rel="preconnect" href="https://api.mapbox.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Tilt+Prism&family=EB+Garamond:wght@400;500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Tilt+Prism&family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet" /></noscript>
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet" />
   </head>
   <body>
-    <div id="app">
-      <div id="map-container"></div>
+    <a class="skip-link sr-only" href="#location-panel">Skip to content</a>
+    <div id="app" role="main">
+      <div id="map-container" role="img" aria-label="Interactive 3D map of iconic New York City music and entertainment landmarks"></div>
 
       <header class="header">
-        <div class="header__brand">
-          <span class="header__icon">&#9830;</span>
-          <h1 class="header__title">The Jim Irsay Collection</h1>
-        </div>
-        <p class="header__subtitle">NYC Landmarks</p>
+        <h1 class="header__logo-heading"><img class="header__logo" src="/logo.svg" alt="The Jim Irsay Collection" fetchpriority="high" /></h1>
       </header>
 
-      <aside class="location-panel" id="location-panel">
-        <div class="location-panel__header">
-          <span class="location-panel__eyebrow">Now Viewing</span>
-          <h2 class="location-panel__title" id="current-location">Ed Sullivan Theatre</h2>
-        </div>
-        <p class="location-panel__description" id="current-description">
-          Home of The Late Show and the legendary Ed Sullivan Show where The Beatles made their historic American debut.
-        </p>
-        <div class="location-panel__footer">
-          <span class="location-panel__coords" id="current-coords">40.7638°N, 73.9829°W</span>
-          <button class="location-panel__learn-more" id="learn-more-btn">
-            <span>Learn More</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </button>
+      <aside class="location-panel" id="location-panel" aria-live="polite" aria-atomic="true">
+        <button class="location-panel__pill" id="panel-pill" aria-label="Expand location info">
+          <span class="location-panel__pill-text">Manny's Music Store</span>
+          <svg class="location-panel__pill-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 15l6-6 6 6"/>
+          </svg>
+        </button>
+        <div class="location-panel__body">
+          <div class="location-panel__header">
+            <span class="location-panel__eyebrow">Now Viewing</span>
+            <h2 class="location-panel__title" id="current-location">Manny's Music Store</h2>
+          </div>
+          <p class="location-panel__description" id="current-description">
+            David Gilmour bought The Black Strat here — the Fender Stratocaster that would become one of the most iconic guitars in rock history.
+          </p>
+          <div class="location-panel__footer">
+            <button class="location-panel__learn-more" id="learn-more-btn">
+              <span>Learn More</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+            <button class="location-panel__collapse" id="panel-collapse" aria-label="Minimize panel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </aside>
 
       <!-- Detail overlay -->
-      <div class="detail-overlay" id="detail-overlay">
+      <div class="detail-overlay" id="detail-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Location details">
         <!-- Morph box for FLIP animation -->
-        <div class="morph-box" id="morph-box"></div>
+        <div class="morph-box" id="morph-box" aria-hidden="true"></div>
         <div class="detail-overlay__content" id="detail-content">
-          <button class="detail-overlay__close" id="detail-close">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <button class="detail-overlay__close" id="detail-close" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M18 6L6 18M6 6l12 12"/>
             </svg>
           </button>
 
-          <!-- Default layout (hidden when special layout active) -->
-          <div class="detail-overlay__inner detail-overlay__inner--default" id="detail-default">
-            <header class="detail-header">
-              <span class="detail-header__eyebrow" id="detail-eyebrow">Historic Venue</span>
-              <h1 class="detail-header__title" id="detail-title">Ed Sullivan Theatre</h1>
-              <p class="detail-header__year" id="detail-year">Est. 1927</p>
-            </header>
-            <div class="detail-body">
-              <p class="detail-body__intro" id="detail-intro"></p>
-              <div class="detail-body__history" id="detail-history"></div>
-              <aside class="detail-body__note" id="detail-note"></aside>
-            </div>
-          </div>
-
-          <!-- Ed Sullivan special layout -->
-          <div class="detail-overlay__inner detail-overlay__inner--edsullivan" id="detail-edsullivan">
-            <div class="edsullivan-bg" id="edsullivan-bg"></div>
-
-            <!-- Floating images -->
-            <div class="edsullivan-image edsullivan-image--top-left">
-              <img src="/edsullivan/14.webp" alt="Beatles at Ed Sullivan" />
-            </div>
-            <div class="edsullivan-image edsullivan-image--bottom-center">
-              <img src="/edsullivan/15.webp" alt="Ed Sullivan Theatre" />
-            </div>
-            <div class="edsullivan-image edsullivan-image--bottom-right">
-              <img src="/edsullivan/16.webp" alt="Historic performance" />
-            </div>
-
-            <!-- Center content -->
-            <div class="edsullivan-center">
-              <h1 class="edsullivan-title">Ed Sullivan Theatre</h1>
-              <p class="edsullivan-description">
-                Historically it was the most important performance of The Beatles' careers. Beatlemania began in the US that evening, permanently changing not only music but pop culture. Starr didn't bring his entire drum kit from London to the US, only a few pieces of his kit along with this drumhead.
+          <!-- Manny's Music Store layout -->
+          <div class="detail-overlay__inner detail-overlay__inner--mannys" id="detail-mannys">
+            <div class="mannys-glow" aria-hidden="true"></div>
+            <div class="mannys-center">
+              <span class="mannys-eyebrow">Est. 1935 &mdash; 48th Street Music Row</span>
+              <h2 class="mannys-title">Manny's Music</h2>
+              <p class="mannys-description">
+                David Gilmour bought The Black Strat here &mdash; the Fender Stratocaster known as 'The Black Strat', which would become one of the most iconic guitars in rock history, defining the sound of Pink Floyd for decades.
               </p>
+              <a class="view-lot-btn" href="https://www.christies.com/en/lot/lot-6573403?ldp_breadcrumb=back" target="_blank" rel="noopener">View Lot</a>
             </div>
+            <div class="mannys-image mannys-image--right">
+              <img loading="lazy" decoding="async" fetchpriority="low" src="/images/mannys/mannys.png" alt="David Gilmour's Fender Stratocaster known as 'The Black Strat', 1969 and 1983" />
+            </div>
+            <span class="mannys-credit">&copy; Jill Furmanovsky</span>
           </div>
 
-          <!-- Carnegie Hall special layout -->
+          <!-- RKO Theatre layout -->
+          <div class="detail-overlay__inner detail-overlay__inner--rko" id="detail-rko">
+            <div class="rko-rays" aria-hidden="true">
+              <div class="rko-rays__beam rko-rays__beam--1"></div>
+              <div class="rko-rays__beam rko-rays__beam--2"></div>
+              <div class="rko-rays__beam rko-rays__beam--3"></div>
+              <div class="rko-rays__beam rko-rays__beam--4"></div>
+              <div class="rko-rays__beam rko-rays__beam--5"></div>
+            </div>
+            <div class="rko-image rko-image--hero" id="rko-hero-image">
+              <img loading="lazy" decoding="async" fetchpriority="low" src="/images/rko/thefool.png" alt="Eric Clapton's Gibson SG Standard known as 'The Fool', 1964" />
+            </div>
+            <div class="rko-center">
+              <span class="rko-eyebrow">Est. 1929</span>
+              <h2 class="rko-title">RKO Theatre</h2>
+              <p class="rko-description">
+                Cream's show here on 26 March 1967 saw the debut appearance of Eric Clapton's SG Standard guitar after it had been decorated with psychedelic designs and patterns &mdash; the guitar became known as 'The Fool' and is one of the most recognisable instruments in rock history.
+              </p>
+              <a class="view-lot-btn" href="https://www.christies.com/en/lot/lot-6573397?ldp_breadcrumb=back" target="_blank" rel="noopener">View Lot</a>
+            </div>
+            <div class="rko-star" aria-hidden="true">&starf;</div>
+            <span class="rko-credit">&copy; Karl Ferris</span>
+          </div>
+
+          <!-- Carnegie Hall layout -->
           <div class="detail-overlay__inner detail-overlay__inner--carnegiehall" id="detail-carnegiehall">
-            <!-- Background shift layers with images -->
             <div class="carnegiehall-shift" id="carnegiehall-shift">
               <div class="carnegiehall-shift__layer">
                 <div class="carnegiehall-shift__layer-inner">
-                  <img src="/edsullivan/17.webp" alt="Historic performance" />
+                  <img loading="lazy" decoding="async" fetchpriority="low" src="/images/carnegie-hall/beatles-drumhead.webp" alt="The Beatles logo drum head used for their debut on The Ed Sullivan Show, 1964" />
                 </div>
               </div>
               <div class="carnegiehall-shift__layer">
                 <div class="carnegiehall-shift__layer-inner">
-                  <img src="/edsullivan/14.webp" alt="Carnegie Hall" />
+                  <img loading="lazy" decoding="async" fetchpriority="low" src="/images/carnegie-hall/ringo-carnegie-hall.webp" alt="Ringo Starr performing at Carnegie Hall, 12 February 1964" />
                 </div>
               </div>
               <div class="carnegiehall-shift__layer">
                 <div class="carnegiehall-shift__layer-inner">
-                  <img src="/edsullivan/15.webp" alt="Concert venue" />
+                  <img loading="lazy" decoding="async" fetchpriority="low" src="/images/carnegie-hall/dylan-carnegie-handbill-1.jpg" alt="Bob Dylan Carnegie Hall concert handbill, 1963" />
                 </div>
               </div>
             </div>
-
-            <!-- Center content -->
+            <span class="carnegiehall-credit">Photo by Popperfoto via Getty</span>
             <div class="carnegiehall-content">
-              <h1 class="carnegiehall-title">Carnegie Hall</h1>
-              <p class="carnegiehall-description">
-                Historically it was the most important performance of The Beatles' careers. Beatlemania began in the US that evening, permanently changing not only music but pop culture. Starr didn't bring his entire drum kit from London to the US, only a few pieces of his kit along with this drumhead.
-              </p>
-            </div>
-
-            <!-- Right side text -->
-            <div class="carnegiehall-aside">
-              <span class="carnegiehall-aside__label">heeeeey</span>
-              <p class="carnegiehall-aside__text">something<br/>incredible goes<br/>here</p>
+              <h2 class="carnegiehall-title">Carnegie Hall</h2>
+              <div class="carnegiehall-description">
+                <p><a class="lot-link" href="https://www.christies.com/en/lot/lot-6573386?ldp_breadcrumb=back" target="_blank" rel="noopener">The Ed Sullivan drum head</a> was played here when the Beatles toured in Feb&ndash;March 1964.</p>
+                <p>Bob Dylan's <a class="lot-link" href="https://www.christies.com/en/lot/lot-6573398?ldp_breadcrumb=back" target="_blank" rel="noopener">&lsquo;The Times They Are A Changin&rsquo;</a> was recorded here as part of Live at Carnegie Hall, 1963.</p>
+                <p>An early <a class="lot-link" href="https://www.christies.com/en/lot/lot-6572821?ldp_breadcrumb=back" target="_blank" rel="noopener">handbill from Dylan's show</a> is also in the Collection.</p>
+              </div>
             </div>
           </div>
 
-          <!-- Madison Square Garden special layout - Jumbotron/LED Style -->
+          <!-- Madison Square Garden layout - Jumbotron/LED Style -->
           <div class="detail-overlay__inner detail-overlay__inner--msg" id="detail-msg">
-            <!-- LED pixel grid background -->
-            <div class="msg-led-grid" id="msg-led-grid"></div>
-
-            <!-- Scanline overlay for CRT/LED effect -->
-            <div class="msg-scanlines"></div>
-
-            <!-- Main jumbotron screen -->
+            <span class="msg-credit">&copy; Steve Banks / mptvimages.com</span>
+            <div class="msg-led-grid" id="msg-led-grid" aria-hidden="true"></div>
+            <div class="msg-scanlines" aria-hidden="true"></div>
             <div class="msg-jumbotron" id="msg-jumbotron">
-              <!-- Screen border with LED chase lights -->
-              <div class="msg-jumbotron__border">
+              <div class="msg-jumbotron__border" aria-hidden="true">
                 <div class="msg-jumbotron__chase-lights" id="msg-chase-lights"></div>
               </div>
-
-              <!-- Screen content -->
               <div class="msg-jumbotron__screen" id="msg-screen">
-                <!-- Background image layer -->
                 <div class="msg-jumbotron__bg" id="msg-bg">
-                  <img src="/edsullivan/18.webp" alt="" />
+                  <img loading="lazy" decoding="async" fetchpriority="low" src="/images/msg/janis-joplin-msg.webp" alt="Janis Joplin performing at Madison Square Garden, 19 December 1969" />
                 </div>
-
-                <!-- Content overlay -->
                 <div class="msg-jumbotron__content">
-                  <!-- Eyebrow text -->
                   <div class="msg-jumbotron__eyebrow" id="msg-eyebrow">THE WORLD'S MOST FAMOUS ARENA</div>
-
-                  <!-- Main title with pixel reveal -->
-                  <h1 class="msg-jumbotron__title" id="msg-title">
+                  <h2 class="msg-jumbotron__title" id="msg-title">
                     <span class="msg-title-line">MADISON</span>
                     <span class="msg-title-line">SQUARE</span>
                     <span class="msg-title-line">GARDEN</span>
-                  </h1>
+                  </h2>
                 </div>
               </div>
             </div>
-
-            <!-- Description panel slides up from bottom -->
             <div class="msg-info-panel" id="msg-info-panel">
               <div class="msg-info-panel__content">
-                <p>Historically it was the most important performance of The Beatles' careers. Beatlemania began in the US that evening, permanently changing not only music but pop culture. Starr didn't bring his entire drum kit from London to the US, only a few pieces of his kit along with this drumhead.</p>
+                <p>Janis Joplin played her <a class="lot-link lot-link--light" href="https://www.christies.com/en/lot/lot-6573399?ldp_breadcrumb=back" target="_blank" rel="noopener">Gibson J-45</a> here to rapturous applause performing &lsquo;Me &amp; Bobby McGee&rsquo; in December 1969.</p>
+                <p>George Harrison's <a class="lot-link lot-link--light" href="https://www.christies.com/en/lot/lot-6572807?ldp_breadcrumb=back" target="_blank" rel="noopener">Harptone guitar</a> was played at the Concert for Bangladesh in August 1971.</p>
+                <p>Fleetwood Mac's 1977 Rumours tour featured John McVie's custom <a class="lot-link lot-link--light" href="https://www.christies.com/en/lot/lot-6572836?ldp_breadcrumb=back" target="_blank" rel="noopener">Alembic fretless bass</a> &mdash; &lsquo;The Chain&rsquo;.</p>
               </div>
               <div class="msg-info-panel__stats">
                 <div class="msg-stat">
@@ -180,148 +184,247 @@
                   <span class="msg-stat__label">CAPACITY</span>
                 </div>
                 <div class="msg-stat">
-                  <span class="msg-stat__value">∞</span>
+                  <span class="msg-stat__value">&infin;</span>
                   <span class="msg-stat__label">LEGENDS</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- RKO Theatre special layout -->
-          <div class="detail-overlay__inner detail-overlay__inner--rko" id="detail-rko">
-            <!-- Decorative spotlight rays -->
-            <div class="rko-rays">
-              <div class="rko-rays__beam rko-rays__beam--1"></div>
-              <div class="rko-rays__beam rko-rays__beam--2"></div>
-              <div class="rko-rays__beam rko-rays__beam--3"></div>
-              <div class="rko-rays__beam rko-rays__beam--4"></div>
-              <div class="rko-rays__beam rko-rays__beam--5"></div>
-            </div>
-
-            <!-- Film strip columns -->
-            <div class="rko-filmstrip rko-filmstrip--left" id="rko-filmstrip-left">
-              <div class="rko-filmstrip__frame">
-                <img src="/edsullivan/14.webp" alt="Historic performance" />
+          <!-- Shea Stadium layout - Retro Scoreboard -->
+          <div class="detail-overlay__inner detail-overlay__inner--shea" id="detail-shea">
+            <div class="shea-field" aria-hidden="true"></div>
+            <div class="shea-lights" aria-hidden="true"></div>
+            <div class="shea-scoreboard" id="shea-scoreboard">
+              <div class="shea-scoreboard__header" style="display:none">
+                <span class="shea-scoreboard__label">SHEA STADIUM</span>
               </div>
-              <div class="rko-filmstrip__frame">
-                <img src="/edsullivan/17.webp" alt="Historic performance" />
+              <div class="shea-scoreboard__screen">
+                <img loading="lazy" decoding="async" fetchpriority="low" src="/images/shea/75183981_comp_2400 Dotcom JPEG.jpg" alt="The Beatles' umpire's locker from Shea Stadium" />
               </div>
-              <div class="rko-filmstrip__frame">
-                <img src="/edsullivan/15.webp" alt="Historic performance" />
+              <div class="shea-scoreboard__ticker" id="shea-ticker">
+                <span>THE BEATLES &bull; AUGUST 15, 1965 &bull; 55,600 FANS &bull; SHEA STADIUM, FLUSHING NY</span>
               </div>
             </div>
-
-            <div class="rko-filmstrip rko-filmstrip--right" id="rko-filmstrip-right">
-              <div class="rko-filmstrip__frame">
-                <img src="/edsullivan/16.webp" alt="Historic performance" />
-              </div>
-              <div class="rko-filmstrip__frame">
-                <img src="/edsullivan/18.webp" alt="Historic performance" />
-              </div>
-              <div class="rko-filmstrip__frame">
-                <img src="/edsullivan/19.webp" alt="Historic performance" />
-              </div>
-            </div>
-
-            <!-- Center content -->
-            <div class="rko-center">
-              <span class="rko-eyebrow">Est. 1932</span>
-              <h1 class="rko-title">RKO Theatre</h1>
-              <p class="rko-description">
-                Historically it was the most important performance of The Beatles' careers. Beatlemania began in the US that evening, permanently changing not only music but pop culture. Starr didn't bring his entire drum kit from London to the US, only a few pieces of his kit along with this drumhead.
+            <div class="shea-content">
+              <h2 class="shea-title">Shea Stadium</h2>
+              <p class="shea-description">
+                The Collection includes the Beatles' umpire's locker from Shea Stadium and original concert tickets from the legendary 1965 performance that defined stadium rock.
               </p>
+              <a class="view-lot-btn" href="https://www.christies.com/en/lot/lot-6572801?ldp_breadcrumb=back" target="_blank" rel="noopener">View Lot</a>
             </div>
-
-            <!-- Decorative star -->
-            <div class="rko-star">★</div>
+            <span class="shea-credit">&copy; Robert Whitaker</span>
           </div>
 
-          <!-- CBS Studios special layout - Broadcast Collage -->
-          <div class="detail-overlay__inner detail-overlay__inner--cbs" id="detail-cbs">
-            <!-- ON AIR indicator -->
-            <div class="cbs-onair" id="cbs-onair">
-              <span class="cbs-onair__dot"></span>
-              <span class="cbs-onair__text">ON AIR</span>
+          <!-- New York Town Hall layout - 60s Folk Poster -->
+          <div class="detail-overlay__inner detail-overlay__inner--townhall" id="detail-townhall">
+            <div class="townhall-bg"></div>
+            <div class="townhall-rings" aria-hidden="true">
+              <div class="townhall-ring townhall-ring--1"></div>
+              <div class="townhall-ring townhall-ring--2"></div>
+              <div class="townhall-ring townhall-ring--3"></div>
             </div>
-
-            <!-- Scattered images at different sizes/positions -->
-            <div class="cbs-image cbs-image--1" id="cbs-img-1">
-              <img src="/edsullivan/14.webp" alt="CBS broadcast" />
-            </div>
-            <div class="cbs-image cbs-image--2" id="cbs-img-2">
-              <img src="/edsullivan/17.webp" alt="CBS studio" />
-            </div>
-            <div class="cbs-image cbs-image--3" id="cbs-img-3">
-              <img src="/edsullivan/18.webp" alt="CBS performance" />
-            </div>
-            <div class="cbs-image cbs-image--4" id="cbs-img-4">
-              <img src="/edsullivan/15.webp" alt="CBS history" />
-            </div>
-            <div class="cbs-image cbs-image--5" id="cbs-img-5">
-              <img src="/edsullivan/16.webp" alt="CBS legacy" />
-            </div>
-
-            <!-- Content area - bottom left -->
-            <div class="cbs-content" id="cbs-content">
-              <h1 class="cbs-title">CBS Studios</h1>
-              <p class="cbs-description">
-                The CBS Broadcast Center served as the nerve center of American television, where Walter Cronkite delivered the news and countless historic moments were captured and transmitted to millions of homes across the nation.
-              </p>
+            <div class="townhall-content">
+              <div class="townhall-handbill" id="townhall-handbill">
+                <div class="townhall-handbill__border">
+                  <span class="townhall-handbill__header">IN CONCERT</span>
+                  <h2 class="townhall-handbill__artist">Bob Dylan</h2>
+                  <div class="townhall-handbill__details">
+                    <span>FRIDAY, APRIL 12, 1963</span>
+                    <span>THE TOWN HALL, NEW YORK CITY</span>
+                    <span>HIS FIRST SOLO CONCERT</span>
+                  </div>
+                  <div class="townhall-handbill__image">
+                    <img loading="lazy" decoding="async" fetchpriority="low" src="/images/town-hall/dylan-handbill_1.jpg" alt="Bob Dylan first solo concert handbill, 1963" />
+                  </div>
+                </div>
+              </div>
+              <div class="townhall-text">
+                <span class="townhall-eyebrow">April 12, 1963 &mdash; His First Solo Concert</span>
+                <h2 class="townhall-title">New York Town Hall</h2>
+                <p class="townhall-description">
+                  Bob Dylan's first solo concert took place here on 12 April 1963. The only known example of the small format handbill from this historic event is in Icons of Pop &mdash; a rare handbill for his first solo concert.
+                </p>
+                <a class="view-lot-btn" href="https://www.christies.com/en/lot/lot-6572820?ldp_breadcrumb=back" target="_blank" rel="noopener">View Lot</a>
+              </div>
             </div>
           </div>
+
+          <!-- Radio City Music Hall layout - Editorial Spread -->
+          <div class="detail-overlay__inner detail-overlay__inner--radiocity" id="detail-radiocity">
+            <div class="radiocity-wash"></div>
+            <div class="radiocity-grain"></div>
+            <div class="radiocity-image">
+              <img loading="lazy" decoding="async" fetchpriority="low" src="/images/radio-city/radiocity.png" alt="Lou Reed performing at Radio City Music Hall with his custom Fender Telecaster 'Goldie'" />
+            </div>
+            <div class="radiocity-text">
+              <span class="radiocity-eyebrow">October 2, 2001</span>
+              <h2 class="radiocity-title">Radio City</h2>
+              <span class="radiocity-subtitle">Music Hall</span>
+              <p class="radiocity-description">
+                Lou Reed performed with Goldie &mdash; his custom shop Fender Telecaster &mdash; for the concert tribute 'Come Together: A Night for John Lennon's Words and Music', broadcast live on TNT.
+              </p>
+              <a class="view-lot-btn" href="https://www.christies.com/en/lot/lot-6572844?ldp_breadcrumb=back" target="_blank" rel="noopener">View Lot</a>
+            </div>
+            <span class="radiocity-credit">&copy; Richard Corkery/NY Daily News via Getty</span>
+          </div>
+
+          <!-- 59 West 12th Street layout - Hendrix Apartment -->
+          <div class="detail-overlay__inner detail-overlay__inner--hendrix" id="detail-hendrix">
+            <div class="hendrix-haze" aria-hidden="true"></div>
+            <!-- Tape reels — spinning background elements -->
+            <div class="hendrix-reel hendrix-reel--left" id="hendrix-reel-left" aria-hidden="true">
+              <div class="hendrix-reel__disc"></div>
+              <div class="hendrix-reel__spoke"></div>
+              <div class="hendrix-reel__spoke"></div>
+              <div class="hendrix-reel__spoke"></div>
+            </div>
+            <div class="hendrix-reel hendrix-reel--right" id="hendrix-reel-right" aria-hidden="true">
+              <div class="hendrix-reel__disc"></div>
+              <div class="hendrix-reel__spoke"></div>
+              <div class="hendrix-reel__spoke"></div>
+              <div class="hendrix-reel__spoke"></div>
+            </div>
+            <!-- Hero image — full height bleed on right -->
+            <div class="hendrix-image hendrix-image--hero">
+              <img loading="lazy" decoding="async" fetchpriority="low" src="/images/hendrix/moroccan-chest.webp" alt="Jimi Hendrix's Moroccan chest used to store demo tapes, 1969-1970" />
+            </div>
+            <div class="hendrix-center">
+              <span class="hendrix-eyebrow">Greenwich Village, 1969&ndash;1970</span>
+              <h2 class="hendrix-title">59 West 12th Street</h2>
+              <p class="hendrix-description">
+                Jimi Hendrix's apartment where he had this chest in his bedroom &mdash; a Moroccan chest used to store demo tapes, 1969&ndash;1970.
+              </p>
+              <a class="view-lot-btn" href="https://www.christies.com/en/lot/lot-6572828?ldp_breadcrumb=back" target="_blank" rel="noopener">View Lot</a>
+            </div>
+          </div>
+
+          <!-- Apollo Theatre layout - Soul Stage -->
+          <div class="detail-overlay__inner detail-overlay__inner--apollo" id="detail-apollo">
+            <div class="apollo-marquee-lights" id="apollo-marquee-lights"></div>
+            <div class="apollo-spotlight" aria-hidden="true"></div>
+            <div class="apollo-stage-floor" aria-hidden="true"></div>
+            <div class="apollo-image">
+              <img loading="lazy" decoding="async" fetchpriority="low" src="/images/apollo/jamesbrown.png" alt="James Brown performing at the Apollo Theatre with his 'Godfather of Soul' sequinned stage cape" />
+            </div>
+            <div class="apollo-center">
+              <span class="apollo-eyebrow">253 West 125th Street, Harlem</span>
+              <h2 class="apollo-title">Apollo Theatre</h2>
+              <p class="apollo-description">
+                James Brown wore his sequinned 'Godfather of Soul' stage cape here at a free concert in 2003 &mdash; one of the most electrifying performers to ever grace this legendary Harlem stage.
+              </p>
+              <a class="view-lot-btn" href="https://www.christies.com/en/lot/lot-6573413?ldp_breadcrumb=back" target="_blank" rel="noopener">View Lot</a>
+            </div>
+            <span class="apollo-credit">&copy; Alamy</span>
+          </div>
+
+          <!-- Belmont Park layout - Racing Elegance -->
+          <div class="detail-overlay__inner detail-overlay__inner--belmont" id="detail-belmont">
+            <div class="belmont-turf" aria-hidden="true"></div>
+            <div class="belmont-ribbon" aria-hidden="true"></div>
+            <div class="belmont-rail belmont-rail--1" aria-hidden="true"></div>
+            <div class="belmont-rail belmont-rail--2" aria-hidden="true"></div>
+            <div class="belmont-finish" aria-hidden="true"></div>
+            <div class="belmont-image">
+              <img loading="lazy" decoding="async" fetchpriority="low" src="/images/belmont/belmont.png" alt="Secretariat winning the Belmont Stakes with Ron Turcotte's race saddle" />
+            </div>
+            <div class="belmont-center">
+              <span class="belmont-eyebrow">The Belmont Stakes &bull; June 9, 1973</span>
+              <h2 class="belmont-title">Belmont Park</h2>
+              <p class="belmont-description">
+                Secretariat raced to victory here wearing his saddle, completing the Triple Crown in the Belmont Stakes in 1973 &mdash; the race-used 1973 Triple Crown saddle from the Ron Turcotte Collection.
+              </p>
+              <a class="view-lot-btn" href="https://www.christies.com/en/lot/lot-6573418?ldp_breadcrumb=back" target="_blank" rel="noopener">View Lot</a>
+            </div>
+            <span class="belmont-credit">&copy; Alamy</span>
+          </div>
+
+          <!-- Nassau Coliseum layout - Rock Arena -->
+          <div class="detail-overlay__inner detail-overlay__inner--nassau" id="detail-nassau">
+            <canvas id="nassau-laser-canvas" aria-hidden="true"></canvas>
+            <div class="nassau-lasers" id="nassau-lasers"></div>
+            <div class="nassau-haze" aria-hidden="true"></div>
+            <div class="nassau-stage-light" aria-hidden="true"></div>
+            <div class="nassau-floor" aria-hidden="true"></div>
+            <div class="nassau-image">
+              <img loading="lazy" decoding="async" fetchpriority="low" src="/images/nassau/nassau.png" alt="Neal Schon performing with Journey at Nassau Coliseum with his Gibson Les Paul Pro Deluxe" />
+            </div>
+            <div class="nassau-center">
+              <span class="nassau-eyebrow">Uniondale, Long Island &bull; 1981</span>
+              <h2 class="nassau-title">Nassau Coliseum</h2>
+              <p class="nassau-description">
+                Neal Schon performed with Journey on his Gibson Les Paul Pro Deluxe here in 1981 &mdash; the guitar used to record Journey's hit single 'Don't Stop Believin''.
+              </p>
+              <a class="view-lot-btn" href="https://www.christies.com/en/lot/lot-6572837?ldp_breadcrumb=back" target="_blank" rel="noopener">View Lot</a>
+            </div>
+            <span class="nassau-credit">&copy; Ebet Roberts/Redferns via Getty</span>
+          </div>
+
         </div>
       </div>
 
       <nav class="location-nav" id="location-nav">
-        <button class="location-nav__btn active" data-index="0">
-          <span class="location-nav__indicator"></span>
-          <span class="location-nav__label">Ed Sullivan</span>
-        </button>
-        <button class="location-nav__btn" data-index="1">
-          <span class="location-nav__indicator"></span>
-          <span class="location-nav__label">CBS Studios</span>
-        </button>
-        <button class="location-nav__btn" data-index="2">
-          <span class="location-nav__indicator"></span>
-          <span class="location-nav__label">Carnegie Hall</span>
-        </button>
-        <button class="location-nav__btn" data-index="3">
-          <span class="location-nav__indicator"></span>
-          <span class="location-nav__label">RKO Theatre</span>
-        </button>
-        <button class="location-nav__btn" data-index="4">
-          <span class="location-nav__indicator"></span>
+        <button class="location-nav__btn active" data-index="0" aria-label="Manny's Music Store">
+          <span class="location-nav__indicator" aria-hidden="true"></span>
           <span class="location-nav__label">Manny's</span>
         </button>
-        <button class="location-nav__btn" data-index="5">
-          <span class="location-nav__indicator"></span>
+        <button class="location-nav__btn" data-index="1" aria-label="RKO Theatre">
+          <span class="location-nav__indicator" aria-hidden="true"></span>
+          <span class="location-nav__label">RKO</span>
+        </button>
+        <button class="location-nav__btn" data-index="2" aria-label="Carnegie Hall">
+          <span class="location-nav__indicator" aria-hidden="true"></span>
+          <span class="location-nav__label">Carnegie</span>
+        </button>
+        <button class="location-nav__btn" data-index="3" aria-label="Madison Square Garden">
+          <span class="location-nav__indicator" aria-hidden="true"></span>
           <span class="location-nav__label">MSG</span>
         </button>
-        <button class="location-nav__btn" data-index="6">
-          <span class="location-nav__indicator"></span>
+        <button class="location-nav__btn" data-index="4" aria-label="Shea Stadium">
+          <span class="location-nav__indicator" aria-hidden="true"></span>
+          <span class="location-nav__label">Shea</span>
+        </button>
+        <button class="location-nav__btn" data-index="5" aria-label="New York Town Hall">
+          <span class="location-nav__indicator" aria-hidden="true"></span>
+          <span class="location-nav__label">Town Hall</span>
+        </button>
+        <button class="location-nav__btn" data-index="6" aria-label="Radio City Music Hall">
+          <span class="location-nav__indicator" aria-hidden="true"></span>
+          <span class="location-nav__label">Radio City</span>
+        </button>
+        <button class="location-nav__btn" data-index="7" aria-label="59 West 12th Street — Hendrix Apartment">
+          <span class="location-nav__indicator" aria-hidden="true"></span>
+          <span class="location-nav__label">59 W 12th</span>
+        </button>
+        <button class="location-nav__btn" data-index="8" aria-label="Apollo Theatre">
+          <span class="location-nav__indicator" aria-hidden="true"></span>
+          <span class="location-nav__label">Apollo</span>
+        </button>
+        <button class="location-nav__btn" data-index="9" aria-label="Belmont Park">
+          <span class="location-nav__indicator" aria-hidden="true"></span>
+          <span class="location-nav__label">Belmont</span>
+        </button>
+        <button class="location-nav__btn" data-index="10" aria-label="Nassau Coliseum">
+          <span class="location-nav__indicator" aria-hidden="true"></span>
+          <span class="location-nav__label">Nassau</span>
+        </button>
+        <button class="location-nav__btn" data-index="11" aria-label="Christie's">
+          <span class="location-nav__indicator" aria-hidden="true"></span>
           <span class="location-nav__label">Christie's</span>
         </button>
       </nav>
-
-      <div class="controls">
-        <button class="controls__btn" id="play-pause" aria-label="Play or pause rotation">
-          <svg class="controls__icon controls__icon--pause" viewBox="0 0 24 24" fill="currentColor">
-            <rect x="6" y="4" width="4" height="16" rx="1"/>
-            <rect x="14" y="4" width="4" height="16" rx="1"/>
-          </svg>
-          <svg class="controls__icon controls__icon--play hidden" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-        </button>
-      </div>
-
-      <div class="loading-overlay" id="loading">
+      <div class="loading-overlay" id="loading" role="status" aria-live="polite">
         <div class="loading-overlay__content">
-          <div class="loading-overlay__spinner"></div>
+          <div class="loading-overlay__spinner" aria-hidden="true"></div>
           <p class="loading-overlay__text">Loading NYC Experience</p>
         </div>
       </div>
     </div>
+    <noscript>
+      <div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0a0a0f;color:#fafafa;font-family:sans-serif;text-align:center;padding:2rem;">
+        <p>This experience requires JavaScript to explore the interactive map and collection.</p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

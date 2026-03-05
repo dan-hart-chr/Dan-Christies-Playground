@@ -66,6 +66,7 @@ export class FlowImageEffect {
   private canvas: HTMLCanvasElement
   private frame = 0
   private currentTarget = 0
+  private _resizeHandler: (() => void) | null = null
 
   // Video elements
   private video: HTMLVideoElement
@@ -170,7 +171,8 @@ export class FlowImageEffect {
     this.scene.add(this.quad)
 
     // Handle resize
-    window.addEventListener('resize', () => this.updateSize())
+    this._resizeHandler = () => this.updateSize()
+    window.addEventListener('resize', this._resizeHandler)
   }
 
   private createNoiseTexture(size: number): THREE.DataTexture {
@@ -255,6 +257,11 @@ export class FlowImageEffect {
 
   dispose() {
     this.stop()
+
+    if (this._resizeHandler) {
+      window.removeEventListener('resize', this._resizeHandler)
+      this._resizeHandler = null
+    }
 
     if (this.hls) {
       this.hls.destroy()
