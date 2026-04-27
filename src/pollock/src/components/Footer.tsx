@@ -2,6 +2,9 @@ function Separator() {
   return <span className="inline-block h-[15px] w-px shrink-0 bg-[#f0e8d7] opacity-50" />;
 }
 
+const POLLOCK_LOT_URL =
+  'https://www.christies.com/lot/jackson-pollock-1912-1956-number-7a-1948-6585089/?intObjectID=6585089&lid=1';
+
 export default function Footer() {
   return (
     <footer className="absolute bottom-0 left-0 z-20 w-full bg-black">
@@ -25,7 +28,8 @@ export default function Footer() {
             </a>
             <Separator />
             <a
-              href="#"
+              href={POLLOCK_LOT_URL}
+              data-analytics="pollock7a:footerLink"
               className="shrink-0 whitespace-nowrap text-[14px] font-normal uppercase leading-[1.2] text-[#f0e8d7] no-underline cursor-pointer hover:opacity-80 transition-opacity"
             >
               VIEW POLLOCK 7A
@@ -57,7 +61,8 @@ export default function Footer() {
           </a>
           <Separator />
           <a
-            href="#"
+            href={POLLOCK_LOT_URL}
+            data-analytics="pollock7a:footerLink"
             className="shrink-0 whitespace-nowrap text-[14px] font-normal uppercase leading-[1.2] text-[#f0e8d7] no-underline cursor-pointer hover:opacity-80 transition-opacity"
           >
             VIEW POLLOCK 7A

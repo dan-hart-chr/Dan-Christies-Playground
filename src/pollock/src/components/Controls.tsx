@@ -7,11 +7,18 @@ interface ControlsProps {
   currentLang: string;
   muted?: boolean;
   onMuteToggle?: () => void;
+  showLanguageSelection?: boolean;
 }
 
 const btn = 'cursor-pointer transition-opacity hover:opacity-80';
 
-export default function Controls({ onOpenPanel, currentLang, muted = false, onMuteToggle }: ControlsProps) {
+export default function Controls({
+  onOpenPanel,
+  currentLang,
+  muted = false,
+  onMuteToggle,
+  showLanguageSelection = true,
+}: ControlsProps) {
   const MuteIcon = muted ? SoundOffIcon : SoundIcon;
   const labels = UI_LABELS[currentLang] ?? UI_LABELS.en;
   return (
@@ -27,16 +34,18 @@ export default function Controls({ onOpenPanel, currentLang, muted = false, onMu
           <InfoIcon />
         </button>
 
-        <button
-          className={`${btn} flex shrink-0 items-center gap-2 rounded-[24px] bg-[rgba(244,244,244,0.8)] p-4`}
-          onClick={() => onOpenPanel('language')}
-          data-analytics={`changeLanguageButton:${currentLang}`}
-        >
-          <span className="whitespace-nowrap text-[14px] font-light uppercase leading-[1.2] text-black">
-            {LANGUAGE_SHORT[currentLang] ?? 'EN'}
-          </span>
-          <GlobeIcon className="size-4 shrink-0" />
-        </button>
+        {showLanguageSelection && (
+          <button
+            className={`${btn} flex shrink-0 items-center gap-2 rounded-[24px] bg-[rgba(244,244,244,0.8)] p-4`}
+            onClick={() => onOpenPanel('language')}
+            data-analytics={`changeLanguageButton:${currentLang}`}
+          >
+            <span className="whitespace-nowrap text-[14px] font-light uppercase leading-[1.2] text-black">
+              {LANGUAGE_SHORT[currentLang] ?? 'EN'}
+            </span>
+            <GlobeIcon className="size-4 shrink-0" />
+          </button>
+        )}
 
         <button
           className={`${btn} flex h-[48px] shrink-0 items-center gap-2 rounded-[24px] bg-[rgba(244,244,244,0.8)] px-6 py-3`}
@@ -72,16 +81,18 @@ export default function Controls({ onOpenPanel, currentLang, muted = false, onMu
         </button>
 
         <div className="absolute bottom-[120px] left-1/2 z-30 flex -translate-x-1/2 gap-[7px]">
-          <button
-            className={`${btn} flex shrink-0 items-center gap-2 rounded-[24px] bg-[rgba(244,244,244,0.7)] p-4 backdrop-blur-[10px]`}
-            onClick={() => onOpenPanel('language')}
-            data-analytics={`changeLanguageButton:${currentLang}`}
-          >
-            <span className="whitespace-nowrap text-[14px] font-light uppercase leading-[1.2] text-[#222]">
-              {LANGUAGE_LABELS[currentLang] ?? 'ENGLISH'}
-            </span>
-            <GlobeIcon className="size-4 shrink-0" />
-          </button>
+          {showLanguageSelection && (
+            <button
+              className={`${btn} flex shrink-0 items-center gap-2 rounded-[24px] bg-[rgba(244,244,244,0.7)] p-4 backdrop-blur-[10px]`}
+              onClick={() => onOpenPanel('language')}
+              data-analytics={`changeLanguageButton:${currentLang}`}
+            >
+              <span className="whitespace-nowrap text-[14px] font-light uppercase leading-[1.2] text-[#222]">
+                {LANGUAGE_LABELS[currentLang] ?? 'ENGLISH'}
+              </span>
+              <GlobeIcon className="size-4 shrink-0" />
+            </button>
+          )}
 
           <button
             className={`${btn} flex h-[48px] shrink-0 items-center gap-2 rounded-[24px] bg-[rgba(244,244,244,0.7)] px-6 py-3 backdrop-blur-[10px]`}

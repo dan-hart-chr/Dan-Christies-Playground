@@ -98,6 +98,6 @@ export const UI_LABELS: Record<string, UiLabels> = {
 // per language if needed.
 export const ARTIST_NAME = 'Jackson Pollock';
 export const ARTIST_DATES = '(1912-1956)';
-export const ARTWORK_TITLE = '7a, 1949';
+export const ARTWORK_TITLE = '7a, 1948';
 
 export default transcripts;
