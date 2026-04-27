@@ -17,7 +17,7 @@ import { DEFAULT_SCENE_STATE, SCENE_CONTROL_DEFINITIONS } from "./sceneControls.
 import { createShowcaseUi } from "./showcaseUi.js";
 import { createFogVolume } from "./fogVolume.js";
 import { DEFAULT_ENTRANCE_TIMELINE, createEntranceTabContent, runEntranceTimeline } from "./entranceTimeline.js";
-import { createCaveAudio } from "./caveAudio.js";
+import { createCaveAudio, getAnalyticsLanguageCode } from "./caveAudio.js";
 
 const isMobile = window.matchMedia("(pointer: coarse)").matches;
 const MAX_DPR = isMobile ? 1.5 : 2;
@@ -54,13 +54,13 @@ const DEFAULT_LIGHTS = [
     name: "Spot 09",
     type: "spot",
     color: "#d6d6d6",
-    intensity: 28.136,
+    intensity: 27.317,
     visible: true,
     castShadow: true,
     position: [-3.958, 2.429, 27.882],
     rotation: [-0.717, -0.963, -0.621],
     target: [-27.552, 13.209, 40.246],
-    distance: 60,
+    distance: 41,
     decay: 0,
     angle: 0.95,
     penumbra: 1,
@@ -70,7 +70,7 @@ const DEFAULT_LIGHTS = [
     name: "Spot 03",
     type: "spot",
     color: "#ffffff",
-    intensity: 21.737,
+    intensity: 20.317,
     visible: true,
     castShadow: true,
     position: [-5.163, 3.823, 27.095],
@@ -86,7 +86,7 @@ const DEFAULT_LIGHTS = [
     name: "Point 04",
     type: "point",
     color: "#ffffff",
-    intensity: 0,
+    intensity: 3.694,
     visible: true,
     castShadow: false,
     position: [-13.037, 7.948, 34.282],
@@ -98,8 +98,8 @@ const DEFAULT_LIGHTS = [
     id: "light-5",
     name: "Spot 05",
     type: "spot",
-    color: "#ccb561",
-    intensity: 44.135,
+    color: "#8c8c8c",
+    intensity: 42.904,
     visible: true,
     castShadow: true,
     position: [-21.82, 11.729, -19.437],
@@ -114,8 +114,8 @@ const DEFAULT_LIGHTS = [
     id: "light-6",
     name: "Spot 06",
     type: "spot",
-    color: "#dfd69a",
-    intensity: 19.86,
+    color: "#bababa",
+    intensity: 31.594,
     visible: true,
     castShadow: true,
     position: [-33.153, 13.631, -10.506],
@@ -410,6 +410,26 @@ world.add(sculptureRoot);
 let sculptureHeadGroup = null;
 const caveAudio = createCaveAudio();
 
+function getArtName() {
+  return window.artName || window.location.pathname.replace(/^\/|\/$/g, "");
+}
+
+function setAnalyticsPageLanguage(languageId) {
+  if (!window.AnalyticsDataLayer?.page) return;
+  window.AnalyticsDataLayer.page.language = getAnalyticsLanguageCode(languageId);
+}
+
+function fireExperienceViewPage() {
+  if (window.viewPageViewFired) return;
+  window.viewPageViewFired = true;
+  const artName = getArtName();
+  if (window.AnalyticsDataLayer?.page) {
+    window.AnalyticsDataLayer.page.name = `experience:${artName}:view`;
+    window.AnalyticsDataLayer.page.template = "experience:view";
+  }
+  window._satellite?.track("experience_virtual_page_view");
+}
+
 const dust = createDustCloud(isMobile ? 60 : undefined);
 scene.add(dust.points);
 
@@ -472,6 +492,7 @@ transformControls.addEventListener("objectChange", () => {
 const showcaseUi = createShowcaseUi(viewport, SCENE_VIEW, {
   appRoot: app,
   onLanguageChange(languageId) {
+    setAnalyticsPageLanguage(languageId);
     caveAudio.setLanguage(languageId);
   },
   onMuteToggle(muted) {
@@ -671,9 +692,11 @@ async function init() {
         onLanguageSelected(langId) {
           // Browser audio is unlocked by this user gesture, but stays silent
           // until the instructions modal is dismissed.
+          setAnalyticsPageLanguage(langId);
           caveAudio.setLanguage(langId);
         },
         onInstructionsDismissed() {
+          fireExperienceViewPage();
           // Quotes start as soon as audio buffers finish decoding, in parallel
           // with the entrance animation.
           caveAudio.start().then(() => caveAudio.startQuotes());

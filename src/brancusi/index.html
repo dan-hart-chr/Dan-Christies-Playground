@@ -8,7 +8,34 @@
     />
     <title>Brancusi Cave Viewer</title>
     <!-- ABC Arizona fonts loaded via @font-face in style.css -->
-     <script src="https://assets.adobedtm.com/4f105c1434ad/836733c85a3b/launch-a3bfde3f3a7a-staging.min.js" async></script>
+    <script>
+    let artName = window.location.pathname.replace(/^\/|\/$/g, '');
+    window.artName = artName;
+    window.viewPageViewFired = false;
+    window.AnalyticsDataLayer = {
+      "page": {
+        "name": "experience:"+artName+":splash",
+        "channel": "experience",
+        "language": "en",
+        "template": "experience:splash"
+      },
+      "platform": {
+        "name": "web",
+        "version": "1.0.0"
+      },
+      "user": {
+        "status": "",
+        "GUID": ""
+      },
+      "audio": {
+        "playing":false,
+        "language":"en"
+      }
+    };
+    </script>
+
+    <script src="https://assets.adobedtm.com/4f105c1434ad/836733c85a3b/launch-a3bfde3f3a7a-staging.min.js" async></script>
+    <!--<script src="https://assets.adobedtm.com/4f105c1434ad/836733c85a3b/launch-50bb68133acf.min.js" async></script>-->
   </head>
   <body>
     <div id="app"></div>

@@ -18,10 +18,37 @@ export const LANGUAGES = [
   { id: "japanese", label: "日本語", url: `${BASE}audio/quotes/japanese.mp3` },
 ];
 
+export const LANGUAGE_ANALYTICS_CODES = {
+  english: "en",
+  german: "de",
+  french: "fr",
+  japanese: "ja",
+};
+
+export function getAnalyticsLanguageCode(languageId) {
+  return LANGUAGE_ANALYTICS_CODES[languageId] || languageId || "en";
+}
+
+function getArtName() {
+  return window.artName || window.location.pathname.replace(/^\/|\/$/g, "");
+}
+
+function fireAudioTrack(directCallId, payload) {
+  if (window.AnalyticsDataLayer?.audio !== undefined) {
+    window.AnalyticsDataLayer.audio = {
+      audio_playing: directCallId !== "audio_complete",
+      ...payload,
+    };
+  }
+  window._satellite?.track(directCallId, payload);
+}
+
 export function createCaveAudio() {
+  let hasStarted = false;
   let ctx = null;
   let started = false;
   let cancelled = false;
+  let languageChanging = false;
 
   // Master gain (for mute toggle)
   let masterGain = null;
@@ -42,6 +69,7 @@ export function createCaveAudio() {
   let activeLanguage = "english";
   let activeQuoteSource = null;
   let quoteLoopTimeout = null;
+  const progressTimeouts = [];
 
   return {
     async start() {
@@ -142,7 +170,14 @@ export function createCaveAudio() {
       activeLanguage = languageId;
 
       if (!quotesStarted || cancelled) return;
+      fireAudioTrack("audio_language_change", {
+        audio_title: getArtName(),
+        audio_language: getAnalyticsLanguageCode(languageId),
+      });
+      languageChanging = true;
       stopCurrentQuote();
+      languageChanging = false;
+      hasStarted = false;
       playCurrentQuote();
     },
 
@@ -169,6 +204,10 @@ export function createCaveAudio() {
       clearTimeout(quoteLoopTimeout);
       quoteLoopTimeout = null;
     }
+    for (const timeout of progressTimeouts) {
+      clearTimeout(timeout);
+    }
+    progressTimeouts.length = 0;
     if (activeQuoteSource) {
       try {
         activeQuoteSource.onended = null;
@@ -177,6 +216,27 @@ export function createCaveAudio() {
         // already stopped
       }
       activeQuoteSource = null;
+    }
+  }
+
+  function scheduleProgressTracking(durationSeconds, languageId) {
+    const milestones = [
+      { label: "25%", fraction: 0.25 },
+      { label: "50%", fraction: 0.5 },
+      { label: "75%", fraction: 0.75 },
+    ];
+    const audioLanguage = getAnalyticsLanguageCode(languageId);
+
+    for (const milestone of milestones) {
+      const timeout = setTimeout(() => {
+        if (cancelled) return;
+        fireAudioTrack("audio_progress", {
+          audio_title: getArtName(),
+          audio_language: audioLanguage,
+          audio_progress: milestone.label,
+        });
+      }, durationSeconds * milestone.fraction * 1000);
+      progressTimeouts.push(timeout);
     }
   }
 
@@ -191,9 +251,26 @@ export function createCaveAudio() {
     activeQuoteSource = source;
 
     source.start(0);
+
+    if (!hasStarted) {
+      hasStarted = true;
+      fireAudioTrack("audio_start", {
+        audio_title: getArtName(),
+        audio_language: getAnalyticsLanguageCode(activeLanguage),
+      });
+    }
+
+    scheduleProgressTracking(buffer.duration, activeLanguage);
+
     source.onended = () => {
       activeQuoteSource = null;
       if (cancelled) return;
+      if (!languageChanging) {
+        fireAudioTrack("audio_complete", {
+          audio_title: getArtName(),
+          audio_language: getAnalyticsLanguageCode(activeLanguage),
+        });
+      }
       quoteLoopTimeout = setTimeout(() => playCurrentQuote(), 2000 + Math.random() * 2000);
     };
   }
