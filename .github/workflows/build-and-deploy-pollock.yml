@@ -62,7 +62,7 @@ jobs:
     runs-on: azure-linux-runner-small
     name: Deploy to Staging
     needs: build
-    if: github.ref == 'refs/heads/feature/pollock-sale' || github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/feature/pollock-sale' || github.ref == 'refs/heads/pollock-sale' ||github.ref == 'refs/heads/main'
     environment:
       name: POLLOCK_STG
 
