@@ -12,6 +12,8 @@ import LanguagePanel from './LanguagePanel';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const SHOW_LANGUAGE_SELECTION: boolean = false;
+
 export type PanelType = 'info' | 'transcript' | 'language' | null;
 
 type IntroStage =
@@ -28,7 +30,9 @@ export default function PollockViewer() {
   const [imageNaturalSize, setImageNaturalSize] = useState({ w: 0, h: 0 });
   const [activePanel, setActivePanel] = useState<PanelType>(null);
   const [language, setLanguage] = useState('en');
-  const [introStage, setIntroStage] = useState<IntroStage>('language');
+  const [introStage, setIntroStage] = useState<IntroStage>(
+    SHOW_LANGUAGE_SELECTION ? 'language' : 'instructions',
+  );
   const [muted, setMuted] = useState(false);
   const audioRef = useRef(createPollockAudio());
 
@@ -163,7 +167,7 @@ export default function PollockViewer() {
         <img
           ref={imageRef}
           src={pollockImage}
-          alt="Jackson Pollock - 7a, 1949"
+          alt="Jackson Pollock - 7a, 1948"
           className="max-w-none will-change-transform"
           draggable={false}
         />
@@ -181,13 +185,14 @@ export default function PollockViewer() {
                 setMuted(next);
                 audioRef.current.setMuted(next);
               }}
+              showLanguageSelection={SHOW_LANGUAGE_SELECTION}
             />
             <Footer />
           </div>
         </div>
 
         {/* Dark intro overlay — hides the painting + UI until the user has
-            picked a language and dismissed the instructions. */}
+            completed the intro instructions. */}
         <div
           className={`pointer-events-none absolute inset-0 z-[45] bg-[#050404] transition-opacity duration-1000 ease-out ${
             introActive ? 'opacity-100' : 'opacity-0'
@@ -195,8 +200,8 @@ export default function PollockViewer() {
           aria-hidden={!introActive}
         />
 
-        {/* Intro flow: language → instructions → done */}
-        {(introStage === 'language' || introStage === 'language-closing') && (
+        {/* Intro flow: optional language → instructions → done */}
+        {SHOW_LANGUAGE_SELECTION && (introStage === 'language' || introStage === 'language-closing') && (
           <LanguagePanel
             currentLang={language}
             onSelect={(code) => {
@@ -243,7 +248,7 @@ export default function PollockViewer() {
         {!introActive && activePanel === 'transcript' && (
           <TranscriptPanel onClose={closePanel} lang={language} />
         )}
-        {!introActive && activePanel === 'language' && (
+        {SHOW_LANGUAGE_SELECTION && !introActive && activePanel === 'language' && (
           <LanguagePanel
             onClose={closePanel}
             currentLang={language}
