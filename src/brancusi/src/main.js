@@ -411,7 +411,7 @@ let sculptureHeadGroup = null;
 const caveAudio = createCaveAudio();
 
 function getArtName() {
-  return window.artName || window.location.pathname.replace(/^\/|\/$/g, "");
+  return window.artName;
 }
 
 function setAnalyticsPageLanguage(languageId) {

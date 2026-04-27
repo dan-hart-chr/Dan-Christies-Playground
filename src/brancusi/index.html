@@ -9,12 +9,11 @@
     <title>Brancusi Cave Viewer</title>
     <!-- ABC Arizona fonts loaded via @font-face in style.css -->
     <script>
-    let artName = window.location.pathname.replace(/^\/|\/$/g, '');
-    window.artName = artName;
+    window.artName = "brancusi";
     window.viewPageViewFired = false;
     window.AnalyticsDataLayer = {
       "page": {
-        "name": "experience:"+artName+":splash",
+        "name": "experience:"+window.artName+":splash",
         "channel": "experience",
         "language": "en",
         "template": "experience:splash"

@@ -30,7 +30,7 @@ export function getAnalyticsLanguageCode(languageId) {
 }
 
 function getArtName() {
-  return window.artName || window.location.pathname.replace(/^\/|\/$/g, "");
+  return window.artName;
 }
 
 function fireAudioTrack(directCallId, payload) {
