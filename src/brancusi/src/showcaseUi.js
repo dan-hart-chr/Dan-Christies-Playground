@@ -49,6 +49,8 @@ const makeScrollIcon = createSvgIcon(`<svg width="24" height="38" viewBox="0 0 2
   <circle cx="12" cy="10" r="2" fill="currentColor"/>
 </svg>`);
 
+const SHOW_LANGUAGE_SELECTION = false;
+
 /* ── Helper ───────────────────────────────────────────────────────────────── */
 
 function el(tag, className, attrs) {
@@ -192,13 +194,18 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   transcriptBtn.setAttribute("data-analytics", "viewTranscriptButton:en");
 
   // Details & bid button
-  const detailsBidBtn = el("a", "pill-button details-bid-btn", { href: "https://www.christies.com/" });
+  const detailsBidBtn = el("a", "pill-button details-bid-btn", {
+    href: "https://www.christies.com/lot/constantin-brancusi-1867-1957--6585085",
+  });
   const detailsBidBtnText = el("span", "pill-text", { text: "DETAILS & BID" });
   detailsBidBtn.append(detailsBidBtnText);
   detailsBidBtn.setAttribute("aria-label", "Details and bid");
   detailsBidBtn.setAttribute("data-analytics", "christies:footerLink");
 
-  centerGroup.append(langBtn, transcriptBtn, detailsBidBtn);
+  if (SHOW_LANGUAGE_SELECTION) {
+    centerGroup.append(langBtn);
+  }
+  centerGroup.append(transcriptBtn, detailsBidBtn);
 
   // Sound button (right)
   const soundBtn = el("button", "pill-button pill-icon-only bottom-sound-btn", { type: "button" });
@@ -418,6 +425,17 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
       this.onInstructionsDismissed?.();
       this.active = false;
     },
+    showInstructions() {
+      if (!this.active) return;
+      this.stage = "instructions";
+      this.onLanguageSelected?.(activeLanguageId);
+      if (!continueBtn.isConnected) infoModal.append(continueBtn);
+      infoModal.classList.add("is-intro-instructions", "is-intro-modal");
+      openModal("info");
+      this.autoDismissTimer = window.setTimeout(() => {
+        if (this.stage === "instructions") this.dismissInstructions();
+      }, INTRO_INSTRUCTIONS_AUTO_DISMISS_MS);
+    },
   };
 
   continueBtn.addEventListener("click", () => {
@@ -586,7 +604,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     revealExperience({ onLanguageSelected, onInstructionsDismissed } = {}) {
       progressTrack.classList.add("is-hidden");
       introFlow.active = true;
-      introFlow.stage = "language";
+      introFlow.stage = SHOW_LANGUAGE_SELECTION ? "language" : "instructions";
       introFlow.onLanguageSelected = onLanguageSelected;
       introFlow.onInstructionsDismissed = onInstructionsDismissed;
       // Flag the root so CSS can lift modals above the dark intro layer
@@ -594,6 +612,10 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
 
       window.setTimeout(() => {
         if (!introFlow.active) return;
+        if (!SHOW_LANGUAGE_SELECTION) {
+          introFlow.showInstructions();
+          return;
+        }
         langModal.classList.add("is-intro-modal");
         openModal("language");
       }, INTRO_LANGUAGE_DELAY_MS);
