@@ -1,0 +1,19 @@
+{
+  "name": "brancusi-cave-viewer",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "sirv dist --single --host 0.0.0.0 --port ${PORT:-3000}",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "sirv-cli": "^3.0.1",
+    "three": "^0.183.2"
+  },
+  "devDependencies": {
+    "vite": "^7.1.9"
+  }
+}
