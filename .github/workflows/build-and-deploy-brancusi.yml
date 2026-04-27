@@ -1,0 +1,171 @@
+name: Build and Deploy Brancusi App
+
+on:
+  push:
+    branches:
+      - main
+      - feature/brancusi-sale
+    paths:
+      - 'src/brancusi/**'
+  pull_request:
+    types: ['opened', 'edited', 'reopened' ]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  NODE_VERSION: '22.x'
+  APP_LOCATION: './src/brancusi'
+  OUTPUT_LOCATION: 'dist'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build App
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.0.2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: '${{ env.APP_LOCATION }}/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: ${{ env.APP_LOCATION }}
+        run: npm ci
+
+      - name: Lint code
+        working-directory: ${{ env.APP_LOCATION }}
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Build application
+        working-directory: ${{ env.APP_LOCATION }}
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f #v6.0.0
+        with:
+          name: brancusi-build
+          path: ${{ env.APP_LOCATION }}/${{ env.OUTPUT_LOCATION }}
+          retention-days: 7
+
+  deploy-staging:
+    runs-on: azure-linux-runner-small
+    name: Deploy to Staging
+    needs: build
+    if: github.ref == 'refs/heads/feature/brancusi-sale' || github.ref == 'refs/heads/main'
+    environment:
+      name: BRANCUSI_STG
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131  #v7.0.0
+        with:
+          name: brancusi-build
+          path: ./dist
+
+      - name: Log in to Azure using OIDC
+        uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5  #v2.3.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      
+      - name: Upload to Azure Storage (Staging)
+        uses: azure/CLI@9f7ce6f37c31b777ec6c6b6d1dfe7db79f497956  #v2.2.0
+        with:
+          inlineScript: |
+            STORAGE_ACCOUNT="${{ vars.AZURE_STORAGE_ACCOUNT_NAME }}"
+            CONTAINER_NAME="${{ vars.AZURE_STORAGE_CONTAINER_NAME}}"
+            
+            echo "Uploading files to Azure Storage Account: $STORAGE_ACCOUNT"
+            echo "Container: $CONTAINER_NAME"
+
+            az account set --subscription ${{ vars.AZURE_SUBSCRIPTION_ID }}
+            
+            az storage blob upload-batch \
+              --account-name $STORAGE_ACCOUNT \
+              --auth-mode login \
+              --destination $CONTAINER_NAME \
+              --source ./dist \
+              --overwrite \
+              --pattern "*"
+            
+            echo "Setting content types..."
+            az storage blob update \
+              --account-name $STORAGE_ACCOUNT \
+              --auth-mode login \
+              --container-name $CONTAINER_NAME \
+              --name "index.html" \
+              --content-type "text/html" || true
+            
+
+      - name: Azure Logout
+        run: az logout
+        if: always()
+
+      
+  deploy-production:
+    runs-on: azure-linux-runner-small
+    name: Deploy to Production
+    needs: [build, deploy-staging]
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: BRANCUSI_PROD
+
+    
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131  #v7.0.0
+        with:
+          name: brancusi-build
+          path: ./dist
+
+      - name: Log in to Azure using OIDC
+        uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5  #v2.3.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Upload to Azure Storage (Production)
+        uses: azure/CLI@9f7ce6f37c31b777ec6c6b6d1dfe7db79f497956  #v2.2.0
+        with:
+          inlineScript: |
+            STORAGE_ACCOUNT="${{ vars.AZURE_STORAGE_ACCOUNT_NAME }}"
+            CONTAINER_NAME="${{ vars.AZURE_STORAGE_CONTAINER_NAME}}"
+            
+            echo "Uploading files to Azure Storage Account: $STORAGE_ACCOUNT"
+            echo "Container: $CONTAINER_NAME"
+
+            az account set --subscription ${{ vars.AZURE_SUBSCRIPTION_ID }}
+            
+            az storage blob upload-batch \
+              --account-name $STORAGE_ACCOUNT \
+              --auth-mode login \
+              --destination $CONTAINER_NAME \
+              --source ./dist \
+              --overwrite \
+              --pattern "*"
+            
+            echo "Setting content types..."
+            az storage blob update \
+              --account-name $STORAGE_ACCOUNT \
+              --auth-mode login \
+              --container-name $CONTAINER_NAME \
+              --name "index.html" \
+              --content-type "text/html" || true
+            
+
+      - name: Azure Logout
+        run: az logout
+        if: always()
