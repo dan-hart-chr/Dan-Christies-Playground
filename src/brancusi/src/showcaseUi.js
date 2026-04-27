@@ -1,4 +1,4 @@
-import { LANGUAGES } from "./caveAudio.js";
+import { LANGUAGES, getAnalyticsLanguageCode } from "./caveAudio.js";
 
 /* ── SVG icon factories ────────────────────────────────────────────────────── */
 
@@ -126,6 +126,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   const viewToggle = el("div", "view-toggle");
 
   const caveViewBtn = el("button", "view-toggle-item is-active", { type: "button" });
+  caveViewBtn.setAttribute("data-analytics", "changeEnvironment:cave");
   const caveViewLabel = el("span", "view-toggle-label", { text: UI_TEXTS.english.caveView });
   const caveViewLine = el("span", "view-toggle-line");
   caveViewBtn.append(caveViewLabel, caveViewLine);
@@ -133,6 +134,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   const viewDivider = el("span", "view-toggle-divider", { text: "|" });
 
   const lotViewBtn = el("button", "view-toggle-item", { type: "button" });
+  lotViewBtn.setAttribute("data-analytics", "changeEnvironment:lot");
   const lotViewLabel = el("span", "view-toggle-label", { text: UI_TEXTS.english.lotView });
   const lotViewLine = el("span", "view-toggle-line");
   lotViewBtn.append(lotViewLabel, lotViewLine);
@@ -166,6 +168,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   const infoBtn = el("button", "pill-button pill-icon-only bottom-info-btn", { type: "button" });
   infoBtn.append(makeInfoIcon());
   infoBtn.setAttribute("aria-label", "Info");
+  infoBtn.setAttribute("data-analytics", "infoButton");
 
   // Center group
   const centerGroup = el("div", "bottom-center");
@@ -177,6 +180,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   const langBtnText = el("span", "pill-text", { text: "ENGLISH" });
   langBtn.append(langBtnIcon, langBtnText);
   langBtn.setAttribute("aria-label", "Language");
+  langBtn.setAttribute("data-analytics", "changeLanguageButton:en");
 
   // Transcript button
   const transcriptBtn = el("button", "pill-button pill-with-icon transcript-btn", { type: "button" });
@@ -185,12 +189,14 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   const transcriptBtnText = el("span", "pill-text", { text: "VIEW TRANSCRIPT" });
   transcriptBtn.append(transcriptBtnIcon, transcriptBtnText);
   transcriptBtn.setAttribute("aria-label", "View transcript");
+  transcriptBtn.setAttribute("data-analytics", "viewTranscriptButton:en");
 
   // Details & bid button
   const detailsBidBtn = el("a", "pill-button details-bid-btn", { href: "https://www.christies.com/" });
   const detailsBidBtnText = el("span", "pill-text", { text: "DETAILS & BID" });
   detailsBidBtn.append(detailsBidBtnText);
   detailsBidBtn.setAttribute("aria-label", "Details and bid");
+  detailsBidBtn.setAttribute("data-analytics", "christies:footerLink");
 
   centerGroup.append(langBtn, transcriptBtn, detailsBidBtn);
 
@@ -198,6 +204,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   const soundBtn = el("button", "pill-button pill-icon-only bottom-sound-btn", { type: "button" });
   soundBtn.append(makeSoundOnIcon());
   soundBtn.setAttribute("aria-label", "Toggle sound");
+  soundBtn.setAttribute("data-analytics", "muteButton");
 
   bottomBar.append(infoBtn, centerGroup, soundBtn);
 
@@ -220,6 +227,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   const infoModal = el("div", "modal-card info-modal");
   const infoClose = el("button", "modal-close", { type: "button" });
   infoClose.append(makeCloseIcon());
+  infoClose.setAttribute("data-analytics", "glassPanelCloseButton");
   const infoBody = el("div", "modal-body info-modal-body");
   const scrollIconWrap = el("div", "info-scroll-icon");
   scrollIconWrap.append(makeScrollIcon());
@@ -227,6 +235,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     text: INSTRUCTION_TEXTS.english,
   });
   const continueBtn = el("button", "info-continue-btn", { type: "button", text: "CONTINUE" });
+  continueBtn.setAttribute("data-analytics", "splashContinue");
   infoBody.append(scrollIconWrap, infoText);
   infoModal.append(infoClose, infoBody);
 
@@ -266,6 +275,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   const transcriptModal = el("div", "modal-card transcript-modal");
   const transcriptClose = el("button", "modal-close", { type: "button" });
   transcriptClose.append(makeCloseIcon());
+  transcriptClose.setAttribute("data-analytics", "glassPanelCloseButton");
   const transcriptBody = el("div", "modal-body transcript-modal-body");
 
   // Header inside the transcript modal — artist name (with dates on a
@@ -303,6 +313,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   const langModal = el("div", "modal-card language-modal");
   const langClose = el("button", "modal-close", { type: "button" });
   langClose.append(makeCloseIcon());
+  langClose.setAttribute("data-analytics", "glassPanelCloseButton");
   const langBody = el("div", "modal-body language-modal-body");
 
   const langOptions = new Map();
@@ -311,6 +322,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
       type: "button",
       text: lang.label.toUpperCase(),
     });
+    item.setAttribute("data-analytics", `language:${getAnalyticsLanguageCode(lang.id)}`);
     item.addEventListener("click", () => {
       activeLanguageId = lang.id;
       onLanguageChange?.(lang.id);
@@ -542,7 +554,14 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     transcriptHeaderTitle.textContent = t.artworkTitle;
     continueBtn.textContent = t.continueLabel;
     detailsBidBtnText.textContent = t.detailsBid;
+    updateAnalyticsLanguageAttributes(langId);
     updateResponsiveLabels();
+  }
+
+  function updateAnalyticsLanguageAttributes(langId) {
+    const code = getAnalyticsLanguageCode(langId);
+    langBtn.setAttribute("data-analytics", `changeLanguageButton:${code}`);
+    transcriptBtn.setAttribute("data-analytics", `viewTranscriptButton:${code}`);
   }
 
   // Responsive label updates (depends on the active language)

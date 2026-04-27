@@ -17,7 +17,7 @@ import { DEFAULT_SCENE_STATE, SCENE_CONTROL_DEFINITIONS } from "./sceneControls.
 import { createShowcaseUi } from "./showcaseUi.js";
 import { createFogVolume } from "./fogVolume.js";
 import { DEFAULT_ENTRANCE_TIMELINE, createEntranceTabContent, runEntranceTimeline } from "./entranceTimeline.js";
-import { createCaveAudio } from "./caveAudio.js";
+import { createCaveAudio, getAnalyticsLanguageCode } from "./caveAudio.js";
 
 const isMobile = window.matchMedia("(pointer: coarse)").matches;
 const MAX_DPR = isMobile ? 1.5 : 2;
@@ -410,6 +410,26 @@ world.add(sculptureRoot);
 let sculptureHeadGroup = null;
 const caveAudio = createCaveAudio();
 
+function getArtName() {
+  return window.artName || window.location.pathname.replace(/^\/|\/$/g, "");
+}
+
+function setAnalyticsPageLanguage(languageId) {
+  if (!window.AnalyticsDataLayer?.page) return;
+  window.AnalyticsDataLayer.page.language = getAnalyticsLanguageCode(languageId);
+}
+
+function fireExperienceViewPage() {
+  if (window.viewPageViewFired) return;
+  window.viewPageViewFired = true;
+  const artName = getArtName();
+  if (window.AnalyticsDataLayer?.page) {
+    window.AnalyticsDataLayer.page.name = `experience:${artName}:view`;
+    window.AnalyticsDataLayer.page.template = "experience:view";
+  }
+  window._satellite?.track("experience_virtual_page_view");
+}
+
 const dust = createDustCloud(isMobile ? 60 : undefined);
 scene.add(dust.points);
 
@@ -472,6 +492,7 @@ transformControls.addEventListener("objectChange", () => {
 const showcaseUi = createShowcaseUi(viewport, SCENE_VIEW, {
   appRoot: app,
   onLanguageChange(languageId) {
+    setAnalyticsPageLanguage(languageId);
     caveAudio.setLanguage(languageId);
   },
   onMuteToggle(muted) {
@@ -671,9 +692,11 @@ async function init() {
         onLanguageSelected(langId) {
           // Browser audio is unlocked by this user gesture, but stays silent
           // until the instructions modal is dismissed.
+          setAnalyticsPageLanguage(langId);
           caveAudio.setLanguage(langId);
         },
         onInstructionsDismissed() {
+          fireExperienceViewPage();
           // Quotes start as soon as audio buffers finish decoding, in parallel
           // with the entrance animation.
           caveAudio.start().then(() => caveAudio.startQuotes());
