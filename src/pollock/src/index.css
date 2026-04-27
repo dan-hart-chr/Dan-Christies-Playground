@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/* ============================================
+   ABC Arizona Font Family
+   ============================================ */
+@font-face {
+  font-family: 'ABC Arizona Serif';
+  src: url('/fonts/ABCArizonaSerif-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Arizona Serif';
+  src: url('/fonts/ABCArizonaSerif-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Arizona Sans';
+  src: url('/fonts/ABCArizonaSans-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Arizona Sans';
+  src: url('/fonts/ABCArizonaSans-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================
+   Tailwind Theme Extensions
+   ============================================ */
+@theme {
+  --font-serif: 'ABC Arizona Serif', Georgia, 'Times New Roman', serif;
+  --font-sans: 'ABC Arizona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --color-text: #222222;
+  --color-natural-white: #f0e8d7;
+}
+
+/* ============================================
+   Base styles — inside @layer so they don't
+   override Tailwind utility classes
+   ============================================ */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    line-height: 1.2;
+  }
+}
