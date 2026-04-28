@@ -182,10 +182,10 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
 
   const footerNav = el("nav", "footer-nav");
   const footerItems = [
-    { kind: "link", label: "HOME" },
-    { kind: "link", label: "VIEW COLLECTION" },
+    { kind: "link", label: "HOME", href: "https://christies.com/" },
+    { kind: "link", label: "VIEW COLLECTION", href: "https://www.christies.com/en/auction/masterpieces-the-private-collection-of-s-i-newhouse-31380/" },
     { kind: "cookie" },
-    { kind: "link", label: "VIEW POLLOCK 7A" },
+    { kind: "link", label: "VIEW POLLOCK 7A", href: "https://experience.christies.com/pollock" },
   ];
   footerItems.forEach((item, i) => {
     if (i > 0) {
@@ -201,7 +201,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
       return;
     }
 
-    const link = el("a", "footer-link", { text: item.label, href: "#" });
+    const link = el("a", "footer-link", { text: item.label, href: item.href });
     footerNav.append(link);
   });
 
