@@ -2,8 +2,20 @@ function Separator() {
   return <span className="inline-block h-[15px] w-px shrink-0 bg-[#f0e8d7] opacity-50" />;
 }
 
-const POLLOCK_LOT_URL =
-  'https://www.christies.com/lot/jackson-pollock-1912-1956-number-7a-1948-6585089/?intObjectID=6585089&lid=1';
+const HOME_URL = 'https://christies.com/';
+const COLLECTION_URL =
+  'https://www.christies.com/en/auction/masterpieces-the-private-collection-of-s-i-newhouse-31380/';
+const BRANCUSI_URL = 'https://experience.christies.com/brancusi/';
+const FOOTER_LINK_CLASS =
+  'shrink-0 whitespace-nowrap text-[14px] font-normal uppercase leading-[1.2] text-[#f0e8d7] no-underline cursor-pointer hover:opacity-80 transition-opacity';
+
+function CookieSettingsButton() {
+  return (
+    <button id="ot-sdk-btn" type="button" className={FOOTER_LINK_CLASS}>
+      Cookie settings
+    </button>
+  );
+}
 
 export default function Footer() {
   return (
@@ -14,26 +26,27 @@ export default function Footer() {
           {/* Breadcrumbs */}
           <div className="flex min-w-0 flex-1 flex-wrap items-center gap-3 px-4">
             <a
-              href="#"
-              className="shrink-0 whitespace-nowrap text-[14px] font-normal uppercase leading-[1.2] text-[#f0e8d7] no-underline cursor-pointer hover:opacity-80 transition-opacity"
+              href={HOME_URL}
+              className={FOOTER_LINK_CLASS}
             >
               HOME
             </a>
             <Separator />
             <a
-              href="#"
-              className="shrink-0 whitespace-nowrap text-[14px] font-normal uppercase leading-[1.2] text-[#f0e8d7] no-underline cursor-pointer hover:opacity-80 transition-opacity"
+              href={COLLECTION_URL}
+              className={FOOTER_LINK_CLASS}
             >
               VIEW COLLECTION
             </a>
             <Separator />
+            <CookieSettingsButton />
+            <Separator />
             <a
-              href={POLLOCK_LOT_URL}
-              data-analytics="pollock7a:footerLink"
-              className="shrink-0 whitespace-nowrap text-[14px] font-normal uppercase leading-[1.2] text-[#f0e8d7] no-underline cursor-pointer hover:opacity-80 transition-opacity"
+              href={BRANCUSI_URL}
+              className={FOOTER_LINK_CLASS}
             >
-              VIEW POLLOCK 7A
-            </a>            
+              View Brancusi&apos;s Danaïde
+            </a>
           </div>
           {/* Copyright */}
           <p className="shrink-0 whitespace-nowrap text-[12px] font-normal uppercase leading-[1.2] text-[#f0e8d7]">
@@ -47,25 +60,26 @@ export default function Footer() {
         {/* Breadcrumbs */}
         <div className="flex flex-wrap items-center gap-3 px-4">
           <a
-            href="#"
-            className="shrink-0 whitespace-nowrap text-[14px] font-normal uppercase leading-[1.2] text-[#f0e8d7] no-underline cursor-pointer hover:opacity-80 transition-opacity"
+            href={HOME_URL}
+            className={FOOTER_LINK_CLASS}
           >
             HOME
           </a>
           <Separator />
           <a
-            href="#"
-            className="shrink-0 whitespace-nowrap text-[14px] font-normal uppercase leading-[1.2] text-[#f0e8d7] no-underline cursor-pointer hover:opacity-80 transition-opacity"
+            href={COLLECTION_URL}
+            className={FOOTER_LINK_CLASS}
           >
             VIEW COLLECTION
           </a>
           <Separator />
+          <CookieSettingsButton />
+          <Separator />
           <a
-            href={POLLOCK_LOT_URL}
-            data-analytics="pollock7a:footerLink"
-            className="shrink-0 whitespace-nowrap text-[14px] font-normal uppercase leading-[1.2] text-[#f0e8d7] no-underline cursor-pointer hover:opacity-80 transition-opacity"
+            href={BRANCUSI_URL}
+            className={FOOTER_LINK_CLASS}
           >
-            VIEW POLLOCK 7A
+            View Brancusi&apos;s Danaïde
           </a>
         </div>
 
@@ -75,11 +89,6 @@ export default function Footer() {
             &copy; CHRISTIE&apos;S 2026
           </p>
         </div>
-      </div>
-      <div className="flex w-full flex-col items-center px-4 py-[26px]">
-      {/* OneTrust cookies settings button start */}
-      <button id="ot-sdk-btn" className="whitespace-nowrap text-[12px] font-normal uppercase leading-[1.2] text-[#f0e8d7]">Cookie settings</button>
-      {/* OneTrust cookies settings button end */}
       </div>
     </footer>
   );
