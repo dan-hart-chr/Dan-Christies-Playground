@@ -1,4 +1,4 @@
-import { LANGUAGES, getAnalyticsLanguageCode } from "./caveAudio.js";
+import { LANGUAGES, getAnalyticsLanguageCode } from "./showcaseAudio.js";
 
 /* ── SVG icon factories ────────────────────────────────────────────────────── */
 
@@ -49,7 +49,7 @@ const makeScrollIcon = createSvgIcon(`<svg width="24" height="38" viewBox="0 0 2
   <circle cx="12" cy="10" r="2" fill="currentColor"/>
 </svg>`);
 
-const SHOW_LANGUAGE_SELECTION = false;
+const SHOW_LANGUAGE_SELECTION = true;
 
 /* ── Helper ───────────────────────────────────────────────────────────────── */
 
@@ -76,8 +76,6 @@ const ARTIST_DATES = "(1867-1957)";
 const UI_TEXTS = {
   english: {
     artworkTitle: "Danaïde, Conceived and cast circa 1913",
-    caveView: "CAVE VIEW",
-    lotView: "LOT VIEW",
     viewTranscript: "VIEW TRANSCRIPT",
     transcriptShort: "TRANSCRIPT",
     detailsBid: "DETAILS & BID",
@@ -85,8 +83,6 @@ const UI_TEXTS = {
   },
   german: {
     artworkTitle: "Danaïde, entstanden um 1913; diese Bronzefassung kurz darauf gegossen",
-    caveView: "HÖHLENANSICHT",
-    lotView: "LOSANSICHT",
     viewTranscript: "TRANSKRIPT ANZEIGEN",
     transcriptShort: "TRANSKRIPT",
     detailsBid: "DETAILS & BID",
@@ -94,8 +90,6 @@ const UI_TEXTS = {
   },
   french: {
     artworkTitle: "Danaïde, conçue vers 1913 ; cette version en bronze coulée peu après",
-    caveView: "VUE GROTTE",
-    lotView: "VUE DU LOT",
     viewTranscript: "VOIR LA TRANSCRIPTION",
     transcriptShort: "TRANSCRIPTION",
     detailsBid: "DETAILS & BID",
@@ -103,8 +97,6 @@ const UI_TEXTS = {
   },
   japanese: {
     artworkTitle: "《ダナイード》、1913年頃に構想され、このブロンズ版はその直後に鋳造された",
-    caveView: "洞窟ビュー",
-    lotView: "ロットビュー",
     viewTranscript: "トランスクリプトを見る",
     transcriptShort: "トランスクリプト",
     detailsBid: "DETAILS & BID",
@@ -116,32 +108,12 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
 
   const root = appRoot || container; // root = #app, container = .app-viewport
 
-  let currentView = "cave"; // "cave" | "lot"
   let activeModal = null;   // null | "info" | "transcript" | "language"
   let soundMuted = false;
   let activeLanguageId = "english";
 
   // ── Artwork info (top-left) ──────────────────────────────────────────
   const artworkInfo = el("div", "artwork-info");
-
-  // View toggle: CAVE VIEW | LOT VIEW
-  const viewToggle = el("div", "view-toggle");
-
-  const caveViewBtn = el("button", "view-toggle-item is-active", { type: "button" });
-  caveViewBtn.setAttribute("data-analytics", "changeEnvironment:cave");
-  const caveViewLabel = el("span", "view-toggle-label", { text: UI_TEXTS.english.caveView });
-  const caveViewLine = el("span", "view-toggle-line");
-  caveViewBtn.append(caveViewLabel, caveViewLine);
-
-  const viewDivider = el("span", "view-toggle-divider", { text: "|" });
-
-  const lotViewBtn = el("button", "view-toggle-item", { type: "button" });
-  lotViewBtn.setAttribute("data-analytics", "changeEnvironment:lot");
-  const lotViewLabel = el("span", "view-toggle-label", { text: UI_TEXTS.english.lotView });
-  const lotViewLine = el("span", "view-toggle-line");
-  lotViewBtn.append(lotViewLabel, lotViewLine);
-
-  viewToggle.append(caveViewBtn, viewDivider, lotViewBtn);
 
   // Artist name + dates on separate lines; dates span is nowrap so the
   // "(1867-1957)" never splits across a line break.
@@ -154,14 +126,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     text: UI_TEXTS.english.artworkTitle,
   });
 
-  artworkInfo.append(viewToggle, artistName, artworkTitle);
-
-  // ── Lot view image ───────────────────────────────────────────────────
-  const lotImage = el("div", "lot-image");
-  const lotImg = el("img", "lot-image-img");
-  lotImg.alt = "Sculpture lot view";
-  lotImg.src = `${BASE}brancusi.webp`;
-  lotImage.append(lotImg);
+  artworkInfo.append(artistName, artworkTitle);
 
   // ── Bottom toolbar ───────────────────────────────────────────────────
   const bottomBar = el("div", "bottom-bar");
@@ -202,10 +167,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   detailsBidBtn.setAttribute("aria-label", "Details and bid");
   detailsBidBtn.setAttribute("data-analytics", "christies:footerLink");
 
-  if (SHOW_LANGUAGE_SELECTION) {
-    centerGroup.append(langBtn);
-  }
-  centerGroup.append(transcriptBtn, detailsBidBtn);
+  centerGroup.append(langBtn, transcriptBtn, detailsBidBtn);
 
   // Sound button (right)
   const soundBtn = el("button", "pill-button pill-icon-only bottom-sound-btn", { type: "button" });
@@ -444,26 +406,8 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     }
   });
 
-  // ── Footer (lot view only) ────────────────────────────────────────────
-  const footer = el("footer", "site-footer");
-
-  const footerNav = el("nav", "footer-nav");
-  const footerLinks = ["HOME", "VIEW COLLECTION", "VIEW POLLOCK 7A"];
-  footerLinks.forEach((label, i) => {
-    if (i > 0) {
-      const divider = el("span", "footer-divider", { text: "|" });
-      footerNav.append(divider);
-    }
-    const link = el("a", "footer-link", { text: label, href: "#" });
-    footerNav.append(link);
-  });
-
-  const footerCopy = el("span", "footer-copy", { text: "\u00A9 CHRISTIE\u2019S 2026" });
-  footer.append(footerNav, footerCopy);
-
   // ── Assemble DOM ─────────────────────────────────────────────────────
-  container.append(artworkInfo, lotImage, bottomBar, overlay, infoModal, transcriptModal, langModal, intro);
-  root.append(footer);
+  container.append(artworkInfo, bottomBar, overlay, infoModal, transcriptModal, langModal, intro);
 
   // ── Event handlers ───────────────────────────────────────────────────
 
@@ -506,15 +450,6 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     transcriptBtn.classList.remove("is-active");
     langBtn.classList.remove("is-active");
     activeModal = null;
-  }
-
-  function setView(view) {
-    if (view === currentView) return;
-    currentView = view;
-    caveViewBtn.classList.toggle("is-active", view === "cave");
-    lotViewBtn.classList.toggle("is-active", view === "lot");
-    root.classList.toggle("is-lot-view", view === "lot");
-    document.body.classList.toggle("is-lot-view-active", view === "lot");
   }
 
   infoBtn.addEventListener("click", () => {
@@ -560,14 +495,9 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     onMuteToggle?.(soundMuted);
   });
 
-  caveViewBtn.addEventListener("click", () => setView("cave"));
-  lotViewBtn.addEventListener("click", () => setView("lot"));
-
   // Apply all localized chrome labels + modal copy for the active language.
   function applyUiLanguage(langId) {
     const t = UI_TEXTS[langId] || UI_TEXTS.english;
-    caveViewLabel.textContent = t.caveView;
-    lotViewLabel.textContent = t.lotView;
     artworkTitle.textContent = t.artworkTitle;
     transcriptHeaderTitle.textContent = t.artworkTitle;
     continueBtn.textContent = t.continueLabel;
@@ -619,9 +549,6 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
         langModal.classList.add("is-intro-modal");
         openModal("language");
       }, INTRO_LANGUAGE_DELAY_MS);
-    },
-    setLotImage(url) {
-      lotImg.src = url;
     },
     getSoundMuted() {
       return soundMuted;

@@ -6,15 +6,14 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
-    <title>Brancusi Cave Viewer</title>
+    <title>Brancusi Model Viewer</title>
     <!-- ABC Arizona fonts loaded via @font-face in style.css -->
     <script>
-    let artName = window.location.pathname.replace(/^\/|\/$/g, '');
-    window.artName = artName;
+    window.artName = "brancusi";
     window.viewPageViewFired = false;
     window.AnalyticsDataLayer = {
       "page": {
-        "name": "experience:"+artName+":splash",
+        "name": "experience:"+window.artName+":splash",
         "channel": "experience",
         "language": "en",
         "template": "experience:splash"
