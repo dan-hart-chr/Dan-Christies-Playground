@@ -177,6 +177,37 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
 
   bottomBar.append(infoBtn, centerGroup, soundBtn);
 
+  // ── Footer ───────────────────────────────────────────────────────────
+  const footer = el("footer", "site-footer");
+
+  const footerNav = el("nav", "footer-nav");
+  const footerItems = [
+    { kind: "link", label: "HOME", href: "https://christies.com/" },
+    { kind: "link", label: "VIEW COLLECTION", href: "https://www.christies.com/en/auction/masterpieces-the-private-collection-of-s-i-newhouse-31380/" },
+    { kind: "cookie" },
+    { kind: "link", label: "VIEW POLLOCK 7A", href: "https://experience.christies.com/pollock" },
+  ];
+  footerItems.forEach((item, i) => {
+    if (i > 0) {
+      const divider = el("span", "footer-divider", { text: "|" });
+      footerNav.append(divider);
+    }
+
+    if (item.kind === "cookie") {
+      const footerCookieWrap = el("div", "footer-cookie-wrap");
+      const cookieSettingsBtn = el("button", "footer-cookie-button", { id: "ot-sdk-btn", type: "button", text: "Cookie settings" });
+      footerCookieWrap.append(cookieSettingsBtn);
+      footerNav.append(footerCookieWrap);
+      return;
+    }
+
+    const link = el("a", "footer-link", { text: item.label, href: item.href });
+    footerNav.append(link);
+  });
+
+  const footerCopy = el("span", "footer-copy", { text: "\u00A9 CHRISTIE\u2019S 2026" });
+  footer.append(footerNav, footerCopy);
+
   // ── Overlay backdrop ─────────────────────────────────────────────────
   const overlay = el("div", "modal-overlay");
 
@@ -408,6 +439,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
 
   // ── Assemble DOM ─────────────────────────────────────────────────────
   container.append(artworkInfo, bottomBar, overlay, infoModal, transcriptModal, langModal, intro);
+  root.append(footer);
 
   // ── Event handlers ───────────────────────────────────────────────────
 

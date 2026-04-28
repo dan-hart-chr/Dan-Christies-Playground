@@ -43,7 +43,7 @@
 html,
 body {
   margin: 0;
-  min-height: 100%;
+  height: 100%;
 }
 
 body {
@@ -53,6 +53,7 @@ body {
 #app {
   position: relative;
   width: 100%;
+  height: 100dvh;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -63,8 +64,9 @@ body {
 .app-viewport {
   position: relative;
   width: 100%;
-  height: 100dvh;
-  flex-shrink: 0;
+  height: auto;
+  min-height: 0;
+  flex: 1 1 auto;
   overflow: hidden;
 }
 
@@ -1145,6 +1147,101 @@ canvas {
   height: 16px;
 }
 
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+
+.site-footer {
+  display: none;
+  width: 100%;
+  flex-shrink: 0;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  background: black;
+  padding: 18px 24px;
+  gap: 24px;
+  box-sizing: border-box;
+  min-height: 112px;
+}
+
+#app.is-revealing-experience .site-footer {
+  display: grid;
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+}
+
+.footer-cookie-wrap {
+  display: inline-flex;
+  width: auto;
+  align-items: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.footer-cookie-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #f0e8d7;
+  font-family: "ABC Arizona Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.footer-cookie-button:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-link {
+  color: #f0e8d7;
+  font-family: "ABC Arizona Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.footer-link:hover {
+  opacity: 0.7;
+}
+
+.footer-divider {
+  color: #f0e8d7;
+  font-size: 14px;
+  opacity: 0.4;
+  user-select: none;
+}
+
+.footer-copy {
+  color: #f0e8d7;
+  font-family: "ABC Arizona Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  justify-self: end;
+}
+
+#app.is-light-scene .footer-cookie-button {
+  color: #f0e8d7;
+}
+
 .showcase-intro {
   position: absolute;
   inset: 0;
@@ -1299,6 +1396,38 @@ canvas {
 
   .bottom-center {
     display: contents;
+  }
+
+  .site-footer {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    align-items: center;
+    padding: 18px 20px;
+    min-height: 150px;
+    text-align: center;
+  }
+
+  .footer-cookie-wrap {
+    padding: 0 16px;
+  }
+
+  .footer-nav {
+    padding: 0;
+    justify-content: center;
+    gap: 8px 10px;
+  }
+
+  .footer-link,
+  .footer-cookie-button,
+  .footer-divider {
+    font-size: 10px;
+  }
+
+  .footer-copy {
+    font-size: 10px;
+    justify-self: center;
   }
 
   .pill-with-icon {
