@@ -223,9 +223,8 @@ export default function PollockViewer() {
               setIntroStage('instructions-closing');
               if (!window.viewPageViewFired) {
                 window.viewPageViewFired = true;
-                const artName = window.artName ?? window.location.pathname.replace(/^\/|\/$/g, '');
                 if (window.AnalyticsDataLayer?.page) {
-                  window.AnalyticsDataLayer.page.name = `experience:${artName}:view`;
+                  window.AnalyticsDataLayer.page.name = `experience:${window.artName}:view`;
                   window.AnalyticsDataLayer.page.template = `experience:view`;
                 }
                 window._satellite?.track('experience_virtual_page_view');

@@ -7,11 +7,11 @@
     <title>Pollock 7a | Christie's</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <script>      
-    let artName = window.location.pathname.replace(/^\/|\/$/g, ''); 
+    window.artName = "pollock"; 
     window.viewPageViewFired = false;
     window.AnalyticsDataLayer = {
       "page": {
-        "name": "experience:"+artName+":splash",
+        "name": "experience:"+window.artName+":splash",
         "channel": "experience",
         "language": "en",
         "template": "experience:splash"
