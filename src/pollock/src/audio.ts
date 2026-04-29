@@ -7,7 +7,7 @@
  */
 
 const VOICEOVER_URLS: Record<string, string> = {
-  en: `${import.meta.env.BASE_URL}Wolfgang-En-Pollock.mp3`,
+  en: `${import.meta.env.BASE_URL}James-Pollock-En.mp3`,
   fr: `${import.meta.env.BASE_URL}James-Pollock-Fr.mp3`,
 };
 
