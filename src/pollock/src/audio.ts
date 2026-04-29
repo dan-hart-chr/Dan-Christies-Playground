@@ -1,13 +1,14 @@
 /**
  * Pollock Audio
  *
- * Single voiceover layer. Only English has a recording for now —
- * other languages stay silent. The voiceover loops with a short
+ * Single voiceover layer. Available language recordings are loaded
+ * up front. The voiceover loops with a short
  * gap between plays, similar to Brancusi's quote layer.
  */
 
 const VOICEOVER_URLS: Record<string, string> = {
   en: `${import.meta.env.BASE_URL}Wolfgang-En-Pollock.mp3`,
+  fr: `${import.meta.env.BASE_URL}James-Pollock-Fr.mp3`,
 };
 
 // MarTech
