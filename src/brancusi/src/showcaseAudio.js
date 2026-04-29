@@ -14,7 +14,7 @@ const AMBIENT_MUSIC_URL = `${BASE}audio/Lotus_Sound_Dream-Ambient-Sleep-Relaxati
 export const LANGUAGES = [
   { id: "english", label: "English", url: `${BASE}audio/James-Brancusi-En.mp3` },
   { id: "german", label: "Deutsch", url: `${BASE}audio/quotes/german.mp3` },
-  { id: "french", label: "Français", url: `${BASE}audio/quotes/german2.mp3` },
+  { id: "french", label: "Français", url: `${BASE}audio/James-Brancusi-Fr-2.mp3` },
   { id: "japanese", label: "日本語", url: `${BASE}audio/quotes/japanese.mp3` },
 ];
 
