@@ -1568,3 +1568,8 @@ canvas {
     backdrop-filter: none;
   }
 }
+
+/* Hide Studio controls for launch. */
+.debug-toggle {
+  display: none;
+}

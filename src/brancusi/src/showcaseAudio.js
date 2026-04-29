@@ -148,7 +148,7 @@ export function createShowcaseAudio() {
 
         // Fade ambient layer in
         ambientMusicGain.gain.setValueAtTime(0, ctx.currentTime);
-        ambientMusicGain.gain.linearRampToValueAtTime(0.18, ctx.currentTime + 4);
+        ambientMusicGain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 4);
       } catch (err) {
         console.warn("Showcase audio failed to initialise:", err);
       }
