@@ -3,7 +3,7 @@
  *
  * Two layers:
  *  1. Ambient music  (Lotus relaxation)  – loops continuously, low volume
- *  2. Spoken quotes  – loops in selected language with reverb, louder
+ *  2. Spoken quotes  – loops in selected language without reverb or echo, louder
  *
  * Layer 1 starts on `.start()`.  Layer 2 starts on `.startQuotes()`.
  */
@@ -99,7 +99,7 @@ export function createShowcaseAudio() {
         quoteDryGain.connect(quoteMasterGain);
 
         const convolver = ctx.createConvolver();
-        convolver.buffer = generateGalleryImpulse(ctx, 4.2, 3.5);
+        convolver.buffer = generateGalleryImpulse(ctx);
 
         const lowpass = ctx.createBiquadFilter();
         lowpass.type = "lowpass";
@@ -278,23 +278,13 @@ export function createShowcaseAudio() {
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-function generateGalleryImpulse(ctx, duration = 4.2, decay = 3.5) {
-  const rate = ctx.sampleRate;
-  const length = Math.floor(rate * duration);
-  const impulse = ctx.createBuffer(2, length, rate);
+function generateGalleryImpulse(ctx) {
+  const impulse = ctx.createBuffer(2, 1, ctx.sampleRate);
 
-  for (let channel = 0; channel < 2; channel++) {
-    const data = impulse.getChannelData(channel);
-    for (let i = 0; i < length; i++) {
-      const t = i / rate;
-      const envelope = Math.exp(-t * decay);
-      const earlyBoost = t < 0.08 ? 1.4 : 1;
-      data[i] = (Math.random() * 2 - 1) * envelope * earlyBoost;
-      if (t > 0.5) {
-        data[i] *= 0.7 + 0.3 * Math.exp(-(t - 0.5) * 1.2);
-      }
-    }
+  for (let channel = 0; channel < impulse.numberOfChannels; channel++) {
+    impulse.getChannelData(channel)[0] = 1;
   }
 
   return impulse;
 }
+
