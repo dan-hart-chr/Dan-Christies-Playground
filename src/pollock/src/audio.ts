@@ -1,14 +1,17 @@
 /**
  * Pollock Audio
  *
- * Single voiceover layer. Available language recordings are loaded
- * up front. The voiceover loops with a short
+ * Ambient music plus a single voiceover layer. Available language
+ * recordings are loaded up front. The voiceover loops with a short
  * gap between plays, similar to Brancusi's quote layer.
  */
 
+const AMBIENT_MUSIC_URL = `${import.meta.env.BASE_URL}Lotus_Sound_Dream-Ambient-Sleep-Relaxation.mp3`;
+const AMBIENT_MUSIC_VOLUME = 0.1;
+
 const VOICEOVER_URLS: Record<string, string> = {
   en: `${import.meta.env.BASE_URL}James-Pollock-En.mp3`,
-  fr: `${import.meta.env.BASE_URL}James-Pollock-Fr.mp3`,
+  fr: `${import.meta.env.BASE_URL}James-Pollock-Fr-2.mp3`,
 };
 
 // MarTech
@@ -31,6 +34,8 @@ export function createPollockAudio() {
   let languageChanging = false; // MarTech: flag so onended knows NOT to fire audio_complete
 
   let masterGain: GainNode | null = null;
+  let ambientMusicSource: AudioBufferSourceNode | null = null;
+  let ambientMusicGain: GainNode | null = null;
   let voiceoverGain: GainNode | null = null;
 
   const bufferCache = new Map<string, AudioBuffer>();
@@ -53,25 +58,33 @@ export function createPollockAudio() {
         masterGain.gain.value = 1;
         masterGain.connect(ctx.destination);
 
+        ambientMusicGain = ctx.createGain();
+        ambientMusicGain.gain.value = 0;
+        ambientMusicGain.connect(masterGain);
+
         voiceoverGain = ctx.createGain();
         voiceoverGain.gain.value = 0;
         voiceoverGain.connect(masterGain);
 
         // Load all available voiceover files
         const entries = Object.entries(VOICEOVER_URLS);
-        const buffers = await Promise.all(
-          entries.map(async ([, url]) => {
+        const loadAudioBuffer = async (url: string) => {
             const res = await fetch(url);
             const ab = await res.arrayBuffer();
             return ctx!.decodeAudioData(ab);
-          }),
-        );
+        };
+        const [ambientMusicBuffer, buffers] = await Promise.all([
+          loadAudioBuffer(AMBIENT_MUSIC_URL),
+          Promise.all(entries.map(([, url]) => loadAudioBuffer(url))),
+        ]);
 
         for (let i = 0; i < entries.length; i++) {
           bufferCache.set(entries[i][0], buffers[i]);
         }
 
         if (cancelled) return;
+
+        startAmbientMusic(ambientMusicBuffer);
 
         // Fade voiceover in
         voiceoverGain.gain.setValueAtTime(0, ctx.currentTime);
@@ -112,9 +125,33 @@ export function createPollockAudio() {
     stop() {
       cancelled = true;
       stopCurrentVoiceover();
+      stopAmbientMusic();
       if (ctx) ctx.close();
     },
   };
+
+  function startAmbientMusic(buffer: AudioBuffer) {
+    if (!ctx || !ambientMusicGain) return;
+
+    ambientMusicSource = ctx.createBufferSource();
+    ambientMusicSource.buffer = buffer;
+    ambientMusicSource.loop = true;
+    ambientMusicSource.connect(ambientMusicGain);
+    ambientMusicSource.start(0);
+
+    ambientMusicGain.gain.setValueAtTime(0, ctx.currentTime);
+    ambientMusicGain.gain.linearRampToValueAtTime(AMBIENT_MUSIC_VOLUME, ctx.currentTime + 4);
+  }
+
+  function stopAmbientMusic() {
+    if (!ambientMusicSource) return;
+    try {
+      ambientMusicSource.stop();
+    } catch {
+      // already stopped
+    }
+    ambientMusicSource = null;
+  }
 
   function stopCurrentVoiceover() {
     if (loopTimeout) {

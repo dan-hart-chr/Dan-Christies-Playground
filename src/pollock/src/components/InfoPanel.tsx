@@ -63,7 +63,7 @@ export default function InfoPanel({
             type="button"
             onClick={() => onContinue?.()}
             data-analytics="splashContinue"
-            className="mt-2 cursor-pointer rounded-full border border-black/40 bg-transparent px-9 py-2.5 text-[13px] font-light uppercase tracking-[0.18em] text-black transition-colors hover:border-black hover:bg-black/5"
+            className="mt-2 cursor-pointer rounded-full border border-black/40 bg-transparent px-9 py-2.5 text-[13px] font-light uppercase tracking-normal text-black transition-colors hover:border-black hover:bg-black/5"
           >
             {labels.continueLabel}
           </button>
