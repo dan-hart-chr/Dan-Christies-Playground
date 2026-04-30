@@ -15,6 +15,7 @@ export const LANGUAGES = [
   { id: "english", label: "English", url: `${BASE}audio/James-Brancusi-En.mp3` },
   { id: "german", label: "Deutsch", url: `${BASE}audio/quotes/german.mp3` },
   { id: "french", label: "Français", url: `${BASE}audio/James-Brancusi-Fr-2.mp3` },
+  { id: "spanish", label: "Español", url: `${BASE}audio/James-Brancusi-Es-2.mp3` },
   { id: "japanese", label: "日本語", url: `${BASE}audio/quotes/japanese.mp3` },
 ];
 
@@ -22,6 +23,7 @@ export const LANGUAGE_ANALYTICS_CODES = {
   english: "en",
   german: "de",
   french: "fr",
+  spanish: "es",
   japanese: "ja",
 };
 
@@ -287,4 +289,3 @@ function generateGalleryImpulse(ctx) {
 
   return impulse;
 }
-

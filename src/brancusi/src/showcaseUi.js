@@ -447,7 +447,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     const lang = LANGUAGES.find((l) => l.id === activeLanguageId);
     const isMobile = window.innerWidth <= 640;
     if (isMobile) {
-      const shortCodes = { english: "EN", german: "DE", french: "FR", japanese: "JP" };
+      const shortCodes = { english: "EN", german: "DE", french: "FR", spanish: "ES", japanese: "JP" };
       return shortCodes[activeLanguageId] || (lang ? lang.label.substring(0, 2).toUpperCase() : "EN");
     }
     return lang ? lang.label.toUpperCase() : "ENGLISH";
