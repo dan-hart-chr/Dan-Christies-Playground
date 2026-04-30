@@ -1,3 +1,5 @@
+const BASE = import.meta.env.BASE_URL;
+
 import { LANGUAGES, getAnalyticsLanguageCode } from "./showcaseAudio.js";
 
 /* ── SVG icon factories ────────────────────────────────────────────────────── */
@@ -22,7 +24,6 @@ function makeImgIcon(src) {
 }
 
 // Icons from public folder SVGs
-const BASE = import.meta.env.BASE_URL;
 const makeGlobeIcon = makeImgIcon(`${BASE}languageicon.svg`);
 const makeTranscriptIcon = makeImgIcon(`${BASE}transcripticon.svg`);
 const makeSoundOnIcon = makeImgIcon(`${BASE}audioicon.svg`);
@@ -114,6 +115,9 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
 
   // ── Artwork info (top-left) ──────────────────────────────────────────
   const artworkInfo = el("div", "artwork-info");
+  const christiesLogo = el("span", "christies-logo");
+  christiesLogo.setAttribute("aria-label", "Christie\u2019s");
+  christiesLogo.style.setProperty("--christies-logo-url", `url("${BASE}Logo.svg")`);
 
   // Artist name + dates on separate lines; dates span is nowrap so the
   // "(1876–1957)" never splits across a line break.
@@ -126,7 +130,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     text: UI_TEXTS.english.artworkTitle,
   });
 
-  artworkInfo.append(artistName, artworkTitle);
+  artworkInfo.append(christiesLogo, artistName, artworkTitle);
 
   // ── Bottom toolbar ───────────────────────────────────────────────────
   const bottomBar = el("div", "bottom-bar");
