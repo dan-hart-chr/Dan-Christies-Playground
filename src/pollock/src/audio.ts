@@ -11,6 +11,7 @@ const AMBIENT_MUSIC_VOLUME = 0.1;
 
 const VOICEOVER_URLS: Record<string, string> = {
   en: `${import.meta.env.BASE_URL}James-Pollock-En.mp3`,
+  de: `${import.meta.env.BASE_URL}James-Pollock-De-4.mp3`,
   fr: `${import.meta.env.BASE_URL}James-Pollock-FR-3.mp3`,
   es: `${import.meta.env.BASE_URL}James-Pollock-es-2.mp3`,
 };
