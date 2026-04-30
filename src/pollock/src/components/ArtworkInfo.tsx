@@ -6,7 +6,7 @@ const logoStyle = {
 
 export default function ArtworkInfo() {
   return (
-    <header className="absolute left-4 top-[44px] z-20 flex flex-col items-start text-[#222] dark:text-[#f0e8d7] md:left-[48px]">
+    <header className="absolute left-4 top-[44px] z-20 flex flex-col items-start text-current md:left-[48px]">
       <div className="flex w-[358px] flex-col gap-2 md:w-[444px]">
         <span
           className="christies-logo"

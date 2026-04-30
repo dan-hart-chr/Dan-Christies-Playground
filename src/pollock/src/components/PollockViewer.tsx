@@ -23,6 +23,13 @@ type IntroStage =
   | 'instructions-closing'
   | 'done';
 
+type ThemeMode = 'light' | 'dark';
+
+function getInitialThemeMode(): ThemeMode {
+  if (typeof window === 'undefined') return 'light';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
 export default function PollockViewer() {
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
@@ -34,10 +41,30 @@ export default function PollockViewer() {
     SHOW_LANGUAGE_SELECTION ? 'language' : 'instructions',
   );
   const [muted, setMuted] = useState(false);
+  const [themeMode, setThemeMode] = useState<ThemeMode>(getInitialThemeMode);
   const audioRef = useRef(createPollockAudio());
+  const manualThemeRef = useRef(false);
 
   const introActive = introStage !== 'done';
   const closePanel = useCallback(() => setActivePanel(null), []);
+  const toggleThemeMode = useCallback(() => {
+    manualThemeRef.current = true;
+    setThemeMode((mode) => (mode === 'light' ? 'dark' : 'light'));
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.style.colorScheme = themeMode;
+  }, [themeMode]);
+
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleSystemThemeChange = (event: MediaQueryListEvent) => {
+      if (!manualThemeRef.current) setThemeMode(event.matches ? 'dark' : 'light');
+    };
+
+    query.addEventListener('change', handleSystemThemeChange);
+    return () => query.removeEventListener('change', handleSystemThemeChange);
+  }, []);
 
   // Freeze page scrolling while the intro flow is up OR a regular panel is
   // open. The latter prevents scroll inside the transcript modal from
@@ -162,7 +189,7 @@ export default function PollockViewer() {
   return (
     <div ref={containerRef} className="relative" style={{ height: '500vh' }}>
       {/* Sticky viewport */}
-      <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden bg-white">
+      <div className={`sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden transition-colors duration-500 ${themeMode === 'light' ? 'bg-white text-[#222]' : 'bg-[#050404] text-[#f0e8d7]'}`}>
         {/* The painting */}
         <img
           ref={imageRef}
@@ -179,6 +206,8 @@ export default function PollockViewer() {
             <Controls
               onOpenPanel={setActivePanel}
               currentLang={language}
+              themeMode={themeMode}
+              onThemeToggle={toggleThemeMode}
               muted={muted}
               onMuteToggle={() => {
                 const next = !muted;
