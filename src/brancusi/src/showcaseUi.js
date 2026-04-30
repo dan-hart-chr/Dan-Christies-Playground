@@ -71,7 +71,7 @@ function el(tag, className, attrs) {
 // Artist name is a proper noun and stays the same; everything else that
 // the user sees in the chrome needs a per-language version.
 const ARTIST_NAME = "Constantin Brancusi";
-const ARTIST_DATES = "(1867-1957)";
+const ARTIST_DATES = "(1876–1957)";
 
 const UI_TEXTS = {
   english: {
@@ -116,7 +116,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   const artworkInfo = el("div", "artwork-info");
 
   // Artist name + dates on separate lines; dates span is nowrap so the
-  // "(1867-1957)" never splits across a line break.
+  // "(1876–1957)" never splits across a line break.
   const artistName = el("h1", "artwork-artist");
   const artistNameText = el("span", "artwork-artist-name", { text: ARTIST_NAME });
   const artistDates = el("span", "artwork-artist-dates", { text: ARTIST_DATES });
@@ -160,7 +160,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
 
   // Details & bid button
   const detailsBidBtn = el("a", "pill-button details-bid-btn", {
-    href: "https://www.christies.com/lot/constantin-brancusi-1867-1957--6585085",
+    href: "https://www.christies.com/lot/constantin-brancusi-1876–1957--6585085",
   });
   const detailsBidBtnText = el("span", "pill-text", { text: "DETAILS & BID" });
   detailsBidBtn.append(detailsBidBtnText);
@@ -185,7 +185,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     { kind: "link", label: "HOME", href: "https://christies.com/" },
     { kind: "link", label: "VIEW COLLECTION", href: "https://www.christies.com/en/auction/masterpieces-the-private-collection-of-s-i-newhouse-31380/" },
     { kind: "cookie" },
-    { kind: "link", label: "VIEW POLLOCK 7A", href: "https://experience.christies.com/pollock" },
+    { kind: "link", label: "VIEW POLLOCK 7A, 1948", href: "https://experience.christies.com/pollock" },
   ];
   footerItems.forEach((item, i) => {
     if (i > 0) {

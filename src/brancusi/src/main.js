@@ -31,12 +31,12 @@ let hasManualColorMode = false;
 
 const DEFAULT_STUDIO_STATE = {
   backgroundColor: COLOR_MODE_BACKGROUND[colorMode],
-  exposure: 1,
-  environmentIntensity: 1,
-  ambientIntensity: 1.2,
-  keyIntensity: 2.2,
-  fillIntensity: 0.6,
-  rimIntensity: 0.9,
+  exposure: 1.15,
+  environmentIntensity: 1.02,
+  ambientIntensity: 0.9,
+  keyIntensity: 2.25,
+  fillIntensity: 3,
+  rimIntensity: 0,
   modelScale: isMobile ? 0.9 : 1,
   cameraDistance: isMobile ? 6.2 : 5.4,
   autoRotateSpeed: 0.08,
