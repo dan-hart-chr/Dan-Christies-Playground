@@ -63,3 +63,27 @@
     line-height: 1.2;
   }
 }
+
+.christies-logo {
+  display: block;
+  width: 137px;
+  height: 18px;
+  margin-bottom: 24px;
+  background-color: currentColor;
+  -webkit-mask-image: var(--christies-logo-url);
+  mask-image: var(--christies-logo-url);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+@media (max-width: 640px) {
+  .christies-logo {
+    width: 122px;
+    height: 16px;
+    margin-bottom: 18px;
+  }
+}

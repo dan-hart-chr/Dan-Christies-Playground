@@ -29,6 +29,16 @@ const transcripts: Record<string, string[]> = {
     'Cette nouvelle approche r\u00E9volutionnaire a suscit\u00E9 l\u2019int\u00E9r\u00EAt du public, et Pollock est apparu dans des magazines et des \u00E9missions de t\u00E9l\u00E9vision \u00E0 travers toute l\u2019Am\u00E9rique\u00A0; un magazine influent lui a m\u00EAme demand\u00E9 s\u2019il \u00E9tait le plus grand peintre am\u00E9ricain du XXe si\u00E8cle.',
     '\u00AB\u00A0Number 7A, 1948\u00A0\u00BB est un chef-d\u2019\u0153uvre de l\u2019art du XXe si\u00E8cle. Sa taille impressionnante et sa composition complexe en font une toile majestueuse et hypnotisante, qui repr\u00E9sente un moment cl\u00E9 non seulement dans la carri\u00E8re br\u00E8ve mais explosive de l\u2019artiste, mais aussi dans l\u2019histoire de l\u2019art tout enti\u00E8re.',
   ],
+  es: [
+    'La obra «Número 7A, 1948» de Jackson Pollock transformó la historia del arte.',
+    'La sofisticadísima interacción entre pintura, movimiento y su dinámica energía es resultado de una forma de pintar totalmente nueva.',
+    'Realizada sobre un lienzo sin tratar y sin imprimación, esta composición enormemente poética es fruto de la nueva y revolucionaria técnica de Pollock, que equivalía a «dibujar en el espacio». Muy poco pigmento, si lo hay, se aplica directamente sobre la superficie de la pintura; en cambio, se vierte, se gotea, se salpica y se acumula en una disposición lírica de trazos negros entrelazados.',
+    'Estos se intercalan con toques de pigmento rojo vivo —algo que Pollock incluía ocasionalmente para añadir un toque dramático—, junto a varias zonas más sutiles en las que introdujo pinceladas moradas.',
+    'Colocar el lienzo directamente sobre el suelo y trabajar desde arriba permitía a Pollock moverse alrededor de la obra, liberándose de las tradiciones de la pintura de caballete, para crear una experiencia visual completa.',
+    'Gracias a esta nueva técnica, Pollock pudo involucrar todo su cuerpo tanto en la composición como en la ejecución de la pintura. Decía que se sentía más a gusto, más íntimamente involucrado en su creación. Pollock solía decir que se sentía dentro de sus pinturas, envuelto en una lucha constante entre lo que él quería que fuera la pintura y lo que la pintura quería hacer por sí misma.',
+    'Este nuevo y revolucionario enfoque cautivó el interés del público. Pollock apareció en revistas y programas de televisión por todo Estados Unidos; incluso una influyente revista llegó a preguntarse si era el mejor pintor estadounidense del siglo XX.',
+    'Número 7A, 1948 es una obra maestra del arte del siglo XX. Su impresionante tamaño y su compleja composición dan como resultado un lienzo majestuoso e hipnótico que representa un momento clave no solo en la breve pero explosiva carrera del artista, sino también en la historia del arte en general.',
+  ],
   ja: [
     '\u30B8\u30E3\u30AF\u30BD\u30F3\u30FB\u30DD\u30ED\u30C3\u30AF\u306E\u300E\u30CA\u30F3\u30D0\u30FC7A\u30011948\u300F\u306F\u7F8E\u8853\u53F2\u306B\u9769\u547D\u3092\u3082\u305F\u3089\u3057\u305F\u3002',
     '\u8272\u5F69\u3001\u52D5\u304D\u3001\u305D\u3057\u3066\u30C0\u30A4\u30CA\u30DF\u30C3\u30AF\u306A\u30A8\u30CD\u30EB\u30AE\u30FC\u304C\u898B\u4E8B\u306B\u7E54\u308A\u306A\u3059\u3053\u306E\u4F5C\u54C1\u306F\u3001\u307E\u3063\u305F\u304F\u65B0\u3057\u3044\u7D75\u753B\u5F62\u5F0F\u306E\u7D50\u6676\u3067\u3042\u308B\u3002',
@@ -45,6 +55,7 @@ export const LANGUAGE_LABELS: Record<string, string> = {
   en: 'ENGLISH',
   de: 'DEUTSCH',
   fr: 'FRAN\u00C7AIS',
+  es: 'ESPAÑOL',
   ja: '\u65E5\u672C\u8A9E',
 };
 
@@ -52,6 +63,7 @@ export const LANGUAGE_SHORT: Record<string, string> = {
   en: 'EN',
   de: 'DE',
   fr: 'FR',
+  es: 'ES',
   ja: 'JA',
 };
 
@@ -82,6 +94,12 @@ export const UI_LABELS: Record<string, UiLabels> = {
     instructions:
       "Faites d\u00E9filer vers le bas pour explorer 7a de Pollock dans une exp\u00E9rience panoramique immersive, tandis qu'un son spatial vous plonge dans une ambiance sonore de galerie.",
     continueLabel: 'CONTINUER',
+  },
+  es: {
+    viewTranscript: 'VER TRANSCRIPCIÓN',
+    transcript: 'TRANSCRIPCIÓN',
+    instructions: 'Desplázate hacia abajo para explorar de cerca Número 7A, 1948 de Pollock.',
+    continueLabel: 'CONTINUAR',
   },
   ja: {
     viewTranscript: '\u30C8\u30E9\u30F3\u30B9\u30AF\u30EA\u30D7\u30C8\u3092\u898B\u308B',
