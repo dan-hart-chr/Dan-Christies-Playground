@@ -1573,3 +1573,33 @@ canvas {
 .debug-toggle {
   display: none;
 }
+
+
+.christies-logo {
+  display: block;
+  width: 137px;
+  height: 18px;
+  margin-bottom: 24px;
+  color: #f0e8d7;
+  background-color: currentColor;
+  -webkit-mask-image: var(--christies-logo-url);
+  mask-image: var(--christies-logo-url);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+#app.is-light-scene .christies-logo {
+  color: #111111;
+}
+
+@media (max-width: 640px) {
+  .christies-logo {
+    width: 122px;
+    height: 16px;
+    margin-bottom: 18px;
+  }
+}

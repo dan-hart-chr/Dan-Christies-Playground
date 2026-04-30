@@ -1,3 +1,5 @@
+const BASE = import.meta.env.BASE_URL;
+
 import { LANGUAGES, getAnalyticsLanguageCode } from "./showcaseAudio.js";
 
 /* ── SVG icon factories ────────────────────────────────────────────────────── */
@@ -22,7 +24,6 @@ function makeImgIcon(src) {
 }
 
 // Icons from public folder SVGs
-const BASE = import.meta.env.BASE_URL;
 const makeGlobeIcon = makeImgIcon(`${BASE}languageicon.svg`);
 const makeTranscriptIcon = makeImgIcon(`${BASE}transcripticon.svg`);
 const makeSoundOnIcon = makeImgIcon(`${BASE}audioicon.svg`);
@@ -114,6 +115,9 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
 
   // ── Artwork info (top-left) ──────────────────────────────────────────
   const artworkInfo = el("div", "artwork-info");
+  const christiesLogo = el("span", "christies-logo");
+  christiesLogo.setAttribute("aria-label", "Christie\u2019s");
+  christiesLogo.style.setProperty("--christies-logo-url", `url("${BASE}Logo.svg")`);
 
   // Artist name + dates on separate lines; dates span is nowrap so the
   // "(1876–1957)" never splits across a line break.
@@ -126,7 +130,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     text: UI_TEXTS.english.artworkTitle,
   });
 
-  artworkInfo.append(artistName, artworkTitle);
+  artworkInfo.append(christiesLogo, artistName, artworkTitle);
 
   // ── Bottom toolbar ───────────────────────────────────────────────────
   const bottomBar = el("div", "bottom-bar");
@@ -185,7 +189,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     { kind: "link", label: "HOME", href: "https://christies.com/" },
     { kind: "link", label: "VIEW COLLECTION", href: "https://www.christies.com/en/auction/masterpieces-the-private-collection-of-s-i-newhouse-31380/" },
     { kind: "cookie" },
-    { kind: "link", label: "VIEW POLLOCK 7A, 1948", href: "https://experience.christies.com/pollock" },
+    { kind: "link", label: "VIEW POLLOCK 7A, 1948", href: "https://experience.christies.com/pollock/index.html" },
   ];
   footerItems.forEach((item, i) => {
     if (i > 0) {
@@ -262,6 +266,12 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
       "Ici, la tête de Margit Pogany, une étudiante en art que l’artiste a rencontrée en 1910, est réinterprétée comme un continuum de courbes gracieuses. Des arcs courbes et plats suggèrent son regard et ses grands yeux, tandis que, vu de dos, son chignon soigné forme une spirale, une mèche de cheveux ondulée, dissimulée juste derrière son oreille. Dans sa quête d’harmonie, Brancusi réduit les détails physionomiques aux formes les plus élémentaires et les plus pures. « Ce n’est pas la forme extérieure qui est réelle, mais l’essence des choses », a-t-il déclaré un jour. « Sur cette base, il est impossible d’exprimer quelque chose de réel en imitant des apparences superficielles. »",
       "Brancusi était un maître de son matériau. Initialement réalisé en marbre, Brancusi transposa ce motif en bronze vers 1913 et créa six fontes de Danaïde. Dans les premières fontes, il utilisa la dorure pour atteindre ses objectifs artistiques – une technique rare dans son œuvre, où le traitement de surface était tout aussi important que le motif lui-même. « Chaque matériau possède son propre langage, que je ne veux pas effacer pour le remplacer par le mien », expliquait Brancusi, « mais simplement amener à exprimer ce que je pense, ce que je vois dans son propre langage, qui lui est propre. »",
       "La surface dorée fait naître d’interminables reflets de lumière, tandis que la figure semble en même temps rayonner de l’intérieur, telle une déesse antique ou une icône d’une époque révolue. Associée à la dorure éclatante, la patine sombre de ses cheveux rappelle l’art antique d’Asie orientale. En fusionnant une présence individuelle de son époque avec l’apparence et la signification d’œuvres d’art du passé, Brancusi a créé un langage visuel tout à fait unique et une nouvelle forme de féminité.",
+    ],
+    spanish: [
+      "Radiante en su materialidad y radical en su refinamiento formal, la obra de Constantin Brancusi es un icono del arte moderno. A través de su poderosa visión, Brancusi transformó el rostro femenino en un conjunto abstracto de formas armoniosas, cambiando para siempre el curso de la escultura en el siglo XX.",
+      "Aquí, la cabeza de Margit Pogany, una estudiante de arte que el artista conoció en 1910, se reimagina como un continuo de elegantes curvas. Los amplios arcos planos aluden a su mirada y sus grandes ojos, mientras que, por detrás, su pulcro moño forma una espiral, un mechón serpenteante de cabello recogido justo detrás de la oreja. Los detalles fisonómicos se destilan hasta alcanzar las formas más elementales y puras en la búsqueda de armonía de Brancusi. «No es la forma exterior lo que es real, sino la esencia de las cosas», afirmó en una ocasión. «Partiendo de esta base, es imposible que alguien exprese algo real imitando las apariencias superficiales».",
+      "Brancusi era un maestro en el uso del material. Realizada inicialmente en mármol, Brancusi transformó este motivo en bronce hacia 1913, creando seis fundiciones de Danaïde. En los primeros ejemplos, utilizó el dorado para alcanzar su objetivo artístico, una técnica poco habitual en su práctica, en la que el acabado era tan importante como el propio tema. «Cada material tiene un lenguaje particular que no pretendo eliminar y sustituir por el mío propio», explicaba Brancusi, «sino simplemente hacer que exprese lo que pienso, lo que veo, en su propio lenguaje, que es solo suyo».",
+      "La superficie dorada evoca infinitos reflejos de luz, mientras que, al mismo tiempo, la figura parece brillar desde dentro, como si fuera una antigua diosa o un icono de una época pasada. Junto con el luminoso dorado, la pátina oscura de su cabello evoca el arte antiguo de Asia Oriental. Al asimilar una presencia individual de su propia época, con una mirada hacia la apariencia y el significado de las obras de arte del pasado, Brancusi creó un lenguaje escultórico totalmente único y una nueva forma de feminidad.",
     ],
     japanese: [
       "\u305d\u306e\u7d20\u6750\u611f\u304c\u8f1d\u304d\u3001\u5f62\u5f0f\u7684\u306a\u6d17\u7df4\u3055\u304c\u969b\u7acb\u3064\u30b3\u30f3\u30b9\u30bf\u30f3\u30c6\u30a3\u30f3\u30fb\u30d6\u30e9\u30f3\u30af\u30fc\u30b7\u306f\u3001\u73fe\u4ee3\u7f8e\u8853\u306e\u8c61\u5fb4\u7684\u5b58\u5728\u3067\u3042\u308b\u3002\u30d6\u30e9\u30f3\u30af\u30fc\u30b7\u306f\u72ec\u81ea\u306e\u529b\u5f37\u3044\u30d3\u30b8\u30e7\u30f3\u306b\u3088\u3063\u3066\u3001\u5973\u6027\u306e\u9854\u3092\u8abf\u548c\u306e\u3068\u308c\u305f\u5f62\u614b\u306e\u62bd\u8c61\u7684\u306a\u69cb\u6210\u3078\u3068\u5909\u5bb9\u3055\u305b\u3001\u305d\u308c\u306b\u3088\u3063\u306520\u4e16\u7d00\u306e\u5f6b\u523b\u306e\u6b74\u53f2\u3092\u6c38\u9060\u306b\u5909\u3048\u305f\u3002",
@@ -447,7 +457,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     const lang = LANGUAGES.find((l) => l.id === activeLanguageId);
     const isMobile = window.innerWidth <= 640;
     if (isMobile) {
-      const shortCodes = { english: "EN", german: "DE", french: "FR", japanese: "JP" };
+      const shortCodes = { english: "EN", german: "DE", french: "FR", spanish: "ES", japanese: "JP" };
       return shortCodes[activeLanguageId] || (lang ? lang.label.substring(0, 2).toUpperCase() : "EN");
     }
     return lang ? lang.label.toUpperCase() : "ENGLISH";
