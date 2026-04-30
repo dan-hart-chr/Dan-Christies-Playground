@@ -189,7 +189,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     { kind: "link", label: "HOME", href: "https://christies.com/" },
     { kind: "link", label: "VIEW COLLECTION", href: "https://www.christies.com/en/auction/masterpieces-the-private-collection-of-s-i-newhouse-31380/" },
     { kind: "cookie" },
-    { kind: "link", label: "VIEW POLLOCK 7A, 1948", href: "https://experience.christies.com/pollock" },
+    { kind: "link", label: "VIEW POLLOCK 7A, 1948", href: "https://experience.christies.com/pollock/index.html" },
   ];
   footerItems.forEach((item, i) => {
     if (i > 0) {
