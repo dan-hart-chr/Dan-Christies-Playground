@@ -78,17 +78,6 @@ canvas {
   display: block;
 }
 
-.showcase-scene-canvas {
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1200ms ease;
-}
-
-#app.is-revealing-experience .showcase-scene-canvas {
-  opacity: 1;
-}
-
 .panel-toolbar {
   position: absolute;
   top: 26px;
@@ -114,14 +103,6 @@ canvas {
   top: 72px;
   right: 26px;
   z-index: 20;
-}
-
-.model-studio-shell {
-  top: 26px;
-}
-
-.top-controls .model-studio-shell {
-  position: static;
 }
 
 .top-controls .debug-panel {
@@ -1569,10 +1550,6 @@ canvas {
   }
 }
 
-/* Hide Studio controls for launch. */
-.debug-toggle {
-  display: none;
-}
 
 
 .christies-logo {
@@ -1602,4 +1579,84 @@ canvas {
     height: 16px;
     margin-bottom: 18px;
   }
+}
+
+.image-sequence-viewer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 700ms ease,
+    visibility 700ms ease;
+}
+
+#app.is-revealing-experience .image-sequence-viewer {
+  opacity: 1;
+  visibility: visible;
+}
+
+.image-sequence-image {
+  display: block;
+  max-width: min(62vw, 760px);
+  max-height: min(86%, 860px);
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@media (max-width: 900px) {
+  .image-sequence-image {
+    max-width: min(82vw, 620px);
+    max-height: min(78%, 760px);
+  }
+}
+
+@media (max-width: 640px) {
+  .image-sequence-image {
+    max-width: 92vw;
+    max-height: min(72%, 640px);
+  }
+}
+
+/* Explicit light/dark scene theming for the image-sequence view. */
+#app {
+  background: #050505;
+}
+
+#app.is-light-scene {
+  background: #ffffff;
+}
+
+#app .app-viewport,
+#app .image-sequence-viewer {
+  background: #050505;
+  transition: background-color 350ms ease;
+}
+
+#app.is-light-scene .app-viewport,
+#app.is-light-scene .image-sequence-viewer {
+  background: #ffffff;
+}
+
+#app.is-light-scene .settings-toggle,
+#app.is-light-scene .debug-toggle,
+#app.is-light-scene .theme-toggle,
+#app.is-light-scene .pill-button {
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.72);
+  color: #111111;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.12);
+}
+
+#app.is-light-scene .settings-toggle:hover,
+#app.is-light-scene .debug-toggle:hover,
+#app.is-light-scene .theme-toggle:hover,
+#app.is-light-scene .pill-button:hover,
+#app.is-light-scene .pill-button.is-active {
+  border-color: rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.88);
 }
