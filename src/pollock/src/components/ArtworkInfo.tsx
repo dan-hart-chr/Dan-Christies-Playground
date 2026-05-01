@@ -20,7 +20,7 @@ export default function ArtworkInfo() {
           <span className="whitespace-nowrap">(1912-1956)</span>
         </h1>
         <p className="font-sans text-[18px] font-light italic leading-[1.2] text-current">
-          7a, 1948
+          Number 7A, 1948
         </p>
       </div>
     </header>

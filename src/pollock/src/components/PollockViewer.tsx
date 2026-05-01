@@ -171,7 +171,7 @@ export default function PollockViewer() {
         <img
           ref={imageRef}
           src={pollockImage}
-          alt="Jackson Pollock - 7a, 1948"
+          alt="Jackson Pollock - Number 7A, 1948"
           className="max-w-none will-change-transform"
           draggable={false}
         />
