@@ -48,19 +48,39 @@ export function createPollockAudio() {
   // MarTech: Progress checkpoint timeouts being cleared on every stop
   const progressTimeouts: ReturnType<typeof setTimeout>[] = [];
 
+  const getAudioContext = async () => {
+    if (!ctx) {
+      const AudioContextConstructor =
+        window.AudioContext ||
+        (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (!AudioContextConstructor) {
+        throw new Error('Web Audio API is not supported in this browser.');
+      }
+      ctx = new AudioContextConstructor();
+    }
+
+    if (ctx.state === 'suspended') {
+      await ctx.resume();
+    }
+
+    return ctx;
+  };
+
   return {
+    async unlock() {
+      try {
+        await getAudioContext();
+      } catch (err) {
+        console.warn('Pollock audio failed to unlock:', err);
+      }
+    },
+
     async start() {
       if (started) return;
       started = true;
 
       try {
-        const AudioContextConstructor =
-          window.AudioContext ||
-          (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-        if (!AudioContextConstructor) {
-          throw new Error('Web Audio API is not supported in this browser.');
-        }
-        ctx = new AudioContextConstructor();
+        ctx = await getAudioContext();
 
         masterGain = ctx.createGain();
         masterGain.gain.value = 1;
