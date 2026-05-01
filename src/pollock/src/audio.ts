@@ -54,7 +54,13 @@ export function createPollockAudio() {
       started = true;
 
       try {
-        ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const AudioContextConstructor =
+          window.AudioContext ||
+          (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+        if (!AudioContextConstructor) {
+          throw new Error('Web Audio API is not supported in this browser.');
+        }
+        ctx = new AudioContextConstructor();
 
         masterGain = ctx.createGain();
         masterGain.gain.value = 1;

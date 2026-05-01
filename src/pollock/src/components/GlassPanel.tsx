@@ -41,9 +41,15 @@ export default function GlassPanel({
   // Parent-driven fade-out
   useEffect(() => {
     if (!closing) return;
-    setVisible(false);
-    const id = setTimeout(onClose, 350);
-    return () => clearTimeout(id);
+    let closeTimeout: ReturnType<typeof setTimeout> | null = null;
+    const frameId = requestAnimationFrame(() => {
+      setVisible(false);
+      closeTimeout = setTimeout(onClose, 350);
+    });
+    return () => {
+      cancelAnimationFrame(frameId);
+      if (closeTimeout) clearTimeout(closeTimeout);
+    };
   }, [closing, onClose]);
 
   useEffect(() => {
