@@ -13,6 +13,7 @@ const IMAGE_SEQUENCE_URLS = [
   "brancusi-7.webp",
   "brancusi-8.webp",
 ].map((fileName) => `${BASE}brancusi-sequence/${fileName}`);
+const IMAGE_SEQUENCE_FADE_MS = 1600;
 
 const MODEL_VIEW = {
   title: "Model View",
@@ -31,18 +32,14 @@ app.append(viewport);
 
 const imageSequenceViewer = document.createElement("div");
 imageSequenceViewer.className = "image-sequence-viewer";
-const imageSequenceImage = document.createElement("img");
-imageSequenceImage.className = "image-sequence-image";
-imageSequenceImage.alt = "Constantin Brancusi, Danaïde";
-imageSequenceImage.decoding = "async";
-imageSequenceImage.draggable = false;
-imageSequenceViewer.append(imageSequenceImage);
+const imageSequenceImages = [createImageSequenceElement(true), createImageSequenceElement(false)];
+imageSequenceViewer.append(...imageSequenceImages);
 viewport.append(imageSequenceViewer);
 
 let imageSequenceFrame = 0;
-let imageSequenceTarget = 0;
+let activeImageSequenceLayer = 0;
+let isImageSequenceTransitioning = false;
 let touchStartY = 0;
-let touchStartTarget = 0;
 let isTouching = false;
 
 const showcaseAudio = createShowcaseAudio();
@@ -132,20 +129,63 @@ function preloadImageSequence() {
 
 function setImageSequenceFrame(nextFrame) {
   const clampedFrame = clampValue(Math.round(nextFrame), 0, IMAGE_SEQUENCE_URLS.length - 1);
-  if (clampedFrame === imageSequenceFrame && imageSequenceImage.src) return;
+  const activeImage = imageSequenceImages[activeImageSequenceLayer];
+  if (clampedFrame === imageSequenceFrame && activeImage.src) return;
   imageSequenceFrame = clampedFrame;
-  imageSequenceImage.src = IMAGE_SEQUENCE_URLS[imageSequenceFrame];
+  if (!activeImage.src) {
+    activeImage.src = IMAGE_SEQUENCE_URLS[imageSequenceFrame];
+    activeImage.classList.add("is-active");
+    return;
+  }
+
+  const nextLayer = activeImageSequenceLayer === 0 ? 1 : 0;
+  const nextImage = imageSequenceImages[nextLayer];
+  nextImage.src = IMAGE_SEQUENCE_URLS[imageSequenceFrame];
+  nextImage.classList.add("is-active");
+  activeImage.classList.remove("is-active");
+  activeImageSequenceLayer = nextLayer;
 }
 
-function setImageSequenceTarget(nextTarget) {
-  imageSequenceTarget = clampValue(nextTarget, 0, IMAGE_SEQUENCE_URLS.length - 1);
-  setImageSequenceFrame(imageSequenceTarget);
+function stepImageSequence(direction) {
+  if (isImageSequenceTransitioning) return;
+  const step = Math.sign(direction);
+  if (!step) return;
+  const nextFrame = (imageSequenceFrame + step + IMAGE_SEQUENCE_URLS.length) % IMAGE_SEQUENCE_URLS.length;
+
+  isImageSequenceTransitioning = true;
+
+  const activeImage = imageSequenceImages[activeImageSequenceLayer];
+  const nextLayer = activeImageSequenceLayer === 0 ? 1 : 0;
+  const nextImage = imageSequenceImages[nextLayer];
+
+  imageSequenceFrame = nextFrame;
+  nextImage.classList.remove("is-active");
+  nextImage.src = IMAGE_SEQUENCE_URLS[imageSequenceFrame];
+  activeImage.classList.remove("is-active");
+
+  window.setTimeout(() => {
+    nextImage.classList.add("is-active");
+    activeImageSequenceLayer = nextLayer;
+  }, IMAGE_SEQUENCE_FADE_MS);
+
+  window.setTimeout(() => {
+    isImageSequenceTransitioning = false;
+  }, IMAGE_SEQUENCE_FADE_MS * 2);
+}
+
+function createImageSequenceElement(active) {
+  const image = document.createElement("img");
+  image.className = `image-sequence-image${active ? " is-active" : ""}`;
+  image.alt = "Constantin Brancusi, Danaïde";
+  image.decoding = "async";
+  image.draggable = false;
+  return image;
 }
 
 function handleWheel(event) {
   if (!app.classList.contains("is-revealing-experience")) return;
   if (event.ctrlKey || event.metaKey) return;
-  setImageSequenceTarget(imageSequenceTarget + event.deltaY * 0.006);
+  stepImageSequence(event.deltaY);
 }
 
 function handleTouchStart(event) {
@@ -154,7 +194,6 @@ function handleTouchStart(event) {
   if (!touch) return;
   isTouching = true;
   touchStartY = touch.clientY;
-  touchStartTarget = imageSequenceTarget;
 }
 
 function handleTouchMove(event) {
@@ -162,7 +201,9 @@ function handleTouchMove(event) {
   const touch = event.touches[0];
   if (!touch) return;
   const deltaY = touchStartY - touch.clientY;
-  setImageSequenceTarget(touchStartTarget + deltaY * 0.018);
+  if (Math.abs(deltaY) < 24) return;
+  stepImageSequence(deltaY);
+  touchStartY = touch.clientY;
 }
 
 function handleTouchEnd() {
