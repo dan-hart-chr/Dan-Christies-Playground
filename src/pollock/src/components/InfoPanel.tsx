@@ -4,7 +4,7 @@ import { UI_LABELS } from '../data/transcripts';
 
 function ScrollIcon() {
   return (
-    <div className="flex size-[60px] items-center justify-center rounded-[12px] bg-[rgba(244,244,244,0.52)] backdrop-blur-[20px]">
+    <div className="flex size-[60px] items-center justify-center rounded-[12px] bg-[rgba(244,244,244,0.52)] text-[#222] backdrop-blur-[20px]">
       <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" strokeWidth="1" />
         <line x1="8" y1="6" x2="8" y2="10" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
