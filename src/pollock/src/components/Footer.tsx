@@ -11,7 +11,7 @@ const FOOTER_LINK_CLASS =
 
 function CookieSettingsButton() {
   return (
-    <button id="ot-sdk-btn" type="button" className={FOOTER_LINK_CLASS}>
+    <button id="ot-sdk-btn" type="button" className={`ot-sdk-show-settings ${FOOTER_LINK_CLASS}`}>
       Cookie settings
     </button>
   );
