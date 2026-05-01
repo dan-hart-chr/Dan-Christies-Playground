@@ -20,24 +20,24 @@ const transcripts: Record<string, string[]> = {
     "„Number 7A, 1948“ ist ein Meisterwerk der Kunst des 20. Jahrhunderts. Die eindrucksvolle Bildgröße und die Komplexität der Komposition sind imposant und ziehen Beschauer in ihren Bann. Das Gemälde stellt ein Schlüsselmoment dar - nicht nur in der kurzen, brisanten Karriere des Künstlers, sondern auch in der Kunstgeschichte.",
   ],
   fr: [
-    "« Number seven A, 1948 » de Jackson Pollock a révolutionné l'histoire de l'art .",
+    "« Number 7A, 1948 » de Jackson Pollock a révolutionné l'histoire de l'art .",
     "L'interaction extrêmement raffinée entre la couleur, le mouvement et l'énergie dynamique est le résultat d'une forme de peinture totalement nouvelle.",
     "Réalisée sur une toile brute et non préparée, cette composition hautement poétique est le fruit de la nouvelle technique révolutionnaire de Pollock, qui s'apparentait à un « dessin dans l'espace ». Très peu, voire aucun pigment, n’est appliqué directement sur la surface du tableau ; elle est au contraire versée, coulée, projetée et accumulée pour former un agencement lyrique de tracés noires entrelacées.",
     "Celles-ci sont ponctuées de touches de pigment rouge vif — un élément que Pollock introduisait parfois afin d’ajouter une dimension dramatique — ainsi que de plusieurs zones discrètes où apparaissent des touches de peinture violette.",
     "En posant sa toile directement sur le sol et en travaillant par-dessus, Pollock pouvait se déplacer tout autour de la toile et s’affranchir ainsi des traditions de la peinture sur chevalet pour créer une expérience visuelle immersive.",
     "Grâce à cette nouvelle technique, Pollock put engager tout son corps à la fois dans la composition et dans l’exécution de l’œuvre. Il déclarait se sentir plus à l’aise, plus intimement impliqué dans sa création. Pollock affirmait souvent avoir l’impression de se trouver à l’intérieur de ses tableaux, dans une lutte constante entre ce qu’il imaginait pour le tableau et ce que la peinture voulait faire d’elle-même.",
     "Cette nouvelle approche révolutionnaire a suscité l'intérêt du public, et Pollock est apparu dans des magazines et des émissions de télévision à travers toute l'Amérique ; un magazine influent s’est même demandé s’il était le plus grand peintre américain du XXᵉ siècle.",
-    "« Number seven A, 1948 » est un chef-d'œuvre de l'art du XXe siècle. Par son format impressionnant et sa composition complexe, l’œuvre donne naissance à une toile majestueuse et envoûtante, incarnant un moment clé non seulement dans la carrière brève mais fulgurante de l’artiste, mais aussi dans l’histoire de l’art au sens large.",
+    "« Number 7A, 1948 » est un chef-d'œuvre de l'art du XXe siècle. Par son format impressionnant et sa composition complexe, l’œuvre donne naissance à une toile majestueuse et envoûtante, incarnant un moment clé non seulement dans la carrière brève mais fulgurante de l’artiste, mais aussi dans l’histoire de l’art au sens large.",
   ],
   es: [
-    "La obra «Número 7A, 1948» de Jackson Pollock transformó la historia del arte.",
+    "La obra «Number 7A, 1948» de Jackson Pollock transformó la historia del arte.",
     "La sofisticadísima interacción entre pintura, movimiento y su dinámica energía es resultado de una forma de pintar totalmente nueva.",
     "Realizada sobre un lienzo sin tratar y sin imprimación, esta composición enormemente poética es fruto de la nueva y revolucionaria técnica de Pollock, que equivalía a «dibujar en el espacio». Muy poco pigmento, si lo hay, se aplica directamente sobre la superficie de la pintura; en cambio, se vierte, se gotea, se salpica y se acumula en una disposición lírica de trazos negros entrelazados.",
     "Estos se intercalan con toques de pigmento rojo vivo —algo que Pollock incluía ocasionalmente para añadir un toque dramático—, junto a varias zonas más sutiles en las que introdujo pinceladas moradas.",
     "Colocar el lienzo directamente sobre el suelo y trabajar desde arriba permitía a Pollock moverse alrededor de la obra, liberándose de las tradiciones de la pintura de caballete, para crear una experiencia visual completa.",
     "Gracias a esta nueva técnica, Pollock pudo involucrar todo su cuerpo tanto en la composición como en la ejecución de la pintura. Decía que se sentía más a gusto, más íntimamente involucrado en su creación. Pollock solía decir que se sentía dentro de sus pinturas, envuelto en una lucha constante entre lo que él quería que fuera la pintura y lo que la pintura quería hacer por sí misma.",
     "Este nuevo y revolucionario enfoque cautivó el interés del público. Pollock apareció en revistas y programas de televisión por todo Estados Unidos; incluso una influyente revista llegó a preguntarse si era el mejor pintor estadounidense del siglo XX.",
-    "Número 7A, 1948 es una obra maestra del arte del siglo XX. Su impresionante tamaño y su compleja composición dan como resultado un lienzo majestuoso e hipnótico que representa un momento clave no solo en la breve pero explosiva carrera del artista, sino también en la historia del arte en general.",
+    "Number 7A, 1948 es una obra maestra del arte del siglo XX. Su impresionante tamaño y su compleja composición dan como resultado un lienzo majestuoso e hipnótico que representa un momento clave no solo en la breve pero explosiva carrera del artista, sino también en la historia del arte en general.",
   ],
 };
 
@@ -66,7 +66,7 @@ export const UI_LABELS: Record<string, UiLabels> = {
   en: {
     viewTranscript: 'VIEW TRANSCRIPT',
     transcript: 'TRANSCRIPT',
-    instructions: "Scroll down to explore Pollock's 7a, 1948.",
+    instructions: "Scroll down to explore Jackson Pollock's Number 7A, 1948.",
     continueLabel: 'CONTINUE',
   },
   de: {
@@ -79,13 +79,13 @@ export const UI_LABELS: Record<string, UiLabels> = {
     viewTranscript: 'VOIR LA TRANSCRIPTION',
     transcript: 'TRANSCRIPTION',
     instructions:
-      "Faites défiler vers le bas pour explorer 7a de Pollock dans une expérience panoramique immersive, tandis qu'un son spatial vous plonge dans une ambiance sonore de galerie.",
+      "Faites défiler vers le bas pour explorer Number 7A, 1948 de Pollock dans une expérience panoramique immersive, tandis qu'un son spatial vous plonge dans une ambiance sonore de galerie.",
     continueLabel: 'CONTINUER',
   },
   es: {
     viewTranscript: 'VER TRANSCRIPCIÓN',
     transcript: 'TRANSCRIPCIÓN',
-    instructions: 'Desplázate hacia abajo para explorar de cerca Número 7A, 1948 de Pollock.',
+    instructions: 'Desplázate hacia abajo para explorar de cerca Number 7A, 1948 de Pollock.',
     continueLabel: 'CONTINUAR',
   },
 };
@@ -95,6 +95,6 @@ export const UI_LABELS: Record<string, UiLabels> = {
 // per language if needed.
 export const ARTIST_NAME = 'Jackson Pollock';
 export const ARTIST_DATES = '(1912-1956)';
-export const ARTWORK_TITLE = '7a, 1948';
+export const ARTWORK_TITLE = 'Number 7A, 1948';
 
 export default transcripts;
