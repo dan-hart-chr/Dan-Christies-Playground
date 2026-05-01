@@ -76,32 +76,32 @@ const ARTIST_DATES = "(1876–1957)";
 
 const UI_TEXTS = {
   english: {
-    artworkTitle: "Danaïde, Conceived and cast circa 1913",
+    artworkTitle: "Danaïde, conceived c. 1913; this bronze version cast shortly after",
     viewTranscript: "VIEW TRANSCRIPT",
     transcriptShort: "TRANSCRIPT",
-    detailsBid: "DETAILS & BID",
+    detailsBid: "DETAILS & BIDDING",
     continueLabel: "CONTINUE",
   },
   german: {
     artworkTitle: "Danaïde, entstanden um 1913; diese Bronzefassung kurz darauf gegossen",
     viewTranscript: "TRANSKRIPT ANZEIGEN",
     transcriptShort: "TRANSKRIPT",
-    detailsBid: "DETAILS & BID",
+    detailsBid: "DETAILS & BIETEN",
     continueLabel: "WEITER",
+  },
+  spanish: {
+    artworkTitle: "Danaïde, concebida hacia 1913; esta versión en bronce fundida poco después",
+    viewTranscript: "VER TRANSCRIPCIÓN",
+    transcriptShort: "TRANSCRIPCIÓN",
+    detailsBid: "DETALLES Y PUJA",
+    continueLabel: "CONTINUAR",
   },
   french: {
     artworkTitle: "Danaïde, conçue vers 1913 ; cette version en bronze coulée peu après",
     viewTranscript: "VOIR LA TRANSCRIPTION",
     transcriptShort: "TRANSCRIPTION",
-    detailsBid: "DETAILS & BID",
+    detailsBid: "DÉTAILS ET ENCHÈRES",
     continueLabel: "CONTINUER",
-  },
-  japanese: {
-    artworkTitle: "《ダナイード》、1913年頃に構想され、このブロンズ版はその直後に鋳造された",
-    viewTranscript: "トランスクリプトを見る",
-    transcriptShort: "トランスクリプト",
-    detailsBid: "DETAILS & BID",
-    continueLabel: "続ける",
   },
 };
 
@@ -186,7 +186,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
 
   const footerNav = el("nav", "footer-nav");
   const footerItems = [
-    { kind: "link", label: "HOME", href: "https://christies.com/" },
+    { kind: "link", label: "HOME", href: "https://www.christies.com/en" },
     { kind: "link", label: "VIEW COLLECTION", href: "https://www.christies.com/en/auction/masterpieces-the-private-collection-of-s-i-newhouse-31380/" },
     { kind: "cookie" },
     { kind: "link", label: "VIEW POLLOCK 7A, 1948", href: "https://experience.christies.com/pollock/index.html" },
@@ -218,13 +218,13 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   // ── Instruction (info) modal translations ────────────────────────────
   const INSTRUCTION_TEXTS = {
     english:
-      "Scroll to explore Brancusi\u2019s Dana\u00efde from every angle in 3D.",
+      "Scroll to explore Brancusi’s Danaïde from every angle in 3D.",
     german:
-      "Scrollen Sie, um Brancusis Dana\u00efde aus jedem Winkel in 3D zu erkunden.",
+      "Scrollen Sie, um Brancusis Danaïde aus jedem Winkel in 3D zu erkunden.",
+    spanish:
+      "Desplázate para explorar la Danaïde de Brancusi en 3D desde todos los ángulos.",
     french:
-      "Faites d\u00e9filer pour explorer la Dana\u00efde de Brancusi sous tous les angles en 3D.",
-    japanese:
-      "\u30b9\u30af\u30ed\u30fc\u30eb\u3057\u3066\u30013D\u3067\u30d6\u30e9\u30f3\u30af\u30fc\u30b7\u306e\u300a\u30c0\u30ca\u30a4\u30fc\u30c9\u300b\u3092\u3042\u3089\u3086\u308b\u89d2\u5ea6\u304b\u3089\u3054\u89a7\u304f\u3060\u3055\u3044\u3002",
+      "Faites défiler pour explorer la Danaïde de Brancusi sous tous les angles en 3D.",
   };
 
   // ── Info modal ───────────────────────────────────────────────────────
@@ -256,10 +256,10 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
       "The gilded surface conjures endless reflections of light, while at the same time, the figure appears to glow from within, as if an ancient goddess or icon from a past epoch. Together with the luminous gilding, the dark patina of her hair evokes the ancient art of East Asia. In his assimilation of an individual presence from his own time, with a look to the appearance and meaning of artworks of the past, Brancusi created an entirely unique sculptural language and a new form of femininity.",
     ],
     german: [
-      "Strahlend in ihrer Materialit\u00e4t und radikal in ihrer formalen Raffinesse ist Constantin Brancusis Werk eine Ikone der modernen Kunst. Durch seine eigene kraftvolle Vision verwandelte Brancusi das weibliche Gesicht in eine abstrahierte Anordnung harmonischer Formen und ver\u00e4nderte damit f\u00fcr immer den Verlauf der Bildhauerei im 20. Jahrhundert.",
-      "Hier wird der Kopf von Margit Pogany, einer Kunststudentin, die der K\u00fcnstler 1910 kennenlernte, als Kontinuum anmutiger Kurven neu interpretiert. Geschwungene, fl\u00e4chige B\u00f6gen deuten ihren Blick und ihre gro\u00dfen Augen an, w\u00e4hrend von hinten ihr ordentlicher Haarknoten eine Spirale bildet, eine schlangenf\u00f6rmige Haarstr\u00e4hne, die knapp hinter ihrem Ohr versteckt ist. Physiognomische Details werden in Brancusis Streben nach Harmonie auf die elementarsten und reinsten Formen reduziert. \u201ENicht die \u00e4u\u00dfere Form ist real, sondern das Wesen der Dinge\u201C, erkl\u00e4rte er einmal. \u201EAuf dieser Grundlage ist es unm\u00f6glich, etwas Reales auszudr\u00fccken, indem man oberfl\u00e4chliche Erscheinungen nachahmt.\u201C",
-      "Brancusi war ein Meister seines Materials. Urspr\u00fcnglich in Marmor ausgef\u00fchrt, \u00fcbertrug Brancusi dieses Motiv um 1913 in Bronze und schuf sechs Abg\u00fcsse von Dana\u00efde. In den fr\u00fchen Abg\u00fcssen nutzte er Vergoldung, um seine k\u00fcnstlerischen Ziele zu erreichen \u2013 eine Technik, die in seinem Schaffen selten anzutreffen ist, wobei die Oberfl\u00e4chenbehandlung ebenso wichtig war wie das Motiv selbst. \u201EJedes Material hat eine eigene Sprache, die ich nicht beseitigen und durch meine eigene ersetzen will\u201C, erkl\u00e4rte Brancusi, \u201Esondern lediglich dazu bringen m\u00f6chte, das, was ich denke und sehe, in seiner eigenen Sprache auszudr\u00fccken, die ihm allein eigen ist.\u201C",
-      "Die vergoldete Oberfl\u00e4che zaubert endlose Lichtreflexe hervor, w\u00e4hrend die Figur gleichzeitig von innen zu leuchten scheint, wie eine antike G\u00f6ttin oder Ikone aus einer vergangenen Epoche. Zusammen mit der leuchtenden Vergoldung erinnert die dunkle Patina ihres Haares an die antike Kunst Ostasiens. Durch die Verschmelzung einer individuellen Pr\u00e4senz seiner eigenen Zeit mit dem Aussehen und der Bedeutung von Kunstwerken der Vergangenheit schuf Brancusi eine v\u00f6llig einzigartige Bildsprache und eine neue Form der Weiblichkeit.",
+      "Strahlend in ihrer Materialität und radikal in ihrer raffinerte Formensprache ist Constantin Brancusis Danaïde eine Ikone der modernen Kunst. Brancusis schöpferische Vorstellungskraft verwandelte das Frauenbildnis in eine abstrahierte Anordnung harmonischer Formen und veränderte damit für immer die Geschichte der Bildhauerei im 20. Jahrhundert.",
+      "Der Kopf Margit Poganys, einer Kunststudentin, die der Künstler 1910 kennenlernte, wird hier als ein Kontinuum anmutiger Kurven neu interpretiert. Ihr Blick und ihre großen Augen werden durch schwungvolle, flächige Bögen angedeutet, während rückseitig ihr sorgfältiger Haarknoten eine Spirale bildet, eine lockige Haarsträhne hinter das Ohr gesteckt. Brancusis künstlerisches Streben nach Harmonie reduziert die Gesichtszüge auf die grundlegendsten und schlichtesten Formen. „Nicht die äußere Form ist real, sondern das Wesen der Dinge“, äußerte sich Brancusi einmal. „So gedacht ist es unmöglich, etwas Wahres auszudrücken, indem man die äußere Erscheinung nachahmt.“",
+      "Brancusi war ein Meister seines Materials. Ursprünglich in Marmor ausgeführt, übertrug Brancusi das Motiv um 1913 in Bronze und schuf sechs Abgüsse der Danaïde. Die frühen Abgüsse vergoldete er, eine Technik der er sich selten bediente, wobei die Bearbeitung der Oberfläche ebenso wichtig war wie das Motiv selbst. „Jedes Material hat eine eigene Sprache, die ich nicht beseitigen und durch meine eigene ersetzen will“, erklärte Brancusi, „sondern lediglich dazu bringen möchte, das, was ich denke und sehe, in seiner eigenen Sprache auszudrücken, die ihm allein eigen ist.“",
+      "Die vergoldete Oberfläche zaubert endlose Lichtreflexe hervor, während die Figur zugleich von innen heraus zu strahlen scheint, eine antike Göttin oder eine Ikone aus einem vergangenen Zeitalter anmutend. Die schimmernde Vergoldung im Kontrast mit der dunklen Patina ihres Haares erinnern an die antike ostasiatische Kunst. In dem er sich eine zeitgenössische Figur künstlerisch aneignete, mit Rückblick auf Form und Bedeutung antiker Kunst, schuf Brancusi eine völlig einzigartige Bildsprache und eine neue Form der Weiblichkeit.",
     ],
     french: [
       "Rayonnante par sa matérialité et radicale dans son raffinement formel, Danaïde de Constantin Brancusi est une icône de l’art moderne. Grâce à sa vision puissante, Brancusi a transformé le visage féminin en un agencement abstrait de formes harmonieuses, modifiant ainsi à jamais l’histoire de la sculpture au XXe siècle.",
@@ -272,12 +272,6 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
       "Aquí, la cabeza de Margit Pogany, una estudiante de arte que el artista conoció en 1910, se reimagina como un continuo de elegantes curvas. Los amplios arcos planos aluden a su mirada y sus grandes ojos, mientras que, por detrás, su pulcro moño forma una espiral, un mechón serpenteante de cabello recogido justo detrás de la oreja. Los detalles fisonómicos se destilan hasta alcanzar las formas más elementales y puras en la búsqueda de armonía de Brancusi. «No es la forma exterior lo que es real, sino la esencia de las cosas», afirmó en una ocasión. «Partiendo de esta base, es imposible que alguien exprese algo real imitando las apariencias superficiales».",
       "Brancusi era un maestro en el uso del material. Realizada inicialmente en mármol, Brancusi transformó este motivo en bronce hacia 1913, creando seis fundiciones de Danaïde. En los primeros ejemplos, utilizó el dorado para alcanzar su objetivo artístico, una técnica poco habitual en su práctica, en la que el acabado era tan importante como el propio tema. «Cada material tiene un lenguaje particular que no pretendo eliminar y sustituir por el mío propio», explicaba Brancusi, «sino simplemente hacer que exprese lo que pienso, lo que veo, en su propio lenguaje, que es solo suyo».",
       "La superficie dorada evoca infinitos reflejos de luz, mientras que, al mismo tiempo, la figura parece brillar desde dentro, como si fuera una antigua diosa o un icono de una época pasada. Junto con el luminoso dorado, la pátina oscura de su cabello evoca el arte antiguo de Asia Oriental. Al asimilar una presencia individual de su propia época, con una mirada hacia la apariencia y el significado de las obras de arte del pasado, Brancusi creó un lenguaje escultórico totalmente único y una nueva forma de feminidad.",
-    ],
-    japanese: [
-      "\u305d\u306e\u7d20\u6750\u611f\u304c\u8f1d\u304d\u3001\u5f62\u5f0f\u7684\u306a\u6d17\u7df4\u3055\u304c\u969b\u7acb\u3064\u30b3\u30f3\u30b9\u30bf\u30f3\u30c6\u30a3\u30f3\u30fb\u30d6\u30e9\u30f3\u30af\u30fc\u30b7\u306f\u3001\u73fe\u4ee3\u7f8e\u8853\u306e\u8c61\u5fb4\u7684\u5b58\u5728\u3067\u3042\u308b\u3002\u30d6\u30e9\u30f3\u30af\u30fc\u30b7\u306f\u72ec\u81ea\u306e\u529b\u5f37\u3044\u30d3\u30b8\u30e7\u30f3\u306b\u3088\u3063\u3066\u3001\u5973\u6027\u306e\u9854\u3092\u8abf\u548c\u306e\u3068\u308c\u305f\u5f62\u614b\u306e\u62bd\u8c61\u7684\u306a\u69cb\u6210\u3078\u3068\u5909\u5bb9\u3055\u305b\u3001\u305d\u308c\u306b\u3088\u3063\u306520\u4e16\u7d00\u306e\u5f6b\u523b\u306e\u6b74\u53f2\u3092\u6c38\u9060\u306b\u5909\u3048\u305f\u3002",
-      "\u3053\u3053\u3067\u306f\u30011910\u5e74\u306b\u82b8\u8853\u5bb6\u304c\u51fa\u4f1a\u3063\u305f\u7f8e\u8853\u5b66\u751f\u30de\u30eb\u30ae\u30c3\u30c8\u30fb\u30dd\u30ac\u30cb\u30fc\u306e\u982d\u90e8\u304c\u3001\u512a\u7f8e\u306a\u66f2\u7dda\u306e\u9023\u7d9a\u4f53\u3068\u3057\u3066\u518d\u89e3\u91c8\u3055\u308c\u3066\u3044\u308b\u3002\u3046\u306d\u308b\u3088\u3046\u306a\u5e73\u9762\u7684\u306a\u30a2\u30fc\u30c1\u304c\u5f7c\u5973\u306e\u8996\u7dda\u3068\u5927\u304d\u306a\u77b3\u3092\u6697\u793a\u3057\u3001\u5f8c\u982d\u90e8\u3067\u306f\u6574\u3063\u305f\u9aea\u7d50\u3044\u304c\u87ba\u65cb\u3092\u63cf\u304d\u3001\u8033\u306e\u3059\u3050\u5f8c\u308d\u306b\u96a0\u308c\u308b\u86c7\u306e\u3088\u3046\u306a\u4e00\u7b4b\u306e\u9aea\u304c\u6d6e\u304b\u3073\u4e0a\u304c\u308b\u3002\u30d6\u30e9\u30f3\u30af\u30fc\u30b7\u304c\u8abf\u548c\u3092\u8ffd\u6c42\u3059\u308b\u4e2d\u3067\u3001\u9854\u8c8c\u306e\u7d30\u90e8\u306f\u6700\u3082\u57fa\u672c\u7684\u304b\u3064\u7d14\u7c8b\u306a\u5f62\u614b\u3078\u3068\u9084\u5143\u3055\u308c\u3066\u3044\u308b\u3002\u300c\u73fe\u5b9f\u306a\u306e\u306f\u5916\u898b\u3067\u306f\u306a\u304f\u3001\u7269\u4e8b\u306e\u672c\u8cea\u3067\u3042\u308b\u300d\u3068\u5f7c\u306f\u304b\u3064\u3066\u8a9e\u3063\u305f\u3002\u300c\u3053\u306e\u89b3\u70b9\u304b\u3089\u3059\u308c\u3070\u3001\u8868\u9762\u7684\u306a\u5916\u89b3\u3092\u6a21\u5023\u3057\u3066\u73fe\u5b9f\u3092\u8868\u73fe\u3059\u308b\u3053\u3068\u306f\u4e0d\u53ef\u80fd\u3060\u3002\u300d",
-      "\u30d6\u30e9\u30f3\u30af\u30fc\u30b7\u306f\u7d20\u6750\u306e\u9054\u4eba\u3067\u3042\u3063\u305f\u3002\u5f53\u521d\u306f\u5927\u7406\u77f3\u3067\u5236\u4f5c\u3055\u308c\u305f\u304c\u3001\u30d6\u30e9\u30f3\u30af\u30fc\u30b7\u306f1913\u5e74\u9803\u3001\u3053\u306e\u30e2\u30c1\u30fc\u30d5\u3092\u30d6\u30ed\u30f3\u30ba\u306b\u79fb\u3057\u30016\u4f53\u306e\u92f3\u9020\u4f5c\u54c1\u3092\u5236\u4f5c\u3057\u305f\u3002\u521d\u671f\u306e\u92f3\u9020\u4f5c\u54c1\u3067\u306f\u3001\u82b8\u8853\u7684\u76ee\u6a19\u3092\u9054\u6210\u3059\u308b\u305f\u3081\u306b\u91d1\u30e1\u30c3\u30ad\u3092\u65bd\u3057\u305f\u3002\u3053\u308c\u306f\u5f7c\u306e\u4f5c\u54c1\u3067\u306f\u7a00\u306a\u6280\u6cd5\u3067\u3042\u308a\u3001\u8868\u9762\u51e6\u7406\u306f\u30e2\u30c1\u30fc\u30d5\u305d\u306e\u3082\u306e\u3068\u540c\u3058\u304f\u3089\u3044\u91cd\u8981\u8996\u3055\u308c\u3066\u3044\u305f\u3002\u300c\u3042\u3089\u3086\u308b\u7d20\u6750\u306b\u306f\u72ec\u81ea\u306e\u8a00\u8a9e\u304c\u3042\u308a\u3001\u79c1\u306f\u305d\u308c\u3092\u6392\u9664\u3057\u3066\u81ea\u5206\u306e\u8a00\u8a9e\u306b\u7f6e\u304d\u63db\u3048\u3088\u3046\u3068\u306f\u3057\u306a\u3044\u300d\u3068\u30d6\u30e9\u30f3\u30af\u30fc\u30b7\u306f\u8aac\u660e\u3057\u305f\u3002\u300c\u305f\u3060\u3001\u79c1\u304c\u8003\u3048\u3001\u898b\u3066\u3044\u308b\u3053\u3068\u3092\u3001\u305d\u306e\u7d20\u6750\u306b\u56fa\u6709\u306e\u3001\u305d\u308c\u3060\u3051\u304c\u6301\u3064\u8a00\u8a9e\u3067\u8868\u73fe\u3055\u305b\u305f\u3044\u3060\u3051\u306a\u306e\u3060\u3002\u300d",
-      "\u91d1\u7b94\u3092\u65bd\u3055\u308c\u305f\u8868\u9762\u306f\u679c\u3066\u3057\u306a\u3044\u5149\u306e\u53cd\u5c04\u3092\u751f\u307f\u51fa\u3057\u3001\u305d\u306e\u50cf\u306f\u307e\u308b\u3067\u53e4\u4ee3\u306e\u5973\u795e\u3084\u904e\u304e\u53bb\u3063\u305f\u6642\u4ee3\u306e\u30a4\u30b3\u30f3\u306e\u3088\u3046\u306b\u3001\u5185\u5074\u304b\u3089\u8f1d\u3044\u3066\u3044\u308b\u304b\u306e\u3088\u3046\u306b\u898b\u3048\u308b\u3002\u8f1d\u304f\u91d1\u7b94\u3068\u76f8\u307e\u3063\u3066\u3001\u5f7c\u5973\u306e\u9aea\u306e\u6697\u3044\u7dd1\u9752\u306f\u3001\u6771\u30a2\u30b8\u30a2\u306e\u53e4\u4ee3\u82b8\u8853\u3092\u5f77\u5f7f\u3068\u3055\u305b\u308b\u3002\u81ea\u8eab\u306e\u6642\u4ee3\u306b\u304a\u3051\u308b\u500b\u3005\u306e\u5b58\u5728\u611f\u3068\u3001\u904e\u53bb\u306e\u82b8\u8853\u4f5c\u54c1\u306e\u69d8\u76f8\u3084\u610f\u5473\u3092\u878d\u5408\u3055\u305b\u308b\u3053\u3068\u3067\u3001\u30d6\u30e9\u30f3\u30af\u30fc\u30b7\u306f\u5168\u304f\u72ec\u81ea\u306e\u8996\u899a\u8a00\u8a9e\u3068\u3001\u65b0\u305f\u306a\u5973\u6027\u50cf\u3092\u5275\u308a\u51fa\u3057\u305f\u3002",
     ],
   };
 
@@ -457,7 +451,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     const lang = LANGUAGES.find((l) => l.id === activeLanguageId);
     const isMobile = window.innerWidth <= 640;
     if (isMobile) {
-      const shortCodes = { english: "EN", german: "DE", french: "FR", spanish: "ES", japanese: "JP" };
+      const shortCodes = { english: "EN", german: "DE", spanish: "ES", french: "FR" };
       return shortCodes[activeLanguageId] || (lang ? lang.label.substring(0, 2).toUpperCase() : "EN");
     }
     return lang ? lang.label.toUpperCase() : "ENGLISH";
