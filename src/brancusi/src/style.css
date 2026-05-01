@@ -1569,10 +1569,6 @@ canvas {
   }
 }
 
-/* Hide Studio controls for launch. */
-.debug-toggle {
-  display: none;
-}
 
 
 .christies-logo {
