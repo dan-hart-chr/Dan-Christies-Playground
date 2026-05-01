@@ -2,36 +2,15 @@ import { GlobeIcon, TranscriptIcon, SoundIcon, SoundOffIcon, InfoIcon } from './
 import { LANGUAGE_LABELS, LANGUAGE_SHORT, UI_LABELS } from '../data/transcripts';
 import type { PanelType } from './PollockViewer';
 
-type ThemeMode = 'light' | 'dark';
-
 interface ControlsProps {
   onOpenPanel: (panel: PanelType) => void;
   currentLang: string;
   muted?: boolean;
   onMuteToggle?: () => void;
   showLanguageSelection?: boolean;
-  themeMode: ThemeMode;
-  onThemeToggle: () => void;
 }
 
 const btn = 'cursor-pointer transition-opacity hover:opacity-80';
-
-function SunIcon({ className = '' }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
-      <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M12 2.75v2.5M12 18.75v2.5M4.22 4.22l1.77 1.77M18.01 18.01l1.77 1.77M2.75 12h2.5M18.75 12h2.5M4.22 19.78l1.77-1.77M18.01 5.99l1.77-1.77" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function MoonIcon({ className = '' }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
-      <path d="M19.2 14.7A7.58 7.58 0 0 1 9.3 4.8a7.6 7.6 0 1 0 9.9 9.9Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 
 export default function Controls({
   onOpenPanel,
@@ -39,24 +18,12 @@ export default function Controls({
   muted = false,
   onMuteToggle,
   showLanguageSelection = true,
-  themeMode,
-  onThemeToggle,
 }: ControlsProps) {
   const MuteIcon = muted ? SoundOffIcon : SoundIcon;
-  const ThemeIcon = themeMode === 'light' ? MoonIcon : SunIcon;
   const labels = UI_LABELS[currentLang] ?? UI_LABELS.en;
 
   return (
     <>
-      <button
-        className={`${btn} absolute right-4 top-[44px] z-30 flex size-[48px] items-center justify-center rounded-[24px] bg-[rgba(244,244,244,0.7)] text-[#222] backdrop-blur-[20px] md:right-[48px]`}
-        aria-label={themeMode === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
-        onClick={onThemeToggle}
-        type="button"
-      >
-        <ThemeIcon key={themeMode} className="size-5" />
-      </button>
-
       {/* ===== MOBILE: all bottom buttons in one centered row ===== */}
       <div className="absolute bottom-[155px] left-1/2 z-30 flex -translate-x-1/2 gap-[7px] md:hidden">
         <button
