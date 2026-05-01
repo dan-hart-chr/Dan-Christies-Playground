@@ -10,14 +10,14 @@ const transcripts: Record<string, string[]> = {
     "Number 7A, 1948 is a masterpiece of twentieth-century art. It's impressive size and complex composition results in a majestic and mesmeric canvas that represents a key moment not only in the artist's short but explosive career, but also in the wider history of art.",
   ],
   de: [
-    'Jackson Pollocks \u201ENumber 7A, 1948\u201C hat die Kunstgeschichte revolutioniert.',
-    'Das \u00E4u\u00DFerst raffinierte Zusammenspiel von Farbe, Bewegung und dynamischer Energie ist das Ergebnis einer v\u00F6llig neuen Form der Malerei.',
-    'Auf roher, ungrundierter Leinwand entstanden, ist diese h\u00F6chst poetische Komposition das Ergebnis von Pollocks revolution\u00E4rer neuer Technik, die einem \u201EZeichnen im Raum\u201C gleichkam. Nur sehr wenig, wenn \u00FCberhaupt, wird die Farbe direkt auf die Oberfl\u00E4che des Gem\u00E4ldes aufgetragen; stattdessen wird sie gegossen, getropft, gespritzt und zu einer lyrischen Anordnung aus ineinander verschlungenen schwarzen Spuren verteilt.',
-    'Diese werden dann durch Tupfer aus leuchtend rotem Pigment durchsetzt \u2013 etwas, das Pollock gelegentlich einf\u00FCgte, um einen dramatischen Effekt zu erzielen \u2013 sowie durch mehrere diskrete Bereiche, in denen er Tupfer aus violetter Farbe einbrachte.',
-    'Indem er seine Leinwand direkt auf den Boden legte und von oben arbeitete, konnte Pollock sich um die gesamte Leinwand herum bewegen und sich so von den Traditionen der Staffeleimalerei befreien, um ein umfassendes visuelles Erlebnis zu schaffen.',
-    'Mit dieser neuen Technik gelang es Pollock, seinen ganzen K\u00F6rper sowohl in die Komposition als auch in die Ausf\u00FChrung des Gem\u00E4ldes einzubeziehen. Er sagte, er f\u00FChle sich dadurch wohler und sei enger in den Schaffensprozess eingebunden. Pollock sagte oft, er habe das Gef\u00FChl, sich in seinen Gem\u00E4lden zu befinden, in einem st\u00E4ndigen Ringen zwischen dem, was er sich f\u00FCr das Gem\u00E4lde vorstellte, und dem, was die Farbe von sich aus tun wollte.',
-    'Dieser revolution\u00E4re neue Ansatz weckte das Interesse der \u00D6ffentlichkeit, und Pollock trat in Zeitschriften und Fernsehsendungen in ganz Amerika auf; eine einflussreiche Zeitschrift fragte sogar, ob er der gr\u00F6\u00DFte amerikanische Maler des 20. Jahrhunderts sei.',
-    '\u201ENumber 7A, 1948\u201C ist ein Meisterwerk der Kunst des 20. Jahrhunderts. Seine beeindruckende Gr\u00F6\u00DFe und komplexe Komposition ergeben eine majest\u00E4tische und hypnotisierende Leinwand, die einen Schl\u00FCsselmoment nicht nur in der kurzen, aber explosiven Karriere des K\u00FCnstlers, sondern auch in der gesamten Kunstgeschichte darstellt.',
+    'Jackson Pollocks „Number 7A, 1948“ hat die Kunstgeschichte revolutioniert.',
+    'Das äußerst raffinierte Zusammenspiel von Farbe, Bewegung und dynamischer Energie ist das Ergebnis einer völlig neuen Form der Malerei.',
+    'Die poetische Komposition auf roher, nicht grundierter Leinwand, ist das Ergebnis von Pollocks bahnbrechender neuer Maltechnik, die einem „Zeichnen im Raum“ gleichkam. Selten, wenn überhaupt, wird die Farbe direkt auf die Bildoberfläche aufgetragen; stattdessen wird sie gegossen, getropft, gespritzt und zu einer lyrischen Anordnung aus ineinander verschlungenen schwarzen Spuren zusammengefügt.',
+    'Diese werden dann mit leuchtendroten Farbtupfern durchsetzt – die Pollock gelegentlich hinzufügte, um dramatische Effekte zu erzielen – und auch durch mehrere Stellen, in denen er violette Farbtupfer auftrug.',
+    'Pollock legte die Leinwand direkt auf den Boden, so dass er von oben arbeiten und sich um die gesamte Leinwand bewegen konnte. So befreite er sich von der traditionellen Staffelei-Malerei und schuf ein umfassendes Seherlebnis.',
+    'Duch diese neue Maltechnik gelang es Pollock, seinen ganzen Körper in Komposition und Ausführung des Gemäldes einzubeziehen. Er sagte, er fühle sich dadurch wohler und sei enger in den Schaffensprozess eingebunden. Pollock sagte oft, er habe das Gefühl, sich in seinen Gemälden zu befinden, in einem ständigen Ringen zwischen seinen Vorstellungen, und dem, was die Farbe von sich aus wollte.',
+    'Dieser revolutionäre neue Ansatz faszinierte die Öffentlichkeit, und Zeitschriften und Fernsehsendungen in ganz Amerika brachten Beiträge über Pollock. Eine einflussreiche Zeitschrift fragte sogar, ob er der größte amerikanische Maler des 20. Jahrhunderts sei.',
+    '„Number 7A, 1948“ ist ein Meisterwerk der Kunst des 20. Jahrhunderts. Die eindrucksvolle Bildgröße und die Komplexität der Komposition sind imposant und ziehen Beschauer in ihren Bann. Das Gemälde stellt ein Schlüsselmoment dar - nicht nur in der kurzen, brisanten Karriere des Künstlers, sondern auch in der Kunstgeschichte.',
   ],
   fr: [
     '\u00AB\u00A0Number 7A, 1948\u00A0\u00BB de Jackson Pollock a r\u00E9volutionn\u00E9 l\u2019histoire de l\u2019art.',
@@ -39,16 +39,6 @@ const transcripts: Record<string, string[]> = {
     'Este nuevo y revolucionario enfoque cautivó el interés del público. Pollock apareció en revistas y programas de televisión por todo Estados Unidos; incluso una influyente revista llegó a preguntarse si era el mejor pintor estadounidense del siglo XX.',
     'Número 7A, 1948 es una obra maestra del arte del siglo XX. Su impresionante tamaño y su compleja composición dan como resultado un lienzo majestuoso e hipnótico que representa un momento clave no solo en la breve pero explosiva carrera del artista, sino también en la historia del arte en general.',
   ],
-  ja: [
-    '\u30B8\u30E3\u30AF\u30BD\u30F3\u30FB\u30DD\u30ED\u30C3\u30AF\u306E\u300E\u30CA\u30F3\u30D0\u30FC7A\u30011948\u300F\u306F\u7F8E\u8853\u53F2\u306B\u9769\u547D\u3092\u3082\u305F\u3089\u3057\u305F\u3002',
-    '\u8272\u5F69\u3001\u52D5\u304D\u3001\u305D\u3057\u3066\u30C0\u30A4\u30CA\u30DF\u30C3\u30AF\u306A\u30A8\u30CD\u30EB\u30AE\u30FC\u304C\u898B\u4E8B\u306B\u7E54\u308A\u306A\u3059\u3053\u306E\u4F5C\u54C1\u306F\u3001\u307E\u3063\u305F\u304F\u65B0\u3057\u3044\u7D75\u753B\u5F62\u5F0F\u306E\u7D50\u6676\u3067\u3042\u308B\u3002',
-    '\u4E0B\u5730\u51E6\u7406\u3055\u308C\u3066\u3044\u306A\u3044\u7D20\u306E\u30AD\u30E3\u30F3\u30D0\u30B9\u306B\u63CF\u304B\u308C\u305F\u3053\u306E\u6975\u3081\u3066\u8A69\u7684\u306A\u69CB\u56F3\u306F\u3001\u3044\u308F\u3070\u300C\u7A7A\u9593\u306B\u304A\u3051\u308B\u63CF\u753B\u300D\u306B\u7B49\u3057\u3044\u30DD\u30ED\u30C3\u30AF\u306E\u9769\u65B0\u7684\u306A\u65B0\u6280\u6CD5\u306B\u3088\u3063\u3066\u751F\u307F\u51FA\u3055\u308C\u305F\u3082\u306E\u3067\u3042\u308B\u3002\u7D75\u306E\u5177\u304C\u7D75\u753B\u306E\u8868\u9762\u306B\u76F4\u63A5\u5857\u3089\u308C\u308B\u3053\u3068\u306F\u3001\u3042\u3063\u305F\u3068\u3057\u3066\u3082\u3054\u304F\u308F\u305A\u304B\u3067\u3042\u308A\u3001\u305D\u306E\u4EE3\u308F\u308A\u306B\u3001\u7D75\u306E\u5177\u306F\u6CE8\u304C\u308C\u3001\u6EF4\u308A\u843D\u3061\u3001\u98DB\u3073\u6563\u308A\u3001\u7D61\u307F\u5408\u3046\u9ED2\u3044\u75D5\u8DE1\u306E\u53D9\u60C5\u7684\u306A\u914D\u7F6E\u3078\u3068\u5E83\u304C\u3063\u3066\u3044\u304F\u3002',
-    '\u3053\u308C\u3089\u306B\u306F\u3001\u9BAE\u3084\u304B\u306A\u8D64\u8272\u306E\u984F\u6599\u306B\u3088\u308B\u70B9\u63CF\u304C\u6563\u308A\u3070\u3081\u3089\u308C\u3066\u3044\u308B\u2014\u2014\u3053\u308C\u306F\u30DD\u30ED\u30C3\u30AF\u304C\u5287\u7684\u306A\u52B9\u679C\u3092\u5F97\u308B\u305F\u3081\u306B\u6642\u6298\u53D6\u308A\u5165\u308C\u305F\u624B\u6CD5\u3067\u3042\u308B\u2014\u2014\u3055\u3089\u306B\u3001\u7D2B\u8272\u306E\u70B9\u63CF\u304C\u65BD\u3055\u308C\u305F\u3044\u304F\u3064\u304B\u306E\u72EC\u7ACB\u3057\u305F\u9818\u57DF\u3082\u5B58\u5728\u3059\u308B\u3002',
-    '\u30AD\u30E3\u30F3\u30D0\u30B9\u3092\u5E8A\u306B\u76F4\u63A5\u7F6E\u304D\u3001\u4E0A\u304B\u3089\u4F5C\u696D\u3059\u308B\u3053\u3068\u3067\u3001\u30DD\u30ED\u30C3\u30AF\u306F\u30AD\u30E3\u30F3\u30D0\u30B9\u306E\u5468\u56F2\u3092\u81EA\u7531\u306B\u52D5\u304D\u56DE\u308A\u3001\u30A4\u30FC\u30BC\u30EB\u753B\u306E\u4F1D\u7D71\u304B\u3089\u89E3\u653E\u3055\u308C\u3001\u5305\u62EC\u7684\u306A\u8996\u899A\u4F53\u9A13\u3092\u751F\u307F\u51FA\u3059\u3053\u3068\u304C\u3067\u304D\u305F\u3002',
-    '\u3053\u306E\u65B0\u3057\u3044\u6280\u6CD5\u306B\u3088\u308A\u3001\u30DD\u30ED\u30C3\u30AF\u306F\u81EA\u8EAB\u306E\u5168\u8EAB\u3092\u3001\u7D75\u753B\u306E\u69CB\u6210\u3068\u5236\u4F5C\u306E\u4E21\u65B9\u3078\u3068\u7D44\u307F\u8FBC\u3080\u3053\u3068\u306B\u6210\u529F\u3057\u305F\u3002\u5F7C\u306F\u3001\u305D\u306E\u65B9\u304C\u3088\u308A\u5FC3\u5730\u3088\u304F\u3001\u5275\u4F5C\u30D7\u30ED\u30BB\u30B9\u306B\u3088\u308A\u6DF1\u304F\u95A2\u308F\u3063\u3066\u3044\u308B\u3068\u611F\u3058\u308B\u3068\u8A9E\u3063\u305F\u3002\u30DD\u30ED\u30C3\u30AF\u306F\u3001\u81EA\u5206\u306E\u7D75\u753B\u306E\u4E2D\u306B\u3044\u308B\u3088\u3046\u306A\u611F\u899A\u3001\u3064\u307E\u308A\u3001\u81EA\u5206\u304C\u305D\u306E\u7D75\u753B\u306B\u601D\u3044\u63CF\u304F\u3082\u306E\u3068\u3001\u7D75\u306E\u5177\u304C\u305D\u308C\u81EA\u4F53\u3067\u306A\u305D\u3046\u3068\u3059\u308B\u3082\u306E\u3068\u306E\u7D76\u3048\u9593\u306A\u3044\u845B\u85E4\u306E\u4E2D\u306B\u3044\u308B\u3088\u3046\u306A\u611F\u899A\u3092\u62B1\u3044\u3066\u3044\u308B\u3068\u3001\u3057\u3070\u3057\u3070\u8A9E\u3063\u3066\u3044\u305F\u3002',
-    '\u3053\u306E\u9769\u65B0\u7684\u306A\u65B0\u3057\u3044\u30A2\u30D7\u30ED\u30FC\u30C1\u306F\u4E16\u9593\u306E\u95A2\u5FC3\u3092\u547C\u3073\u3001\u30DD\u30ED\u30C3\u30AF\u306F\u5168\u7C73\u306E\u96D1\u8A8C\u3084\u30C6\u30EC\u30D3\u756A\u7D44\u306B\u51FA\u6F14\u3059\u308B\u3088\u3046\u306B\u306A\u3063\u305F\u3002\u3042\u308B\u6709\u529B\u306A\u96D1\u8A8C\u306F\u3001\u5F7C\u304C20\u4E16\u7D00\u6700\u5927\u306E\u30A2\u30E1\u30EA\u30AB\u4EBA\u753B\u5BB6\u3067\u3042\u308B\u304B\u3069\u3046\u304B\u3055\u3048\u554F\u3044\u304B\u3051\u305F\u307B\u3069\u3067\u3042\u308B\u3002',
-    '\u300C\u30CA\u30F3\u30D0\u30FC7A\u30011948\u5E74\u300D\u306F\u300120\u4E16\u7D00\u7F8E\u8853\u306E\u5091\u4F5C\u3067\u3042\u308B\u3002\u305D\u306E\u5727\u5012\u7684\u306A\u5927\u304D\u3055\u3068\u8907\u96D1\u306A\u69CB\u56F3\u304C\u76F8\u307E\u3063\u3066\u3001\u5A01\u53B3\u306B\u6E80\u3061\u3001\u89B3\u308B\u8005\u3092\u9B45\u4E86\u3059\u308B\u3053\u306E\u4F5C\u54C1\u306F\u3001\u82B8\u8853\u5BB6\u306E\u77ED\u304F\u3082\u7206\u767A\u7684\u306A\u30AD\u30E3\u30EA\u30A2\u306B\u304A\u3051\u308B\u91CD\u8981\u306A\u77AC\u9593\u3060\u3051\u3067\u306A\u304F\u3001\u7F8E\u8853\u53F2\u5168\u4F53\u306B\u304A\u3044\u3066\u3082\u91CD\u8981\u306A\u4F4D\u7F6E\u3092\u5360\u3081\u3066\u3044\u307E\u3059\u3002',
-  ],
 };
 
 export const LANGUAGE_LABELS: Record<string, string> = {
@@ -56,7 +46,6 @@ export const LANGUAGE_LABELS: Record<string, string> = {
   de: 'DEUTSCH',
   fr: 'FRAN\u00C7AIS',
   es: 'ESPAÑOL',
-  ja: '\u65E5\u672C\u8A9E',
 };
 
 export const LANGUAGE_SHORT: Record<string, string> = {
@@ -64,7 +53,6 @@ export const LANGUAGE_SHORT: Record<string, string> = {
   de: 'DE',
   fr: 'FR',
   es: 'ES',
-  ja: 'JA',
 };
 
 export interface UiLabels {
@@ -84,8 +72,7 @@ export const UI_LABELS: Record<string, UiLabels> = {
   de: {
     viewTranscript: 'TRANSKRIPT ANZEIGEN',
     transcript: 'TRANSKRIPT',
-    instructions:
-      'Scrollen Sie nach unten, um Pollocks 7a in einem immersiven Panoramaerlebnis zu entdecken, w\u00E4hrend Sie r\u00E4umlicher Klang in eine galerie\u00E4hnliche Klanglandschaft versetzt.',
+    instructions: 'Scrollen Sie nach unten, um Pollocks Number 7A, 1948 aus nächster Nähe zu erkunden.',
     continueLabel: 'WEITER',
   },
   fr: {
@@ -100,13 +87,6 @@ export const UI_LABELS: Record<string, UiLabels> = {
     transcript: 'TRANSCRIPCIÓN',
     instructions: 'Desplázate hacia abajo para explorar de cerca Número 7A, 1948 de Pollock.',
     continueLabel: 'CONTINUAR',
-  },
-  ja: {
-    viewTranscript: '\u30C8\u30E9\u30F3\u30B9\u30AF\u30EA\u30D7\u30C8\u3092\u898B\u308B',
-    transcript: '\u30C8\u30E9\u30F3\u30B9\u30AF\u30EA\u30D7\u30C8',
-    instructions:
-      '\u4E0B\u306B\u30B9\u30AF\u30ED\u30FC\u30EB\u3057\u3066\u3001\u30DD\u30ED\u30C3\u30AF\u306E\u300C7a\u300D\u3092\u6CA1\u5165\u578B\u306E\u30D1\u30CE\u30E9\u30DE\u4F53\u9A13\u3067\u63A2\u7D22\u3057\u3066\u304F\u3060\u3055\u3044\u3002\u7A7A\u9593\u97F3\u97FF\u304C\u30AE\u30E3\u30E9\u30EA\u30FC\u306E\u3088\u3046\u306A\u97F3\u306E\u4E16\u754C\u3078\u3068\u3044\u3056\u306A\u3044\u307E\u3059\u3002',
-    continueLabel: '\u7D9A\u3051\u308B',
   },
 };
 

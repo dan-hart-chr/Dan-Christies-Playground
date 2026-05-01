@@ -2,7 +2,7 @@ function Separator() {
   return <span className="inline-block h-[15px] w-px shrink-0 bg-[#f0e8d7] opacity-50" />;
 }
 
-const HOME_URL = 'https://christies.com/';
+const HOME_URL = 'https://www.christies.com/en';
 const COLLECTION_URL =
   'https://www.christies.com/en/auction/masterpieces-the-private-collection-of-s-i-newhouse-31380/';
 const BRANCUSI_URL = 'https://experience.christies.com/brancusi/';

@@ -5,7 +5,6 @@ const LANGUAGES = [
   { code: 'de', label: 'Deutsch' },
   { code: 'fr', label: 'Français' },
   { code: 'es', label: 'Español' },
-  { code: 'ja', label: '日本語' },
 ];
 
 interface LanguagePanelProps {
