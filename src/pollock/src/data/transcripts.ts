@@ -66,7 +66,7 @@ export const UI_LABELS: Record<string, UiLabels> = {
   en: {
     viewTranscript: 'VIEW TRANSCRIPT',
     transcript: 'TRANSCRIPT',
-    instructions: "Scroll down to explore Pollock's 7a, 1948 up-close.",
+    instructions: "Scroll down to explore Pollock's 7a, 1948.",
     continueLabel: 'CONTINUE',
   },
   de: {
