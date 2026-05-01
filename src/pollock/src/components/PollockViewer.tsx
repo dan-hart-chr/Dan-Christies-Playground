@@ -12,7 +12,7 @@ import LanguagePanel from './LanguagePanel';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const SHOW_LANGUAGE_SELECTION: boolean = false;
+const SHOW_LANGUAGE_SELECTION: boolean = true;
 
 export type PanelType = 'info' | 'transcript' | 'language' | null;
 
