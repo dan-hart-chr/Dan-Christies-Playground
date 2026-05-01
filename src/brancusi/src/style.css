@@ -1584,6 +1584,7 @@ canvas {
 .image-sequence-viewer {
   position: absolute;
   inset: 0;
+  --sequence-y-offset: clamp(56px, 8vh, 104px);
   display: grid;
   place-items: center;
   opacity: 0;
@@ -1604,6 +1605,7 @@ canvas {
   max-width: min(62vw, 760px);
   max-height: min(86%, 860px);
   object-fit: contain;
+  transform: translateY(calc(-1 * var(--sequence-y-offset)));
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -1616,6 +1618,10 @@ canvas {
 }
 
 @media (max-width: 640px) {
+  .image-sequence-viewer {
+    --sequence-y-offset: clamp(40px, 6vh, 72px);
+  }
+
   .image-sequence-image {
     max-width: 92vw;
     max-height: min(72%, 640px);
