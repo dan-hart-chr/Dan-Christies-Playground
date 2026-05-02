@@ -134,6 +134,7 @@ function setImageSequenceFrame(nextFrame) {
   const activeImage = imageSequenceImages[activeImageSequenceLayer];
   if (clampedFrame === imageSequenceFrame && activeImage.src) return;
   imageSequenceFrame = clampedFrame;
+  updateArtworkInfoVisibility();
   if (!activeImage.src) {
     activeImage.src = IMAGE_SEQUENCE_URLS[imageSequenceFrame];
     activeImage.classList.add("is-active");
@@ -161,6 +162,7 @@ function stepImageSequence(direction) {
   const nextImage = imageSequenceImages[nextLayer];
 
   imageSequenceFrame = nextFrame;
+  updateArtworkInfoVisibility();
   nextImage.classList.remove("is-active");
   nextImage.src = IMAGE_SEQUENCE_URLS[imageSequenceFrame];
   activeImage.classList.remove("is-active");
@@ -173,6 +175,10 @@ function stepImageSequence(direction) {
   window.setTimeout(() => {
     isImageSequenceTransitioning = false;
   }, IMAGE_SEQUENCE_FADE_MS * 2);
+}
+
+function updateArtworkInfoVisibility() {
+  app.classList.toggle("is-image-sequence-scrolled", imageSequenceFrame !== 0);
 }
 
 function createImageSequenceElement(active) {
