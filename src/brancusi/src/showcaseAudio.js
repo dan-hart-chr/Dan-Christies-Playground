@@ -71,13 +71,37 @@ export function createShowcaseAudio() {
   let quoteLoopTimeout = null;
   const progressTimeouts = [];
 
+  const getAudioContext = async () => {
+    if (!ctx) {
+      const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextConstructor) {
+        throw new Error("Web Audio API is not supported in this browser.");
+      }
+      ctx = new AudioContextConstructor();
+    }
+
+    if (ctx.state === "suspended") {
+      await ctx.resume();
+    }
+
+    return ctx;
+  };
+
   return {
+    async unlock() {
+      try {
+        await getAudioContext();
+      } catch (err) {
+        console.warn("Showcase audio failed to unlock:", err);
+      }
+    },
+
     async start() {
       if (started) return;
       started = true;
 
       try {
-        ctx = new (window.AudioContext || window.webkitAudioContext)();
+        ctx = await getAudioContext();
 
         // ── Master output ──────────────────────────────────────
         masterGain = ctx.createGain();
