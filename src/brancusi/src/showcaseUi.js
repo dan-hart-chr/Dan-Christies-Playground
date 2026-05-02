@@ -76,28 +76,28 @@ const ARTIST_DATES = "(1876–1957)";
 
 const UI_TEXTS = {
   english: {
-    artworkTitle: "Danaïde, conceived c. 1913; this bronze version cast shortly after",
+    artworkTitle: "Danaïde, Conceived and cast circa 1913",
     viewTranscript: "VIEW TRANSCRIPT",
     transcriptShort: "TRANSCRIPT",
     detailsBid: "DETAILS & BIDDING",
     continueLabel: "CONTINUE",
   },
   german: {
-    artworkTitle: "Danaïde, entstanden um 1913; diese Bronzefassung kurz darauf gegossen",
+    artworkTitle: "Danaïde, konzipiert und gegossen circa 1913",
     viewTranscript: "TRANSKRIPT ANZEIGEN",
     transcriptShort: "TRANSKRIPT",
     detailsBid: "DETAILS & BIETEN",
     continueLabel: "WEITER",
   },
   spanish: {
-    artworkTitle: "Danaïde, concebida hacia 1913; esta versión en bronce fundida poco después",
+    artworkTitle: "Danaïde, concebida y fundida circa 1913",
     viewTranscript: "VER TRANSCRIPCIÓN",
     transcriptShort: "TRANSCRIPCIÓN",
     detailsBid: "DETALLES Y PUJA",
     continueLabel: "CONTINUAR",
   },
   french: {
-    artworkTitle: "Danaïde, conçue vers 1913 ; cette version en bronze coulée peu après",
+    artworkTitle: "Danaïde, conçue et fondue circa 1913",
     viewTranscript: "VOIR LA TRANSCRIPTION",
     transcriptShort: "TRANSCRIPTION",
     detailsBid: "DÉTAILS ET ENCHÈRES",

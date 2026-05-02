@@ -6,6 +6,25 @@
   font-display: swap;
 }
 
+button.footer-cookie-button.ot-sdk-show-settings {
+  appearance: none !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #f0e8d7 !important;
+  font-family: "ABC Arizona Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+}
+
 @font-face {
   font-family: "ABC Arizona Sans";
   src: url("/fonts/ABCArizonaSans-Regular.otf") format("opentype");
@@ -1404,6 +1423,11 @@ canvas {
   .footer-cookie-button,
   .footer-divider {
     font-size: 10px;
+  }
+
+  button.footer-cookie-button.ot-sdk-show-settings {
+    font-size: 10px !important;
+    letter-spacing: 0.02em !important;
   }
 
   .footer-copy {
