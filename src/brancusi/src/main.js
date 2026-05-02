@@ -67,6 +67,7 @@ function fireExperienceViewPage() {
 const showcaseUi = createShowcaseUi(viewport, MODEL_VIEW, {
   appRoot: app,
   onLanguageChange(languageId) {
+    void showcaseAudio.unlock();
     setAnalyticsPageLanguage(languageId);
     showcaseAudio.setLanguage(languageId);
   },
@@ -91,12 +92,13 @@ function initImageExperience() {
   window.setTimeout(() => {
     showcaseUi.revealExperience({
       onLanguageSelected(langId) {
+        void showcaseAudio.unlock();
         setAnalyticsPageLanguage(langId);
         showcaseAudio.setLanguage(langId);
       },
       onInstructionsDismissed() {
         fireExperienceViewPage();
-        showcaseAudio.start().then(() => showcaseAudio.startQuotes());
+        void showcaseAudio.start().then(() => showcaseAudio.startQuotes());
       },
     });
   }, 180);

@@ -199,7 +199,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
 
     if (item.kind === "cookie") {
       const footerCookieWrap = el("div", "footer-cookie-wrap");
-      const cookieSettingsBtn = el("button", "footer-cookie-button", { id: "ot-sdk-btn", type: "button", text: "Cookie settings" });
+      const cookieSettingsBtn = el("button", "footer-cookie-button ot-sdk-show-settings", { id: "ot-sdk-btn", type: "button", text: "Cookie settings" });
       footerCookieWrap.append(cookieSettingsBtn);
       footerNav.append(footerCookieWrap);
       return;
