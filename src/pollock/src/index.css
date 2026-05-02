@@ -80,6 +80,31 @@
   mask-size: contain;
 }
 
+footer #ot-sdk-btn.footer-cookie-button.ot-sdk-show-settings {
+  appearance: none !important;
+  margin: 0 !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: #f0e8d7 !important;
+  font-family: var(--font-sans) !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-kerning: normal !important;
+  letter-spacing: normal !important;
+  line-height: 1.2 !important;
+  text-decoration: none !important;
+  text-indent: 0 !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+}
+
 @media (max-width: 640px) {
   .christies-logo {
     width: 122px;

@@ -8,10 +8,11 @@ const COLLECTION_URL =
 const BRANCUSI_URL = 'https://experience.christies.com/brancusi/';
 const FOOTER_LINK_CLASS =
   'shrink-0 whitespace-nowrap text-[14px] font-normal uppercase leading-[1.2] text-[#f0e8d7] no-underline cursor-pointer hover:opacity-80 transition-opacity';
+const COOKIE_BUTTON_CLASS = `footer-cookie-button ot-sdk-show-settings ${FOOTER_LINK_CLASS} !border-0 !bg-transparent !p-0 !shadow-none !font-normal !uppercase !leading-[1.2] !text-[14px] !text-[#f0e8d7] !no-underline`;
 
 function CookieSettingsButton() {
   return (
-    <button id="ot-sdk-btn" type="button" className={`ot-sdk-show-settings ${FOOTER_LINK_CLASS}`}>
+    <button id="ot-sdk-btn" type="button" className={COOKIE_BUTTON_CLASS}>
       Cookie settings
     </button>
   );
