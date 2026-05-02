@@ -748,6 +748,16 @@ canvas {
   color: #111111;
 }
 
+.artwork-info {
+  transition: opacity 420ms ease, transform 420ms ease;
+}
+
+#app.is-image-sequence-scrolled .artwork-info {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+}
+
 /* ── Bottom toolbar ──────────────────────────────────────────────────────── */
 
 .bottom-bar {
