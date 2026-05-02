@@ -209,6 +209,7 @@ export default function PollockViewer() {
           <LanguagePanel
             currentLang={language}
             onSelect={(code) => {
+              void audioRef.current.unlock();
               setLanguage(code);
               audioRef.current.setLanguage(code);
               setIntroStage('language-closing');
@@ -224,6 +225,7 @@ export default function PollockViewer() {
             lang={language}
             introMode
             onContinue={() => {
+              void audioRef.current.start();
               setIntroStage('instructions-closing');
               if (!window.viewPageViewFired) {
                 window.viewPageViewFired = true;
@@ -256,6 +258,7 @@ export default function PollockViewer() {
             onClose={closePanel}
             currentLang={language}
             onSelect={(code) => {
+              void audioRef.current.unlock();
               setLanguage(code);
               audioRef.current.setLanguage(code);
               closePanel();
