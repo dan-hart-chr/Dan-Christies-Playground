@@ -88,23 +88,24 @@ export default function PollockViewer() {
         const isMobile = vw < 768;
         const initialWidthPct = isMobile ? 0.89 : 0.65;
         const initialWidth = vw * initialWidthPct;
-        const initialHeight = initialWidth / imgAspect;
 
         const zoomedHeight = vh;
         const zoomedWidth = zoomedHeight * imgAspect;
-        const zoomScale = zoomedHeight / initialHeight;
+        const initialScale = initialWidth / zoomedWidth;
 
         const xLeftAligned = (zoomedWidth - vw) / 2;
         const xRightAligned = -(zoomedWidth - vw) / 2;
 
-        return { zoomScale, xLeftAligned, xRightAligned, initialWidth };
+        return { initialScale, xLeftAligned, xRightAligned, zoomedWidth };
       };
 
       const vals = getValues();
 
       gsap.set(image, {
-        width: vals.initialWidth,
+        width: vals.zoomedWidth,
         height: 'auto',
+        scale: vals.initialScale,
+        x: 0,
         transformOrigin: 'center center',
       });
 
@@ -121,7 +122,7 @@ export default function PollockViewer() {
       tl.to(
         image,
         {
-          scale: () => getValues().zoomScale,
+          scale: 1,
           x: () => getValues().xLeftAligned,
           ease: 'power2.inOut',
           duration: 1,
@@ -144,7 +145,7 @@ export default function PollockViewer() {
       tl.to(
         image,
         {
-          scale: 1,
+          scale: () => getValues().initialScale,
           x: 0,
           ease: 'power2.inOut',
           duration: 1,
@@ -156,7 +157,7 @@ export default function PollockViewer() {
 
       ScrollTrigger.addEventListener('refreshInit', () => {
         const v = getValues();
-        gsap.set(image, { width: v.initialWidth, height: 'auto' });
+        gsap.set(image, { width: v.zoomedWidth, height: 'auto' });
       });
     }, container);
 
