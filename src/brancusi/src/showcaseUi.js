@@ -105,6 +105,23 @@ const UI_TEXTS = {
   },
 };
 
+function renderArtworkTitle(target, text) {
+  target.textContent = "";
+  const marker = "circa";
+  const index = text.indexOf(marker);
+
+  if (index === -1) {
+    target.textContent = text;
+    return;
+  }
+
+  target.append(
+    document.createTextNode(text.slice(0, index)),
+    el("em", null, { text: marker }),
+    document.createTextNode(text.slice(index + marker.length)),
+  );
+}
+
 export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChange, onMuteToggle } = {}) {
 
   const root = appRoot || container; // root = #app, container = .app-viewport
@@ -126,9 +143,8 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   const artistDates = el("span", "artwork-artist-dates", { text: ARTIST_DATES });
   artistName.append(artistNameText, document.createElement("br"), artistDates);
 
-  const artworkTitle = el("p", "artwork-title", {
-    text: UI_TEXTS.english.artworkTitle,
-  });
+  const artworkTitle = el("p", "artwork-title");
+  renderArtworkTitle(artworkTitle, UI_TEXTS.english.artworkTitle);
 
   artworkInfo.append(christiesLogo, artistName, artworkTitle);
 
@@ -293,9 +309,8 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
     document.createElement("br"),
     transcriptHeaderArtistDates,
   );
-  const transcriptHeaderTitle = el("p", "transcript-header-title", {
-    text: UI_TEXTS.english.artworkTitle,
-  });
+  const transcriptHeaderTitle = el("p", "transcript-header-title");
+  renderArtworkTitle(transcriptHeaderTitle, UI_TEXTS.english.artworkTitle);
   transcriptHeader.append(transcriptHeaderArtist, transcriptHeaderTitle);
 
   const transcriptContent = el("div", "transcript-content");
@@ -534,8 +549,8 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   // Apply all localized chrome labels + modal copy for the active language.
   function applyUiLanguage(langId) {
     const t = UI_TEXTS[langId] || UI_TEXTS.english;
-    artworkTitle.textContent = t.artworkTitle;
-    transcriptHeaderTitle.textContent = t.artworkTitle;
+    renderArtworkTitle(artworkTitle, t.artworkTitle);
+    renderArtworkTitle(transcriptHeaderTitle, t.artworkTitle);
     continueBtn.textContent = t.continueLabel;
     detailsBidBtnText.textContent = t.detailsBid;
     updateAnalyticsLanguageAttributes(langId);
