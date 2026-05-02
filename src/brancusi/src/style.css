@@ -759,7 +759,7 @@ canvas {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding: 0 48px 36px;
+  padding: 0 48px 24px;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 700ms ease, transform 700ms ease;
@@ -1389,7 +1389,7 @@ canvas {
   }
 
   .bottom-bar {
-    padding: 0 16px calc(44px + env(safe-area-inset-bottom));
+    padding: 0 16px calc(32px + env(safe-area-inset-bottom));
     justify-content: center;
     gap: 7px;
   }
