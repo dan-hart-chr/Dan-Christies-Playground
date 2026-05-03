@@ -58,6 +58,8 @@ export const LANGUAGE_SHORT: Record<string, string> = {
 export interface UiLabels {
   viewTranscript: string;
   transcript: string;
+  detailsBid: string;
+  detailsBidShort: string;
   instructions: string;
   continueLabel: string;
 }
@@ -66,18 +68,24 @@ export const UI_LABELS: Record<string, UiLabels> = {
   en: {
     viewTranscript: 'VIEW TRANSCRIPT',
     transcript: 'TRANSCRIPT',
+    detailsBid: 'DETAILS & BIDDING',
+    detailsBidShort: 'DETAILS',
     instructions: "Scroll down to explore Jackson Pollock's Number 7A, 1948.",
     continueLabel: 'CONTINUE',
   },
   de: {
     viewTranscript: 'TRANSKRIPT ANZEIGEN',
     transcript: 'TRANSKRIPT',
+    detailsBid: 'DETAILS & BIETEN',
+    detailsBidShort: 'DETAILS',
     instructions: 'Scrollen Sie nach unten, um Pollocks Number 7A, 1948 aus nächster Nähe zu erkunden.',
     continueLabel: 'WEITER',
   },
   fr: {
     viewTranscript: 'VOIR LA TRANSCRIPTION',
     transcript: 'TRANSCRIPTION',
+    detailsBid: 'DÉTAILS ET ENCHÈRES',
+    detailsBidShort: 'DÉTAILS',
     instructions:
       "Faites défiler vers le bas pour explorer Number 7A, 1948 de Pollock dans une expérience panoramique immersive, tandis qu'un son spatial vous plonge dans une ambiance sonore de galerie.",
     continueLabel: 'CONTINUER',
@@ -85,6 +93,8 @@ export const UI_LABELS: Record<string, UiLabels> = {
   es: {
     viewTranscript: 'VER TRANSCRIPCIÓN',
     transcript: 'TRANSCRIPCIÓN',
+    detailsBid: 'DETALLES Y PUJA',
+    detailsBidShort: 'DETALLES',
     instructions: 'Desplázate hacia abajo para explorar de cerca Number 7A, 1948 de Pollock.',
     continueLabel: 'CONTINUAR',
   },
