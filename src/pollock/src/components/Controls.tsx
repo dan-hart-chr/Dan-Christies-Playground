@@ -11,6 +11,7 @@ interface ControlsProps {
 }
 
 const btn = 'cursor-pointer transition-opacity hover:opacity-80';
+const POLLOCK_LOT_URL = 'https://www.christies.com/en/lot/lot-6585089';
 
 export default function Controls({
   onOpenPanel,
@@ -57,10 +58,21 @@ export default function Controls({
           type="button"
         >
           <TranscriptIcon className="size-4 shrink-0" />
-          <span className="whitespace-nowrap text-[14px] font-light uppercase leading-[1.2] text-black">
+          <span className="whitespace-nowrap text-[14px] font-light uppercase leading-[1.2] text-black max-[420px]:hidden">
             {labels.transcript}
           </span>
         </button>
+
+        <a
+          className={`${btn} flex h-[48px] shrink-0 items-center rounded-[24px] bg-[rgba(244,244,244,0.8)] px-4 py-3 text-[#222] no-underline`}
+          href={POLLOCK_LOT_URL}
+          aria-label="Details and bidding"
+          data-analytics="christies:footerLink"
+        >
+          <span className="whitespace-nowrap text-[14px] font-light uppercase leading-[1.2] text-black">
+            {labels.detailsBidShort}
+          </span>
+        </a>
 
         <button
           className={`${btn} flex shrink-0 items-center rounded-[100px] bg-[rgba(244,244,244,0.8)] p-4 text-[#222]`}
@@ -112,6 +124,17 @@ export default function Controls({
             </span>
             <TranscriptIcon className="size-4 shrink-0" />
           </button>
+
+          <a
+            className={`${btn} flex h-[48px] shrink-0 items-center rounded-[24px] bg-[rgba(244,244,244,0.7)] px-6 py-3 text-[#222] no-underline backdrop-blur-[10px]`}
+            href={POLLOCK_LOT_URL}
+            aria-label="Details and bidding"
+            data-analytics="christies:footerLink"
+          >
+            <span className="whitespace-nowrap text-[14px] font-light uppercase leading-[1.2] text-[#222]">
+              {labels.detailsBid}
+            </span>
+          </a>
         </div>
 
         <button
