@@ -11,6 +11,19 @@ export default defineConfig({
     hmr: {
       overlay: true,
     },
+    proxy: {
+      "/header-footer-content": {
+        target: "https://api.christies.com",
+        changeOrigin: true,
+        secure: true,
+      },
+      "/christies-auth": {
+        target: "https://api.christies.com",
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/christies-auth/, "/auth"),
+      },
+    },
   },
   build: {
     chunkSizeWarningLimit: 1200,

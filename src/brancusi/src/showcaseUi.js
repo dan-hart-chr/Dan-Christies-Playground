@@ -132,10 +132,6 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
 
   // ── Artwork info (top-left) ──────────────────────────────────────────
   const artworkInfo = el("div", "artwork-info");
-  const christiesLogo = el("span", "christies-logo");
-  christiesLogo.setAttribute("aria-label", "Christie\u2019s");
-  christiesLogo.style.setProperty("--christies-logo-url", `url("${BASE}Logo.svg")`);
-
   // Artist name + dates on separate lines; dates span is nowrap so the
   // "(1876–1957)" never splits across a line break.
   const artistName = el("h1", "artwork-artist");
@@ -146,7 +142,7 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   const artworkTitle = el("p", "artwork-title");
   renderArtworkTitle(artworkTitle, UI_TEXTS.english.artworkTitle);
 
-  artworkInfo.append(christiesLogo, artistName, artworkTitle);
+  artworkInfo.append(artistName, artworkTitle);
 
   // ── Bottom toolbar ───────────────────────────────────────────────────
   const bottomBar = el("div", "bottom-bar");
@@ -196,37 +192,6 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
   soundBtn.setAttribute("data-analytics", "muteButton");
 
   bottomBar.append(infoBtn, centerGroup, soundBtn);
-
-  // ── Footer ───────────────────────────────────────────────────────────
-  const footer = el("footer", "site-footer");
-
-  const footerNav = el("nav", "footer-nav");
-  const footerItems = [
-    { kind: "link", label: "HOME", href: "https://www.christies.com/en" },
-    { kind: "link", label: "VIEW COLLECTION", href: "https://www.christies.com/en/auction/masterpieces-the-private-collection-of-s-i-newhouse-31380/" },
-    { kind: "cookie" },
-    { kind: "link", label: "VIEW POLLOCK'S NUMBER 7A, 1948", href: "https://experience.christies.com/pollock/index.html" },
-  ];
-  footerItems.forEach((item, i) => {
-    if (i > 0) {
-      const divider = el("span", "footer-divider", { text: "|" });
-      footerNav.append(divider);
-    }
-
-    if (item.kind === "cookie") {
-      const footerCookieWrap = el("div", "footer-cookie-wrap");
-      const cookieSettingsBtn = el("button", "footer-cookie-button ot-sdk-show-settings", { id: "ot-sdk-btn", type: "button", text: "Cookie settings" });
-      footerCookieWrap.append(cookieSettingsBtn);
-      footerNav.append(footerCookieWrap);
-      return;
-    }
-
-    const link = el("a", "footer-link", { text: item.label, href: item.href });
-    footerNav.append(link);
-  });
-
-  const footerCopy = el("span", "footer-copy", { text: "\u00A9 CHRISTIE\u2019S 2026" });
-  footer.append(footerNav, footerCopy);
 
   // ── Overlay backdrop ─────────────────────────────────────────────────
   const overlay = el("div", "modal-overlay");
@@ -458,7 +423,6 @@ export function createShowcaseUi(container, sceneInfo, { appRoot, onLanguageChan
 
   // ── Assemble DOM ─────────────────────────────────────────────────────
   container.append(artworkInfo, bottomBar, overlay, infoModal, transcriptModal, langModal, intro);
-  root.append(footer);
 
   // ── Event handlers ───────────────────────────────────────────────────
 

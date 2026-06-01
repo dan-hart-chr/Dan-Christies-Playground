@@ -1,57 +1,6 @@
-@font-face {
-  font-family: "ABC Arizona Sans";
-  src: url("/fonts/ABCArizonaSans-Light.otf") format("opentype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-button.footer-cookie-button.ot-sdk-show-settings {
-  appearance: none !important;
-  min-width: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  color: #f0e8d7 !important;
-  font-family: "ABC Arizona Sans", sans-serif !important;
-  font-size: 14px !important;
-  font-weight: 400 !important;
-  line-height: 1.2 !important;
-  letter-spacing: 0.02em !important;
-  text-transform: uppercase !important;
-  white-space: nowrap !important;
-  cursor: pointer !important;
-}
-
-@font-face {
-  font-family: "ABC Arizona Sans";
-  src: url("/fonts/ABCArizonaSans-Regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "ABC Arizona Serif";
-  src: url("/fonts/ABCArizonaSerif-Light.otf") format("opentype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "ABC Arizona Serif";
-  src: url("/fonts/ABCArizonaSerif-Regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   color-scheme: dark;
-  font-family: "ABC Arizona Sans", "Geist", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: var(--font-arizona-sans, ABCArizonaSans), "Helvetica Neue", Helvetica, Arial, sans-serif;
   background: #050505;
 }
 
@@ -62,11 +11,29 @@ button.footer-cookie-button.ot-sdk-show-settings {
 html,
 body {
   margin: 0;
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #050505;
+}
+
+.christies-chrome-host {
+  display: block;
+  position: relative;
+  z-index: 60;
+  background: #ffffff;
+}
+
+#headerHost {
+  min-height: 94px;
+}
+
+#footerHost {
+  min-height: 460px;
+  background: #000000;
 }
 
 #app {
@@ -724,7 +691,7 @@ canvas {
 .artwork-artist {
   margin: 0;
   color: white;
-  font-family: "ABC Arizona Serif", serif;
+  font-family: var(--font-arizona-serif, ABCArizonaSerif), serif;
   font-size: 32px;
   font-weight: 300;
   line-height: 1.2;
@@ -737,7 +704,7 @@ canvas {
 .artwork-title {
   margin: 8px 0 0;
   color: white;
-  font-family: "ABC Arizona Sans", sans-serif;
+  font-family: var(--font-arizona-sans, ABCArizonaSans), sans-serif;
   font-size: 18px;
   font-weight: 300;
   line-height: 1.2;
@@ -799,7 +766,7 @@ canvas {
   border-radius: 24px;
   background: rgba(159, 159, 159, 0.5);
   color: white;
-  font-family: "ABC Arizona Sans", sans-serif;
+  font-family: var(--font-arizona-sans, ABCArizonaSans), sans-serif;
   font-size: 14px;
   font-weight: 300;
   line-height: 1.2;
@@ -866,7 +833,7 @@ canvas {
 }
 
 .pill-text {
-  font-family: "ABC Arizona Sans", sans-serif;
+  font-family: var(--font-arizona-sans, ABCArizonaSans), sans-serif;
   font-size: 14px;
   font-weight: 300;
   line-height: 1.2;
@@ -1019,7 +986,7 @@ canvas {
 .info-modal-text {
   margin: 0;
   color: white;
-  font-family: "ABC Arizona Sans", sans-serif;
+  font-family: var(--font-arizona-sans, ABCArizonaSans), sans-serif;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.4;
@@ -1051,7 +1018,7 @@ canvas {
 .transcript-header-artist {
   margin: 0;
   color: white;
-  font-family: "ABC Arizona Serif", serif;
+  font-family: var(--font-arizona-serif, ABCArizonaSerif), serif;
   font-size: 20px;
   font-weight: 300;
   line-height: 1.15;
@@ -1064,7 +1031,7 @@ canvas {
 .transcript-header-title {
   margin: 6px 0 0;
   color: white;
-  font-family: "ABC Arizona Sans", sans-serif;
+  font-family: var(--font-arizona-sans, ABCArizonaSans), sans-serif;
   font-size: 13px;
   font-weight: 300;
   line-height: 1.3;
@@ -1077,7 +1044,7 @@ canvas {
   overflow-y: auto;
   scrollbar-gutter: stable;
   color: white;
-  font-family: "ABC Arizona Sans", sans-serif;
+  font-family: var(--font-arizona-sans, ABCArizonaSans), sans-serif;
   font-size: 14px;
   font-weight: 300;
   line-height: 1.4;
@@ -1121,7 +1088,7 @@ canvas {
   border-bottom: 1px solid transparent;
   background: none;
   color: white;
-  font-family: "ABC Arizona Sans", sans-serif;
+  font-family: var(--font-arizona-sans, ABCArizonaSans), sans-serif;
   font-size: 14px;
   font-weight: 300;
   line-height: 1.2;
@@ -1157,101 +1124,6 @@ canvas {
   height: 16px;
 }
 
-/* ── Footer ──────────────────────────────────────────────────────────────── */
-
-.site-footer {
-  display: none;
-  width: 100%;
-  flex-shrink: 0;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  background: black;
-  padding: 18px 24px;
-  gap: 24px;
-  box-sizing: border-box;
-  min-height: 112px;
-}
-
-#app.is-revealing-experience .site-footer {
-  display: grid;
-}
-
-.footer-nav {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  padding: 0 16px;
-}
-
-.footer-cookie-wrap {
-  display: inline-flex;
-  width: auto;
-  align-items: center;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.footer-cookie-button {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: #f0e8d7;
-  font-family: "ABC Arizona Sans", sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.footer-cookie-button:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.footer-link {
-  color: #f0e8d7;
-  font-family: "ABC Arizona Sans", sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: opacity 0.2s;
-}
-
-.footer-link:hover {
-  opacity: 0.7;
-}
-
-.footer-divider {
-  color: #f0e8d7;
-  font-size: 14px;
-  opacity: 0.4;
-  user-select: none;
-}
-
-.footer-copy {
-  color: #f0e8d7;
-  font-family: "ABC Arizona Sans", sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  justify-self: end;
-}
-
-#app.is-light-scene .footer-cookie-button {
-  color: #f0e8d7;
-}
-
 .showcase-intro {
   position: absolute;
   inset: 0;
@@ -1280,7 +1152,7 @@ canvas {
 .showcase-intro-title {
   margin: 0;
   color: #f8efe3;
-  font-family: "ABC Arizona Serif", serif;
+  font-family: var(--font-arizona-serif, ABCArizonaSerif), serif;
   font-size: clamp(42px, 7vw, 80px);
   font-weight: 300;
   letter-spacing: 0.06em;
@@ -1406,43 +1278,6 @@ canvas {
 
   .bottom-center {
     display: contents;
-  }
-
-  .site-footer {
-    grid-template-columns: 1fr;
-    flex-direction: column;
-    justify-content: center;
-    gap: 12px;
-    align-items: center;
-    padding: 18px 20px;
-    min-height: 150px;
-    text-align: center;
-  }
-
-  .footer-cookie-wrap {
-    padding: 0 16px;
-  }
-
-  .footer-nav {
-    padding: 0;
-    justify-content: center;
-    gap: 8px 10px;
-  }
-
-  .footer-link,
-  .footer-cookie-button,
-  .footer-divider {
-    font-size: 10px;
-  }
-
-  button.footer-cookie-button.ot-sdk-show-settings {
-    font-size: 10px !important;
-    letter-spacing: 0.02em !important;
-  }
-
-  .footer-copy {
-    font-size: 10px;
-    justify-self: center;
   }
 
   .pill-with-icon {
@@ -1585,35 +1420,6 @@ canvas {
 }
 
 
-
-.christies-logo {
-  display: block;
-  width: 137px;
-  height: 18px;
-  margin-bottom: 24px;
-  color: #f0e8d7;
-  background-color: currentColor;
-  -webkit-mask-image: var(--christies-logo-url);
-  mask-image: var(--christies-logo-url);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-}
-
-#app.is-light-scene .christies-logo {
-  color: #111111;
-}
-
-@media (max-width: 640px) {
-  .christies-logo {
-    width: 122px;
-    height: 16px;
-    margin-bottom: 18px;
-  }
-}
 
 .image-sequence-viewer {
   position: absolute;
