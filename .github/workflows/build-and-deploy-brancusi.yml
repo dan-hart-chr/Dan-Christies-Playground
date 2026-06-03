@@ -34,6 +34,8 @@ jobs:
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.0.2
         with:
           node-version: ${{ env.NODE_VERSION }}
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@christies'
           cache: 'npm'
           cache-dependency-path: '${{ env.APP_LOCATION }}/package-lock.json'
 
