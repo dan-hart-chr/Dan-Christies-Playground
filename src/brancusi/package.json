@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@christies/react-legacy-integration": "^3.6.0",
+    "@christies/react-legacy-integration": "^3.6.1",
     "sirv-cli": "^3.0.1"
   },
   "devDependencies": {
