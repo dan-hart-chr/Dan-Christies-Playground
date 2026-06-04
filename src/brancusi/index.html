@@ -17,8 +17,16 @@
     <meta name="twitter:description" content="Explore Constantin Brancusi's Danaïde through an immersive Christie’s 3D experience." />
     <link rel="icon" type="image/jpeg" sizes="32x32" href="%BASE_URL%favicon-32x32.jpg" />
     <link rel="apple-touch-icon" sizes="256x256" href="%BASE_URL%favicon-256x256.jpg" />
-    <!-- ABC Arizona fonts loaded via @font-face in style.css -->
+    <link rel="stylesheet" href="https://dsl.assets.christies.com/design-system-library/production/arizona.css" />
+    <link rel="stylesheet" href="https://dsl.assets.christies.com/design-system-library/production/christies-design-system-library-header-footer.css" />
+    <script type="module" src="https://dsl.assets.christies.com/design-system-library/production/christies-design-system-library.esm.js"></script>
+    <script nomodule src="https://dsl.assets.christies.com/design-system-library/production/christies-design-system-library.js"></script>
     <script>
+    window.chrGlobal = window.chrGlobal || {};
+    window.chrGlobal.labels = {
+      ...(window.chrGlobal.labels || {}),
+      close_modal_txt: "Close"
+    };
     window.artName = "brancusi";
     window.viewPageViewFired = false;
     window.AnalyticsDataLayer = {
@@ -46,7 +54,12 @@
     <script src="https://assets.adobedtm.com/4f105c1434ad/836733c85a3b/launch-50bb68133acf.min.js" async></script>
   </head>
   <body>
+    <div id="headerHost" class="christies-chrome-host"></div>
     <div id="app"></div>
+    <div id="footerHost" class="christies-chrome-host"></div>
+    <div class="chr-header-footer">
+      <chr-modal-provider></chr-modal-provider>
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
   </html>

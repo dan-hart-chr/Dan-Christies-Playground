@@ -8,12 +8,13 @@ on:
     paths:
       - 'src/brancusi/**'
   pull_request:
-    types: ['opened', 'edited', 'reopened' ]
+    types: ['opened', 'edited', 'reopened', 'synchronize' ]
   workflow_dispatch:
 
 permissions:
   id-token: write
   contents: read
+  packages: read
 
 env:
   NODE_VERSION: '22.x'
@@ -33,12 +34,16 @@ jobs:
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.0.2
         with:
           node-version: ${{ env.NODE_VERSION }}
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@christies'
           cache: 'npm'
           cache-dependency-path: '${{ env.APP_LOCATION }}/package-lock.json'
 
       - name: Install dependencies
         working-directory: ${{ env.APP_LOCATION }}
         run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_READ_TOKEN }}
 
       - name: Lint code
         working-directory: ${{ env.APP_LOCATION }}

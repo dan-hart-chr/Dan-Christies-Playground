@@ -1,6 +1,9 @@
+import { mountChristiesGlobalChrome } from "./christiesGlobalChrome.js";
 import "./style.css";
 import { createShowcaseUi } from "./showcaseUi.js";
 import { createShowcaseAudio, getAnalyticsLanguageCode } from "./showcaseAudio.js";
+
+mountChristiesGlobalChrome();
 
 const BASE = import.meta.env.BASE_URL;
 const IMAGE_SEQUENCE_URLS = [
