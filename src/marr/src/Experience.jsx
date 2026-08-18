@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { GUITARS } from "./guitars.js";
 import styles from "./experience.module.css";
 
+const BASE = import.meta.env.BASE_URL;
+
 const N = GUITARS.length;
 
 // ---- focus screen geometry (voku.studio/artifacts pattern) ----
@@ -331,7 +333,7 @@ export default function Experience({ variant = "v1" }) {
         <nav className={styles.nav}>
           <img
             className={styles.navLogo}
-            src="/images/f901ccc3ab9e8852a2efcc34b41de75cad0e01df.png"
+            src={`${BASE}images/f901ccc3ab9e8852a2efcc34b41de75cad0e01df.png`}
             alt="Marr&rsquo;s Guitars — The Johnny Marr Collection"
           />
           <span className={styles.navLabel}>THE JOHNNY MARR COLLECTION</span>
@@ -344,7 +346,7 @@ export default function Experience({ variant = "v1" }) {
           >
             <img
               className={`${styles.navChevron} ${menuOpen ? styles.navChevronOpen : ""}`}
-              src="/icons/chevron-down.svg"
+              src={`${BASE}icons/chevron-down.svg`}
               alt=""
             />
           </button>
@@ -465,7 +467,11 @@ export default function Experience({ variant = "v1" }) {
           >
             &times;
           </button>
-          <img className={styles.scrollHintIcon} src="/icons/mouse-icon.svg" alt="" />
+          <img
+            className={styles.scrollHintIcon}
+            src={`${BASE}icons/mouse-icon.svg`}
+            alt=""
+          />
           <p className={styles.scrollHintText}>
             Scroll to explore Johnny
             <br />
@@ -491,14 +497,14 @@ export default function Experience({ variant = "v1" }) {
             playsInline
             preload="auto"
           >
-            <source src="/videos/hero.mp4" type="video/mp4" />
+            <source src={`${BASE}videos/hero.mp4`} type="video/mp4" />
           </video>
           <div className={styles.tint} aria-hidden="true" />
           <div className={styles.heroContent}>
             <h1 className={styles.heroTitle}>
               <img
                 className={styles.heroLogo}
-                src="/images/9d28894d878355447558ac68c92ce7dbf4e8594e.png"
+                src={`${BASE}images/9d28894d878355447558ac68c92ce7dbf4e8594e.png`}
                 alt="Marr's Guitars — The Johnny Marr Collection"
               />
             </h1>
