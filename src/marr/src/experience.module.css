@@ -1,0 +1,1020 @@
+.section {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  background: #0a0a0a;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+/* ============ HERO / LANDING GATE ============ */
+.hero {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  opacity: 1;
+  transition: opacity 0.9s ease;
+}
+
+.live .hero {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate(-50%, -50%) scale(1.12);
+  filter: blur(22px) saturate(1.05);
+  will-change: transform;
+}
+
+.tint {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 120% at 50% 50%,
+    rgba(0, 0, 0, 0.12) 0%,
+    rgba(0, 0, 0, 0.28) 100%
+  );
+}
+
+.heroContent {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.heroTitle {
+  margin: 0;
+  line-height: 0;
+  will-change: transform;
+}
+
+.heroLogo {
+  display: block;
+  width: clamp(320px, 38vw, 470px);
+  height: auto;
+  filter: drop-shadow(0 1px 30px rgba(0, 0, 0, 0.25));
+}
+
+@media (max-width: 600px) {
+  .heroLogo {
+    width: min(76vw, 360px);
+  }
+}
+
+/* ============ ENTER BUTTON ============ */
+.enter {
+  margin-top: clamp(28px, 4vh, 48px);
+  padding: 13px 40px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  color: #ffffff;
+  font-family: var(--font-arizona-sans), sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.25);
+  transition: background 0.25s ease, border-color 0.25s ease,
+    opacity 0.6s ease, transform 0.6s ease;
+}
+
+.enter:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+/* ============ WHITE BACKDROP ============ */
+.white {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: #ffffff;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.live .white {
+  opacity: 1;
+}
+
+/* ============ GUITARS ============ */
+.stage {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.25s;
+}
+
+.live .stage {
+  opacity: 1;
+}
+
+.guitar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: center center;
+  will-change: transform, filter, opacity;
+  /* smooth stepped glide — 1400ms "Gentle" easing (Figma preset) */
+  transition: transform 1400ms cubic-bezier(0.25, 0.8, 0.25, 1),
+    filter 1400ms cubic-bezier(0.25, 0.8, 0.25, 1), opacity 700ms ease;
+}
+
+.guitar img {
+  /* size by the SMALLER viewport dimension (= U) so the layout stays
+     proportional and guitars never overlap on narrow/short screens */
+  height: min(82vh, 82vw);
+  width: auto;
+  /* override the global `img { max-width: 100% }` reset — it would clamp the
+     width while the height is fixed, squashing the (square) guitar art */
+  max-width: none;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ============ TOP NAV PILL ============ */
+.nav {
+  position: absolute;
+  top: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 130;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.25s;
+}
+
+.live .nav {
+  opacity: 1;
+}
+
+/* while the lot picker is open, hide the collection title — just guitars + × */
+.menuOpenState .nav {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* desktop shows the black logo lockup; the text label is the mobile fallback */
+.navLogo {
+  display: block;
+  height: 46px;
+  width: auto;
+}
+
+.navLabel {
+  display: none;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: #1a1a1a;
+  white-space: nowrap;
+}
+
+.navPlus {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 999px;
+  background: #f0f0f0;
+  color: #1a1a1a;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.navPlus:hover {
+  background: #e4e4e4;
+}
+
+/* chevron toggle on the tablet & mobile header pill */
+.navChevron {
+  display: block;
+  width: 16px;
+  height: 16px;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navChevronOpen {
+  transform: rotate(180deg);
+}
+
+/* +/− morphing icon */
+.navIcon {
+  position: relative;
+  width: 11px;
+  height: 11px;
+}
+
+.navIcon::before,
+.navIcon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1.4px;
+  background: #1a1a1a;
+  transform: translateY(-50%) rotate(0deg);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+}
+
+.navIcon::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+/* open → collapse the vertical stroke into a single minus */
+.navIconOpen::after {
+  transform: translateY(-50%) rotate(0deg);
+  opacity: 0;
+}
+
+/* ============ COLLECTION MENU ============ */
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: rgba(250, 250, 250, 0.2);
+  backdrop-filter: blur(30px) saturate(1.1);
+  -webkit-backdrop-filter: blur(30px) saturate(1.1);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.015);
+  transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0.5s;
+}
+
+.menuOpen {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s;
+}
+
+.menuPanel {
+  position: relative;
+  min-height: 100%;
+  background: rgba(252, 252, 252, 0.6);
+  border-radius: 28px;
+  margin: 10px;
+  /* top padding = close button top (20) + its height (34) + 8px gap to the cards */
+  padding: 62px 16px 44px;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.06);
+}
+
+/* close (×) — exits the lot picker, top-right */
+.menuClose {
+  position: absolute;
+  top: 20px;
+  right: 16px;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: #1a1a1a;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.menuClose:hover {
+  opacity: 1;
+}
+
+.menuCloseIcon {
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+
+.menuCloseIcon::before,
+.menuCloseIcon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: #1a1a1a;
+}
+
+.menuCloseIcon::before {
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.menuCloseIcon::after {
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.menuGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(8px, 1.5vw, 24px);
+}
+
+.menuItem {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: clamp(300px, 32vw, 420px);
+  padding: 28px 30px;
+  border: none;
+  border-radius: 22px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.4s ease, box-shadow 0.4s ease;
+}
+
+.menuOpen .menuItem {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.menuItem:hover {
+  background: #ffffff;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.09);
+}
+
+.menuNum {
+  position: relative;
+  z-index: 2;
+  display: block;
+  font-family: var(--font-arizona-sans), sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  letter-spacing: 0;
+  color: #1a1a1a;
+}
+
+.menuImg {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 52%;
+  width: 80%;
+  height: 58%;
+  object-fit: contain;
+  transform: translateY(-50%);
+  transition: filter 0.5s ease, transform 0.5s ease, opacity 0.5s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.menuItem:hover .menuImg {
+  filter: blur(26px);
+  transform: translateY(-50%) scale(1.04);
+  opacity: 0.9;
+}
+
+.menuMeta {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  bottom: 28px;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.menuItem:hover .menuMeta {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.menuName {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.45;
+  text-transform: uppercase;
+  color: #1a1a1a;
+}
+
+.menuEstimate {
+  margin: 10px 0 0;
+  font-size: 13px;
+  letter-spacing: 0;
+  color: #9a9a9a;
+}
+
+.menuBid {
+  margin-top: 20px;
+  width: 100%;
+  padding: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.28);
+  border-radius: 999px;
+  background: transparent;
+  color: #1a1a1a;
+  font-size: 13px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.menuBid:hover {
+  background: #1a1a1a;
+  color: #ffffff;
+  border-color: #1a1a1a;
+}
+
+
+@media (max-width: 900px) {
+  .menuGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .menuGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============ COUNTER (left, vertically centred) ============ */
+.counter {
+  position: absolute;
+  left: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  color: #1a1a1a;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.3s;
+}
+
+.live .counter {
+  opacity: 1;
+}
+
+.counterCurrent {
+  font-size: 22px;
+  letter-spacing: 0;
+}
+
+.counterTotal {
+  font-size: 13px;
+  color: #9a9a9a;
+  letter-spacing: 0;
+}
+
+/* ============ INFO (right, vertically centred) ============ */
+.info {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  max-width: 320px;
+  text-align: left;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.3s;
+}
+
+.live .info {
+  opacity: 1;
+}
+
+.infoHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.infoName {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+  color: #1a1a1a;
+  animation: fadeUp 0.5s ease both;
+}
+
+/* the lot number sits to the right of the title on tablet & mobile;
+   desktop uses the counter on the left instead */
+.infoNum {
+  display: none;
+  flex-shrink: 0;
+  font-weight: 400;
+  color: #1a1a1a;
+  white-space: nowrap;
+}
+
+.infoText {
+  margin-top: 6px;
+  font-size: 10.5px;
+  letter-spacing: 0;
+  line-height: 1.55;
+  color: #6a6a6a;
+}
+
+.infoEstimate {
+  margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: 0;
+  color: #333333;
+}
+
+.infoBid {
+  margin-top: 18px;
+  padding: 12px 30px;
+  border: 1px solid rgba(0, 0, 0, 0.28);
+  border-radius: 999px;
+  background: transparent;
+  color: #1a1a1a;
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.infoBid:hover {
+  background: #1a1a1a;
+  color: #ffffff;
+  border-color: #1a1a1a;
+}
+
+/* ============ SCROLL-TO-EXPLORE GLASS HINT ============ */
+.scrollHint {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.97);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  width: min(420px, 86vw);
+  height: min(460px, 72vh);
+  padding: 0;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(28px) saturate(1.1);
+  -webkit-backdrop-filter: blur(28px) saturate(1.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scrollHintShow {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+
+.scrollHintIcon {
+  width: clamp(48px, 6vw, 64px);
+  height: clamp(48px, 6vw, 64px);
+  display: block;
+}
+
+.scrollHintText {
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-arizona-sans), sans-serif;
+  font-weight: 300;
+  font-size: clamp(15px, 1.5vw, 18px);
+  letter-spacing: 0;
+  line-height: 1.3;
+  color: #2c2c2c;
+}
+
+.scrollHintClose {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 999px;
+  font-size: 22px;
+  line-height: 1;
+  color: rgba(60, 60, 60, 0.45);
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.scrollHintClose:hover {
+  color: rgba(60, 60, 60, 0.85);
+}
+
+.scrollHintCta {
+  padding: 11px 34px;
+  background: none;
+  border: 1px solid rgba(60, 60, 60, 0.35);
+  border-radius: 999px;
+  color: #2c2c2c;
+  font-family: var(--font-arizona-sans), sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-indent: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.scrollHintCta:hover {
+  background: rgba(60, 60, 60, 0.06);
+  border-color: rgba(60, 60, 60, 0.6);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============ V2 SIDE MENU (thumbnail strip) ============ */
+.sideMenu {
+  position: absolute;
+  right: 22px;
+  /* top edge lines up with the top edge of the collection title (nav) */
+  top: 26px;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  /* the strip sits inside its own rounded container card (per the 1440 design) */
+  padding: 8px;
+  background: rgba(245, 245, 245, 0.72);
+  backdrop-filter: blur(12px) saturate(1.05);
+  -webkit-backdrop-filter: blur(12px) saturate(1.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.06);
+  opacity: 0;
+  transition: opacity 0.8s ease 0.3s;
+}
+
+.live .sideMenu {
+  opacity: 1;
+}
+
+.sideThumb {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 52px;
+  padding: 6px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.sideThumb img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.75;
+  transition: opacity 0.25s ease;
+}
+
+.sideThumb:hover img {
+  opacity: 1;
+}
+
+.sideThumbActive {
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.14), 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.sideThumbActive img {
+  opacity: 1;
+}
+
+.sidePlus {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-top: 2px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sidePlus:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* in v2 the menu toggle lives in the side strip, not next to the title; the
+   lot picker is closed with its own × button, so the title stands alone */
+.v2 .navPlus {
+  display: none;
+}
+
+/* ============ V2 DESKTOP: info becomes a glass detail card ============ */
+@media (min-width: 1281px) {
+  .v2 .info {
+    top: auto;
+    bottom: 40px;
+    left: auto;
+    right: 40px;
+    transform: none;
+    width: 360px;
+    max-width: none;
+    padding: 22px 26px;
+    border-radius: 18px;
+    background: rgba(245, 245, 245, 0.6);
+    backdrop-filter: blur(22px) saturate(1.1);
+    -webkit-backdrop-filter: blur(22px) saturate(1.1);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
+  }
+
+  .v2 .infoText {
+    display: none;
+  }
+
+  .v2 .infoEstimate {
+    margin-top: 6px;
+  }
+
+  .v2 .infoBid {
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .v2 .bidWord {
+    display: none;
+  }
+}
+
+/* ============ TABLET & SMALLER (<1280px) ============ */
+@media (max-width: 1280px) {
+  /* base size for the upright guitar; JS scales it to fit the free space.
+     keep width auto so the aspect ratio is never squeezed */
+  .guitar img {
+    height: min(70vh, 150vw);
+    width: auto;
+  }
+
+  /* the side strip is a desktop affordance; bring back the top + on compact */
+  .sideMenu {
+    display: none;
+  }
+
+  .v2 .navPlus {
+    display: grid;
+  }
+
+  /* tablet & mobile: header is a frosted pill with the text label centred
+     (the black logo lockup is a desktop-only affordance) */
+  .nav {
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    transform: none;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 24px;
+    border-radius: 999px;
+    background: rgba(244, 244, 244, 0.55);
+    backdrop-filter: blur(20px) saturate(1.1);
+    -webkit-backdrop-filter: blur(20px) saturate(1.1);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06);
+    /* only the entrance fade animates here; the open→closed morph is
+       instant so the header snaps back to a pill when the drawer shuts */
+    transition: opacity 0.6s ease;
+  }
+
+  .navLogo {
+    display: none;
+  }
+
+  .navLabel {
+    display: block;
+    font-family: var(--font-arizona-sans), sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    letter-spacing: 0.04em;
+  }
+
+  .navPlus {
+    background: transparent;
+  }
+
+  /* the counter isn't part of the compact design */
+  .counter {
+    display: none;
+  }
+
+  /* catalogue info spans the bottom, full-width CTA */
+  .info {
+    top: auto;
+    bottom: 30px;
+    left: 24px;
+    right: 24px;
+    transform: none;
+    max-width: none;
+  }
+
+  .infoBid {
+    width: 100%;
+  }
+
+  /* show the lot number beside the catalogue title */
+  .infoNum {
+    display: block;
+    font-size: 14px;
+  }
+
+  /* ---- the lot picker opens as a drawer sliding down from the header ---- */
+
+  /* keep the header where it is and flatten it into the drawer's top row
+     (title + chevron stay centred together, matching the closed pill) */
+  .menuOpenState .nav {
+    opacity: 1;
+    pointer-events: auto;
+    border-radius: 28px 28px 0 0;
+    background: rgba(252, 252, 252, 0.6);
+    border-color: transparent;
+    box-shadow: none;
+    /* the flatten animates only while opening */
+    transition: border-radius 0.45s ease, background 0.4s ease,
+      border-color 0.4s ease, box-shadow 0.4s ease, opacity 0.6s ease;
+  }
+
+  /* the drawer slides down when opening, but shuts instantly on close
+     (the transition lives on the open state, so reversing it has none) */
+  .menu {
+    transform: translateY(-101%);
+    transition: none;
+  }
+
+  .menuOpen {
+    transform: translateY(0);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.4s ease, visibility 0s;
+  }
+
+  /* the header chevron collapses the drawer — no separate × on compact */
+  .menuClose {
+    display: none;
+  }
+
+  /* an inset drawer card — no longer edge-to-edge full screen */
+  .menuPanel {
+    margin: 16px;
+    border-radius: 28px;
+    padding: 60px 16px 44px;
+  }
+}
+
+/* ============ MOBILE (<640px): info becomes a glass card ============ */
+@media (max-width: 640px) {
+  .info {
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: rgba(244, 244, 244, 0.55);
+    backdrop-filter: blur(20px) saturate(1.1);
+    -webkit-backdrop-filter: blur(20px) saturate(1.1);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  }
+
+  /* the maker line is dropped on the mobile card */
+  .infoText {
+    display: none;
+  }
+
+  .infoEstimate {
+    margin-top: 6px;
+  }
+
+  .infoBid {
+    margin-top: 16px;
+  }
+
+  /* CTA reads just "BID" on mobile */
+  .bidWord {
+    display: none;
+  }
+
+  /* v2 menu shows a 2×2 grid on mobile (two guitars side by side) */
+  .v2 .menuGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* tighten the spacing between guitars in the open menu */
+  .menuGrid {
+    gap: 4px;
+  }
+
+  .menuItem,
+  .v2 .menuItem {
+    min-height: clamp(220px, 52vw, 320px);
+    padding: 12px 12px;
+  }
+
+  /* the CTA stays hidden until the guitar is hovered (default reveal rule) */
+  .menuMeta {
+    left: 8px;
+    right: 8px;
+    bottom: 14px;
+  }
+
+  /* the open menu shows only the guitar + a single CTA */
+  .menuName,
+  .menuEstimate {
+    display: none;
+  }
+
+  .menuBid {
+    margin-top: 0;
+    padding: 12px 8px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  /* smaller title on narrow phones so the centred pill never overflows
+     (the pill layout itself is defined in the tablet & smaller block) */
+  .navLabel {
+    font-size: 15px;
+  }
+
+  /* catalogue card: bump text +2px, darken the estimate line */
+  .infoName {
+    font-size: 14px;
+  }
+
+  .infoEstimate {
+    font-size: 13px;
+  }
+
+  .infoBid {
+    font-size: 13px;
+  }
+}
