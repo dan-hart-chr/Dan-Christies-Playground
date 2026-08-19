@@ -50,6 +50,21 @@ public/
   videos/  hero.mp4
 ```
 
+## SEO / sharing
+
+`index.html` carries the full head: canonical + Open Graph + Twitter card
+pointing at https://experience.christies.com/marr/, a 1200×630 `og-image.jpg`
+built from the wordmark and the ES-355, Christie's favicons, and JSON-LD
+(WebPage + ItemList of the 13 lots, names verbatim from `guitars.js` — update
+both together if lots change).
+
+`public/robots.txt` and `sitemap.xml` deploy under /marr/, and robots.txt only
+has authority at the domain root — the root robots.txt on
+experience.christies.com currently 403s, which crawlers treat as "no
+restrictions", so the site is indexable. Submit
+https://experience.christies.com/marr/sitemap.xml in Search Console; it cannot
+be auto-discovered from a root robots.txt we don't control.
+
 Assets are referenced with root-absolute paths (`/images/…`), so `base` is left
 at the Vite default. If this site is ever served from a sub-path, those paths
 need to move to `import.meta.env.BASE_URL` first.
