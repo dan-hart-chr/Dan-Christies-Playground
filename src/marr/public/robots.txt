@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://experience.christies.com/marr/sitemap.xml
