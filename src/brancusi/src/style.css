@@ -28,7 +28,14 @@ body {
 }
 
 #headerHost {
-  min-height: 94px;
+  min-height: 56px;
+}
+
+/* The header package shows its taller two-row layout from 1280px up */
+@media (min-width: 1280px) {
+  #headerHost {
+    min-height: 94px;
+  }
 }
 
 #footerHost {
