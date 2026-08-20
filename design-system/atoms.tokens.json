@@ -1,0 +1,67 @@
+{
+  "Christie's Variables Library": {
+    "modes": ["Mobile", "Desktop", "Display", "Display plus", "iOS App"],
+    "variables": {
+      "font": {
+        "family": {
+          "serif": "ABC Arizona Serif",
+          "sans": "ABC Arizona Sans"
+        },
+        "size": {
+          "5xl":  { "Mobile": 48, "Desktop": 56, "Display": 72, "Display plus": 84, "iOS App": 48 },
+          "4xl":  { "Mobile": 36, "Desktop": 48, "Display": 64, "Display plus": 68, "iOS App": 36 },
+          "3xl":  { "Mobile": 28, "Desktop": 32, "Display": 48, "Display plus": 56, "iOS App": 28 },
+          "2xl-sans": { "Mobile": 24, "Desktop": 28, "Display": 32, "Display plus": 36, "iOS App": 24 },
+          "2xl-serif": { "Mobile": 24, "Desktop": 28, "Display": 36, "Display plus": 42, "iOS App": 24 },
+          "xl-sans": { "Mobile": 18, "Desktop": 18, "Display": 20, "Display plus": 24, "iOS App": 18 },
+          "xl-serif": { "Mobile": 20, "Desktop": 24, "Display": 28, "Display plus": 36, "iOS App": 20 },
+          "lg-sans": { "Mobile": 14, "Desktop": 16, "Display": 20, "Display plus": 24, "iOS App": 14 },
+          "lg-serif": { "Mobile": 16, "Desktop": 20, "Display": 24, "Display plus": 28, "iOS App": 16 },
+          "md":   { "Mobile": 18, "Desktop": 18, "Display": 20, "Display plus": 20, "iOS App": 16 },
+          "sm":   { "Mobile": 16, "Desktop": 16, "Display": 20, "Display plus": 24, "iOS App": 14 },
+          "xs":   { "Mobile": 14, "Desktop": 14, "Display": 16, "Display plus": 20, "iOS App": 12 },
+          "xxs":  { "Mobile": 12, "Desktop": 14, "Display": 14, "Display plus": 14, "iOS App": 12 },
+          "xxxs": { "Mobile": 12, "Desktop": 12, "Display": 14, "Display plus": 14, "iOS App": 10 }
+        },
+        "weight": {
+          "Light": "Light",
+          "Light Italic": "Light Italic",
+          "Regular": "Regular",
+          "Medium": "Medium"
+        }
+      },
+      "spacing": {
+        "1": 4, "2": { "Mobile": 8, "Desktop": 8, "Display": 12, "Display plus": 12, "iOS App": 8 },
+        "3": { "Mobile": 12, "Desktop": 12, "Display": 16, "Display plus": 16, "iOS App": 12 },
+        "4": 16, "5": 20, "6": 24, "7": 28, "8": 32, "9": 36, "10": 40,
+        "11": 44, "12": 48, "13": 52, "14": 56, "15": 60, "16": 64,
+        "17": 68, "18": 72, "19": 76, "20": 80, "21": 84, "22": 88
+      },
+      "radius": {
+        "md": 24, "sm": 12, "xs": 4
+      },
+      "colour": {
+        "brand-natural-white": {
+          "100": "#FCF9F7", "200": "#F9F6EF", "300": "#F6F1E7",
+          "400": "#F3EDDF", "500": "#F0E8D7"
+        },
+        "brand-light-grey": {
+          "100": "#F2F1EF", "200": "#E5E3DF", "300": "#D9D4CF",
+          "400": "#CCC6BF", "500": "#BFB8AF"
+        },
+        "brand-grey": {
+          "100": "#E2E0DE", "200": "#C5C0BD", "300": "#A8A19B",
+          "400": "#8B817A", "500": "#6E6259"
+        },
+        "brand-red":      { "500": "#960000" },
+        "brand-dark-red":  { "500": "#771100" },
+        "black":  { "500": "#000000", "400": "#333333", "300": "#666666" },
+        "grey":   { "500": "#999999", "400": "#C2C2C2", "300": "#EBEBEB" },
+        "white":  { "500": "#FFFFFF" },
+        "modal":  { "500": "rgba(0,0,0,0.8)" },
+        "alert":  { "500": "#C62828" },
+        "success": { "500": "#028764" }
+      }
+    }
+  }
+}

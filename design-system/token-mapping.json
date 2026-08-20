@@ -1,0 +1,69 @@
+{
+  "colour": {
+    "brand-red": "brand-c-red",
+    "brand-grey": "brand-grey",
+    "brand-light-grey": "brand-light-grey",
+    "brand-natural-white": "brand-natural-white",
+    "brand-c-red": "brand-c-red",
+    "brand-c-dark-red": "brand-c-dark-red"
+  },
+  "colour_supplemental": {
+    "brand-dark-red": "brand-c-dark-red",
+    "modal": "modal"
+  },
+  "spacing": {
+    "1": "1",
+    "2": "2",
+    "3": "3",
+    "4": "4",
+    "5": "5",
+    "6": "6",
+    "7": "7",
+    "8": "8",
+    "9": "9",
+    "10": "10",
+    "11": "11",
+    "12": "12",
+    "13": "13",
+    "14": "14",
+    "15": "15",
+    "16": "16",
+    "17": "17",
+    "18": "18",
+    "19": "19",
+    "20": "20",
+    "21": "21",
+    "22": "22"
+  },
+  "radius": {
+    "md": "md",
+    "sm": "sm",
+    "xs": "xs"
+  },
+  "font.size": {
+    "5xl": "5xl",
+    "4xl": "4xl",
+    "3xl": "3xl",
+    "2xl-sans": "2xl-sans",
+    "2xl-serif": "2xl-serif",
+    "xl-sans": "xl-sans",
+    "xl-serif": "xl-serif",
+    "lg-sans": "lg-sans",
+    "lg-serif": "lg-serif",
+    "body": "body",
+    "body-s": "body-s",
+    "body-xs": "body-xs",
+    "label": "label",
+    "action": "action"
+  }
+
+  ,
+  "font.size_supplemental": {
+    "md": "body-medium",
+    "sm": "body-s",
+    "xs": "body-xs",
+    "xxs": "body-xxs",
+    "xxxs": "body-xxxs"
+  }
+
+}
