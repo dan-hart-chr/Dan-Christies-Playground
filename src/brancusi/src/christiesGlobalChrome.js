@@ -184,6 +184,10 @@ function renderChristiesGlobalChrome({ headerRoot, footerRoot, language }) {
 export function mountChristiesGlobalChrome() {
   const language = getChromeLanguage();
   const headerMount = createMount("headerHost");
+  // The header package assumes christies.com's default dark text colour; without
+  // an explicit colour here its unstyled nav items inherit this page's white body
+  // colour and disappear against the white header bar.
+  if (headerMount) headerMount.style.color = "#1a1a1a";
   const footerMount = createMount("footerHost");
   const headerRoot = headerMount ? ReactTools.createRoot(headerMount) : null;
   const footerRoot = footerMount ? ReactTools.createRoot(footerMount) : null;
