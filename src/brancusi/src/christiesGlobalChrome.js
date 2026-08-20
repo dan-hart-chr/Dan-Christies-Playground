@@ -9,7 +9,11 @@ const DEFAULT_HEADER_FOOTER_API = import.meta.env.DEV
   ? "/header-footer-content"
   : "https://api.christies.com/header-footer-content";
 
+const STAGING_HEADER_FOOTER_API = "https://stgapi.christies.com/header-footer-content";
+
 const DEFAULT_AUTH_API = import.meta.env.DEV ? "/christies-auth" : "https://api.christies.com/auth";
+
+const STAGING_AUTH_API = "https://stgapi.christies.com/auth";
 const DEFAULT_AUTH_ORIGIN = "https://www.christies.com";
 const DEFAULT_CN_AUTH_ORIGIN = "https://www.christies.com.cn";
 
@@ -34,15 +38,22 @@ function getChromeLanguage() {
   return LANGUAGE_MAP[params.get("sc_lang")] || "en";
 }
 
+function isStagingHost() {
+  return /-stg\./.test(window.location.hostname);
+}
+
 function getHeaderFooterApiBase() {
-  return (import.meta.env.VITE_HEADER_FOOTER_DATA_API || DEFAULT_HEADER_FOOTER_API).replace(
-    /\/$/,
-    "",
-  );
+  const base =
+    import.meta.env.VITE_HEADER_FOOTER_DATA_API ||
+    (isStagingHost() ? STAGING_HEADER_FOOTER_API : DEFAULT_HEADER_FOOTER_API);
+  return base.replace(/\/$/, "");
 }
 
 function getAuthApiBase() {
-  return (import.meta.env.VITE_CHRISTIES_AUTH_API || DEFAULT_AUTH_API).replace(/\/$/, "");
+  const base =
+    import.meta.env.VITE_CHRISTIES_AUTH_API ||
+    (isStagingHost() ? STAGING_AUTH_API : DEFAULT_AUTH_API);
+  return base.replace(/\/$/, "");
 }
 
 function getAuthOrigin() {
@@ -173,6 +184,10 @@ function renderChristiesGlobalChrome({ headerRoot, footerRoot, language }) {
 export function mountChristiesGlobalChrome() {
   const language = getChromeLanguage();
   const headerMount = createMount("headerHost");
+  // The header package assumes christies.com's default dark text colour; without
+  // an explicit colour here its unstyled nav items inherit this page's white body
+  // colour and disappear against the white header bar.
+  if (headerMount) headerMount.style.color = "#1a1a1a";
   const footerMount = createMount("footerHost");
   const headerRoot = headerMount ? ReactTools.createRoot(headerMount) : null;
   const footerRoot = footerMount ? ReactTools.createRoot(footerMount) : null;
