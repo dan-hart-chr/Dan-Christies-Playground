@@ -12,7 +12,4 @@ button:disabled {
   cursor: not-allowed;
 }
 
-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-}
 svg { display: block; }
