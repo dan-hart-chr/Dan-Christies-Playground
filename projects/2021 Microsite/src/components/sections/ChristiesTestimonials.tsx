@@ -323,7 +323,6 @@ export function ChristiesTestimonials() {
                         type="Secondary"
                         mode="Light"
                         buttonCopy="READ MORE"
-                        className="w-auto"
                       />
                     </div>
                   </div>
