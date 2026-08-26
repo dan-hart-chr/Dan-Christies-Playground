@@ -1,65 +1,10 @@
-/* ---- Arizona type family (served from /public/fonts) ---- */
-@font-face {
-  font-family: "Arizona Sans";
-  src: url("/fonts/ArizonaSans-Light.otf") format("opentype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Arizona Sans";
-  src: url("/fonts/ArizonaSans-Regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Arizona Sans";
-  src: url("/fonts/ArizonaSans-Medium.otf") format("opentype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Arizona Sans";
-  src: url("/fonts/ArizonaSans-Bold.otf") format("opentype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Arizona Serif";
-  src: url("/fonts/ArizonaSerif-Light.otf") format("opentype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Arizona Serif";
-  src: url("/fonts/ArizonaSerif-Regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Arizona Serif";
-  src: url("/fonts/ArizonaSerif-Italic.otf") format("opentype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Arizona Flare";
-  src: url("/fonts/ArizonaFlare-Regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
+/* Arizona type family — use central design-system fonts */
+@import url("/design-system/fonts/arizona/arizona-fonts.css");
 
 :root {
-  --font-arizona-sans: "Arizona Sans";
-  --font-arizona-serif: "Arizona Serif";
-  --font-arizona-flare: "Arizona Flare";
+  --font-arizona-sans: var(--font-family-arizona-sans, "Arizona Sans");
+  --font-arizona-serif: var(--font-family-arizona-serif, "Arizona Serif");
+  --font-arizona-flare: var(--font-family-arizona-flare, "Arizona Flare");
   --color-bg: #0a0a0a;
   --color-fg: #ffffff;
 }
