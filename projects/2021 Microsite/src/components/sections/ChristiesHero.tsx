@@ -12,11 +12,17 @@
  *   Colors: text / wordmark / label → #FFFFFF (colors.white)
  *           overlay                 → #000000 (colors.black) @ 40% opacity
  *
- * The background video is a temporary BYQ stock placeholder pending a final
- * Christie's video asset — swap the <source> URLs when one is available.
+ * Wordmark swapped for the "20/21 Full Logo" SVG (Figma node 5:57), same
+ * size/position as the frame it was exported from.
+ *
+ * Background video replaced with the Christie's "gavelslam" clip (Figma
+ * node 5:167 pointed to a native Figma video embed, which can't be exported
+ * as bytes via the API — the user supplied the real asset directly).
  */
 
 import * as React from 'react';
+import logo2021 from '../../assets/images/2021-full-logo.svg';
+import gavelSlamVideo from '../../assets/videos/gavelslam.mp4';
 
 const words = [
   'Extraordinary',
@@ -71,19 +77,8 @@ export function ChristiesHero() {
           muted
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
-          style={{
-            backgroundImage:
-              'url("https://cdn.prod.website-files.com/6751dc3d88655c482ba588b8%2F67595b7416681c5c7dd18a5f_-2599-411c-b59e-c5c327dae87e-poster-00001.jpg")',
-          }}
         >
-          <source
-            src="https://byqsupply-components.netlify.app/FRANCO/videos/-2599-411c-b59e-c5c327dae87e-transcode.mp4"
-            type="video/mp4"
-          />
-          <source
-            src="https://byqsupply-components.netlify.app/FRANCO/videos/-2599-411c-b59e-c5c327dae87e-transcode.webm"
-            type="video/webm"
-          />
+          <source src={gavelSlamVideo} type="video/mp4" />
         </video>
       </div>
 
@@ -111,19 +106,7 @@ export function ChristiesHero() {
         <div className="flex flex-col justify-between items-start w-full h-full gap-10">
           {/* Top: wordmark + labels */}
           <div className="flex flex-col w-full gap-3">
-            <div
-              className="w-full"
-              style={{
-                fontFamily: tokens.fontSerif,
-                fontWeight: 300,
-                fontSize: 'clamp(3rem, 10vw, 8.5rem)',
-                lineHeight: '1',
-                letterSpacing: '-0.02em',
-                color: tokens.textColor,
-              }}
-            >
-              Christie&rsquo;s
-            </div>
+            <img src={logo2021} alt="20/21" className="w-full h-auto" />
             <div className="flex justify-between items-end w-full">
               <div
                 className="uppercase tracking-widest"
