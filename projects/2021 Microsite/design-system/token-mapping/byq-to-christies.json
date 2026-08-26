@@ -1,0 +1,29 @@
+{
+  "brand.primary": "colors.brand-c-red",
+  "brand.dark": "colors.brand-c-dark-red",
+  "brand.grey": "colors.brand-grey",
+  "surface.page": "colors.natural-white",
+  "text.base": "colors.black-400",
+  "text.inverse": "colors.white",
+  "ui.border": "colors.grey-400",
+  "ui.surface": "colors.grey-200",
+
+  "font.family.sans": "typography.fontFamily.arizona-sans",
+  "font.family.serif": "typography.fontFamily.arizona-serif",
+  "font.size.base": "typography.fontSizes.body",
+  "font.size.h1": "typography.fontSizes.5xl",
+  "font.size.h2": "typography.fontSizes.4xl",
+  "font.size.h3": "typography.fontSizes.3xl",
+  "font.size.h4": "typography.fontSizes.2xl-sans",
+  "font.size.h5": "typography.fontSizes.xl-serif",
+  "font.size.h6": "typography.fontSizes.lg-sans",
+
+  "space.1": "spacing.1",
+  "space.2": "spacing.2",
+  "space.3": "spacing.3",
+  "space.4": "spacing.4",
+
+  "radius.sm": "radius.sm",
+  "radius.md": "radius.md",
+  "radius.xs": "radius.xs"
+}
