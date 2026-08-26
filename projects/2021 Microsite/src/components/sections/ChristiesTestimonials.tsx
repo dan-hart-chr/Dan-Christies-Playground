@@ -256,9 +256,9 @@ export function ChristiesTestimonials() {
             >
               {slides.map((slide, i) => (
                 <div key={i} className="w-[90%] flex-shrink-0 max-[767px]:w-[90%] max-[479px]:w-[92%]">
-                  {/* Card */}
+                  {/* Card — desktop / tablet layout */}
                   <div
-                    className="w-full grid gap-12 p-6 max-[991px]:grid-cols-1 max-[991px]:gap-12"
+                    className="w-full grid gap-12 p-6 max-[991px]:grid-cols-1 max-[991px]:gap-12 max-[767px]:hidden"
                     style={{
                       backgroundColor: tokens.cardBg,
                       color: tokens.cardText,
@@ -268,13 +268,13 @@ export function ChristiesTestimonials() {
                   >
                     {/* Portrait image */}
                     <div
-                      className="flex items-center justify-center w-full overflow-hidden max-[991px]:h-[350px] max-[767px]:hidden"
+                      className="flex items-center justify-center w-full overflow-hidden max-[991px]:h-[350px]"
                       style={{ height: '624px', borderRadius: tokens.imageRadius }}
                     >
                       <img
                         src={slide.image}
                         loading="lazy"
-                        sizes="(max-width: 767px) 100vw, (max-width: 991px) 727px, 940px"
+                        sizes="(max-width: 991px) 727px, 940px"
                         alt={slide.authorName}
                         draggable={false}
                         className="object-cover w-full h-full"
@@ -336,6 +336,88 @@ export function ChristiesTestimonials() {
                         mode="Light"
                         buttonCopy="READ MORE"
                       />
+                    </div>
+                  </div>
+
+                  {/* Card — mobile slate layout */}
+                  <div
+                    className="hidden max-[767px]:flex flex-col justify-between gap-10 items-center w-full h-full p-6"
+                    style={{
+                      backgroundColor: tokens.cardBg,
+                      color: tokens.cardText,
+                      borderRadius: tokens.cardRadius,
+                    }}
+                  >
+                    {/* Top group — image + name/title, anchored top */}
+                    <div className="flex flex-col items-center w-full">
+                      {/* Circular portrait */}
+                      <div
+                        className="rounded-full overflow-hidden shrink-0 w-[204px] h-[204px]"
+                      >
+                        <img
+                          src={slide.image}
+                          loading="lazy"
+                          alt={slide.authorName}
+                          draggable={false}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+
+                      {/* Name + Job Title/Label — centered */}
+                      <div className="flex flex-col items-center gap-1 text-center mt-3 w-[192px]">
+                        <p
+                          style={{
+                            fontFamily: tokens.fontSerif,
+                            fontWeight: 300,
+                            fontSize: '1.5rem',
+                            lineHeight: '1.2',
+                            color: tokens.cardText,
+                            margin: 0,
+                          }}
+                        >
+                          {slide.authorName}
+                        </p>
+                        <p
+                          style={{
+                            fontFamily: tokens.fontSans,
+                            fontWeight: 300,
+                            fontSize: '0.875rem',
+                            lineHeight: '1.4',
+                            color: tokens.cardText,
+                            margin: 0,
+                          }}
+                        >
+                          {slide.handle}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Bottom group — bio + button, anchored bottom */}
+                    <div className="flex flex-col w-full">
+                      {/* Bio — left aligned */}
+                      <p
+                        className="w-full text-left"
+                        style={{
+                          fontFamily: tokens.fontSans,
+                          fontWeight: 300,
+                          fontSize: '1rem',
+                          lineHeight: '1.4',
+                          color: tokens.cardText,
+                          margin: 0,
+                        }}
+                      >
+                        {slide.quote}
+                      </p>
+
+                      {/* Read More Button — full width */}
+                      <div className="w-full mt-6">
+                        <Button
+                          type="Secondary"
+                          mode="Light"
+                          buttonCopy="READ MORE"
+                          className="!w-full"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
