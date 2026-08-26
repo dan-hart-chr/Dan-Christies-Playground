@@ -14,7 +14,7 @@ export default function Button({
   disabled = false,
   ...props
 }) {
-  const baseStyles = "flex items-center justify-center gap-2 rounded-[32px] px-8 py-4 font-medium text-xs uppercase transition-all duration-200 cursor-pointer font-arizona-sans";
+  const baseStyles = "flex items-center justify-center gap-2 rounded-full font-medium text-xs uppercase transition-all duration-200 cursor-pointer font-arizona-sans h-12 px-8 py-4 w-60";
   
   // Determine colors based on type and mode
   let colorClasses = "";
@@ -25,8 +25,8 @@ export default function Button({
       : "bg-black text-white hover:bg-gray-800";
   } else if (type === "Secondary") {
     colorClasses = mode === "Dark"
-      ? "border-2 border-white text-white hover:bg-white hover:bg-opacity-10"
-      : "border-2 border-black text-black hover:bg-black hover:bg-opacity-5";
+      ? "border border-white text-white hover:bg-white hover:bg-opacity-10"
+      : "border border-black text-black hover:bg-black hover:bg-opacity-5";
   } else if (type === "Link/Tertiary") {
     colorClasses = "text-black underline hover:no-underline";
   }
