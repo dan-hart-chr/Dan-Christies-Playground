@@ -1,5 +1,5 @@
-/* Arizona font registrations — use local copy from this project's public folder */
-@import url("/fonts/arizona/arizona-fonts.css");
+/* Arizona font registrations — import from source assets so Vite bundles fonts */
+@import "../assets/fonts/arizona/arizona-fonts.css";
 
 :root {
   --font-family-arizona-sans: var(--font-family-arizona-sans, "Arizona Sans");
