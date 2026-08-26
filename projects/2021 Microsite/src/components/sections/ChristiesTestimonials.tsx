@@ -15,6 +15,8 @@
  */
 
 import * as React from 'react';
+// @ts-ignore
+import Button from '@christies-ds/molecules/button/Button.jsx';
 
 // ─── Christie's content ───────────────────────────────────────────────────────
 const slides = [
@@ -317,32 +319,12 @@ export function ChristiesTestimonials() {
                       </div>
 
                       {/* Read More Button */}
-                      <button
-                        className="flex items-center justify-center gap-2"
-                        style={{
-                          fontFamily: tokens.fontSans,
-                          fontWeight: 600,
-                          fontSize: tokens.sizeBody,
-                          lineHeight: '1.5',
-                          color: tokens.cardText,
-                          backgroundColor: 'transparent',
-                          border: `1.5px solid ${tokens.cardText}`,
-                          borderRadius: '4px',
-                          padding: '12px 24px',
-                          cursor: 'pointer',
-                          transition: 'all 0.3s ease',
-                        }}
-                        onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLButtonElement).style.backgroundColor = tokens.cardText;
-                          (e.currentTarget as HTMLButtonElement).style.color = tokens.cardBg;
-                        }}
-                        onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
-                          (e.currentTarget as HTMLButtonElement).style.color = tokens.cardText;
-                        }}
-                      >
-                        READ MORE
-                      </button>
+                      <Button
+                        type="Secondary"
+                        mode="Light"
+                        buttonCopy="READ MORE"
+                        className="w-auto"
+                      />
                     </div>
                   </div>
                 </div>
