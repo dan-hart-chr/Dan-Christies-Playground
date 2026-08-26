@@ -17,41 +17,40 @@
 import * as React from 'react';
 // @ts-ignore
 import Button from '@christies-ds/molecules/button/Button.jsx';
+import alexRotterImg from '../../assets/images/specialists/alex-rotter.jpg';
+import maxCarterImg from '../../assets/images/specialists/max-carter.jpg';
+import saraFriedlanderImg from '../../assets/images/specialists/sara-friedlander.jpg';
+import johannaFlaumImg from '../../assets/images/specialists/johanna-flaum.jpg';
 
 // ─── Christie's content ───────────────────────────────────────────────────────
 const slides = [
   {
-    intro: 'James Whitfield',
+    authorName: 'Alex Rotter',
+    handle: "Global President, Christie's",
     quote:
-      "From first enquiry to the hammer falling, the Christie's team were exceptional. The most extraordinary experience I have had acquiring a work of art.",
-    authorName: 'James Whitfield',
-    handle: 'Collector, London',
-    image:
-      'https://byqsupply-components.netlify.app/andfold/images/ArticleThumbnail2.jpeg',
-    imageSrcSet:
-      'https://byqsupply-components.netlify.app/andfold/images/Portrait-in-Red-Top-p-500.jpeg 500w, https://byqsupply-components.netlify.app/andfold/images/Portrait-in-Red-Top-p-800.jpeg 800w, https://byqsupply-components.netlify.app/andfold/images/Portrait-in-Red-Top-p-1080.jpeg 1080w, https://byqsupply-components.netlify.app/andfold/images/Portrait-in-Red-Top-p-1600.jpeg 1600w, https://byqsupply-components.netlify.app/andfold/images/ArticleThumbnail2.jpeg 1808w',
+      "Alex Rotter is an Austrian man with a deep appreciation for the arts. He is the global president of Christie's. There are few people who are as well acquainted with Warhol as him. He has an impressive collection of jackets and it feels like he saves some of them for evening sales. He\u2019s a friend to animals and humans alike. Blop Blop Blop.",
+    image: alexRotterImg,
   },
   {
-    intro: 'Marina Sørensen',
+    authorName: 'Max Carter',
+    handle: 'Global Chairman, 20/21',
     quote:
-      "I consigned my grandfather's collection through Christie's. The expertise and care they showed for each individual piece was beyond anything I had anticipated.",
-    authorName: 'Marina Sørensen',
-    handle: 'Estate Consignor, New York',
-    image:
-      'https://byqsupply-components.netlify.app/andfold/images/MainTestimonial.webp',
-    imageSrcSet:
-      'https://byqsupply-components.netlify.app/andfold/images/MainTestimonial.webp 500w, https://byqsupply-components.netlify.app/andfold/images/MainTestimonial.webp 648w',
+      "Here is a little blurb about Max Carter. He is an important guy around here. People like Max because he helps them do their jobs. People recognize that Max is good at his job and they also recognize him by his hair. Max enjoys art and has been at Christie\u2019s since he was born. He is friends with King Charles. When you click read more it could drive to an interview with Tilly?",
+    image: maxCarterImg,
   },
   {
-    intro: 'David Okubo',
+    authorName: 'Sara Friedlander',
+    handle: 'Chairman, PWC',
     quote:
-      "I bid on a Basquiat I had been searching for over a decade. Winning it at Christie's was the realisation of a lifelong ambition. The whole experience was flawless.",
-    authorName: 'David Okubo',
-    handle: 'Art Advisor, Hong Kong',
-    image:
-      'https://byqsupply-components.netlify.app/andfold/images/SliderImage.jpeg',
-    imageSrcSet:
-      'https://byqsupply-components.netlify.app/andfold/images/Portrait-in-Silver-Jacket-2-p-500.jpeg 500w, https://byqsupply-components.netlify.app/andfold/images/Portrait-in-Silver-Jacket-2-p-800.jpeg 800w, https://byqsupply-components.netlify.app/andfold/images/Portrait-in-Silver-Jacket-2-p-1080.jpeg 1080w, https://byqsupply-components.netlify.app/andfold/images/Portrait-in-Silver-Jacket-2-p-1600.jpeg 1600w, https://byqsupply-components.netlify.app/andfold/images/Portrait-in-Silver-Jacket-2-p-2000.jpeg 2000w, https://byqsupply-components.netlify.app/andfold/images/SliderImage.jpeg 2400w',
+      "He\u2019re is where we put some info about Ms. Sara Friedlander. She is a friend to both animals and humans. Her parents were rabbis and growing up every Saturday they let her choose between going to temple or a museum. She always chose museum and now she is part of the upper echelon of Christie\u2019s elite. She is proudly from the UWS.",
+    image: saraFriedlanderImg,
+  },
+  {
+    authorName: 'Johanna Flaum',
+    handle: 'Vice Chairman, PWC',
+    quote:
+      "Ms. Johanna Flaum is that girl. She has an office in a very nice part of Rockefeller Center and is always down to share feedback. She doesn\u2019t play around! She has a pretty encycolpedic knowledge of major Post-War and Contemporary artists. Mess with her and you will be sorry. Johanna does not suffer fools and I bet you she\u2019d say that too! She went to Penn which is like the best.",
+    image: johannaFlaumImg,
   },
 ];
 
@@ -275,9 +274,8 @@ export function ChristiesTestimonials() {
                       <img
                         src={slide.image}
                         loading="lazy"
-                        srcSet={slide.imageSrcSet}
                         sizes="(max-width: 767px) 100vw, (max-width: 991px) 727px, 940px"
-                        alt=""
+                        alt={slide.authorName}
                         draggable={false}
                         className="object-cover w-full h-full"
                       />
@@ -289,25 +287,39 @@ export function ChristiesTestimonials() {
                       style={{ paddingTop: '16px', paddingRight: '16px', paddingBottom: '16px' }}
                     >
                       {/* Quote block */}
-                      <div className="flex flex-col gap-6 items-start justify-start">
-                        {/* Intro line with Name | Job Title — Arizona Sans */}
-                        <div
-                          style={{
-                            fontFamily: tokens.fontSans,
-                            fontWeight: 500,
-                            fontSize: tokens.sizeBody,
-                            lineHeight: '1.5',
-                            color: tokens.introText,
-                            letterSpacing: '0.05em',
-                          }}
-                        >
-                          {slide.intro} | {slide.handle}
+                      <div className="flex flex-col gap-6 items-start justify-start w-full">
+                        {/* Name + Job Title/Label */}
+                        <div className="flex flex-col gap-1 items-start w-full">
+                          <p
+                            style={{
+                              fontFamily: tokens.fontSerif,
+                              fontWeight: 300,
+                              fontSize: '2rem',
+                              lineHeight: '1.2',
+                              color: tokens.cardText,
+                              margin: 0,
+                            }}
+                          >
+                            {slide.authorName}
+                          </p>
+                          <p
+                            style={{
+                              fontFamily: tokens.fontSans,
+                              fontWeight: 300,
+                              fontSize: '1rem',
+                              lineHeight: '1.4',
+                              color: tokens.cardText,
+                              margin: 0,
+                            }}
+                          >
+                            {slide.handle}
+                          </p>
                         </div>
                         {/* Quote — Arizona Serif */}
                         <div
                           style={{
                             fontFamily: tokens.fontSerif,
-                            fontSize: tokens.sizeQuote,
+                            fontSize: '1.75rem',
                             lineHeight: '1.2',
                             fontWeight: 300,
                             letterSpacing: '-0.02em',
