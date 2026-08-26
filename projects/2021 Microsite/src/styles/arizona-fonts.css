@@ -1,8 +1,2 @@
 /* Arizona font registrations — import from source assets so Vite bundles fonts */
 @import "../assets/fonts/arizona/arizona-fonts.css";
-
-:root {
-  --font-family-arizona-sans: var(--font-family-arizona-sans, "Arizona Sans");
-  --font-family-arizona-serif: var(--font-family-arizona-serif, "Arizona Serif");
-  --font-family-arizona-flare: var(--font-family-arizona-flare, "Arizona Flare");
-}
