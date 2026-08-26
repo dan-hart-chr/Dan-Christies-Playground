@@ -1,0 +1,19 @@
+/* Button component styles */
+button {
+  font-family: var(--font-family-arizona-sans, "ABC Arizona Sans Variable", sans-serif);
+  border: none;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+svg { display: block; }
