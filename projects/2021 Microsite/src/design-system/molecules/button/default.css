@@ -1,7 +1,6 @@
 /* Button component styles */
 button {
   font-family: var(--font-family-arizona-sans, "ABC Arizona Sans Variable", sans-serif);
-  border: none;
 }
 
 button:focus {
