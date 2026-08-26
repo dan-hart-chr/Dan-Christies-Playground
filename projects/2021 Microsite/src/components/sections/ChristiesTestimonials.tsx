@@ -341,77 +341,83 @@ export function ChristiesTestimonials() {
 
                   {/* Card — mobile slate layout */}
                   <div
-                    className="hidden max-[767px]:flex flex-col items-center w-full p-6"
+                    className="hidden max-[767px]:flex flex-col justify-between gap-10 items-center w-full h-full p-6"
                     style={{
                       backgroundColor: tokens.cardBg,
                       color: tokens.cardText,
                       borderRadius: tokens.cardRadius,
                     }}
                   >
-                    {/* Circular portrait */}
-                    <div
-                      className="rounded-full overflow-hidden shrink-0 w-[204px] h-[204px]"
-                    >
-                      <img
-                        src={slide.image}
-                        loading="lazy"
-                        alt={slide.authorName}
-                        draggable={false}
-                        className="object-cover w-full h-full"
-                      />
+                    {/* Top group — image + name/title, anchored top */}
+                    <div className="flex flex-col items-center w-full">
+                      {/* Circular portrait */}
+                      <div
+                        className="rounded-full overflow-hidden shrink-0 w-[204px] h-[204px]"
+                      >
+                        <img
+                          src={slide.image}
+                          loading="lazy"
+                          alt={slide.authorName}
+                          draggable={false}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+
+                      {/* Name + Job Title/Label — centered */}
+                      <div className="flex flex-col items-center gap-1 text-center mt-3 w-[192px]">
+                        <p
+                          style={{
+                            fontFamily: tokens.fontSerif,
+                            fontWeight: 300,
+                            fontSize: '1.5rem',
+                            lineHeight: '1.2',
+                            color: tokens.cardText,
+                            margin: 0,
+                          }}
+                        >
+                          {slide.authorName}
+                        </p>
+                        <p
+                          style={{
+                            fontFamily: tokens.fontSans,
+                            fontWeight: 300,
+                            fontSize: '0.875rem',
+                            lineHeight: '1.4',
+                            color: tokens.cardText,
+                            margin: 0,
+                          }}
+                        >
+                          {slide.handle}
+                        </p>
+                      </div>
                     </div>
 
-                    {/* Name + Job Title/Label — centered */}
-                    <div className="flex flex-col items-center gap-1 text-center mt-3 w-[192px]">
+                    {/* Bottom group — bio + button, anchored bottom */}
+                    <div className="flex flex-col w-full">
+                      {/* Bio — left aligned */}
                       <p
-                        style={{
-                          fontFamily: tokens.fontSerif,
-                          fontWeight: 300,
-                          fontSize: '1.5rem',
-                          lineHeight: '1.2',
-                          color: tokens.cardText,
-                          margin: 0,
-                        }}
-                      >
-                        {slide.authorName}
-                      </p>
-                      <p
+                        className="w-full text-left"
                         style={{
                           fontFamily: tokens.fontSans,
                           fontWeight: 300,
-                          fontSize: '0.875rem',
+                          fontSize: '1rem',
                           lineHeight: '1.4',
                           color: tokens.cardText,
                           margin: 0,
                         }}
                       >
-                        {slide.handle}
+                        {slide.quote}
                       </p>
-                    </div>
 
-                    {/* Bio — left aligned */}
-                    <p
-                      className="w-full text-left mt-6"
-                      style={{
-                        fontFamily: tokens.fontSans,
-                        fontWeight: 300,
-                        fontSize: '1rem',
-                        lineHeight: '1.4',
-                        color: tokens.cardText,
-                        margin: 0,
-                      }}
-                    >
-                      {slide.quote}
-                    </p>
-
-                    {/* Read More Button — full width */}
-                    <div className="w-full mt-6">
-                      <Button
-                        type="Secondary"
-                        mode="Light"
-                        buttonCopy="READ MORE"
-                        className="!w-full"
-                      />
+                      {/* Read More Button — full width */}
+                      <div className="w-full mt-6">
+                        <Button
+                          type="Secondary"
+                          mode="Light"
+                          buttonCopy="READ MORE"
+                          className="!w-full"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
