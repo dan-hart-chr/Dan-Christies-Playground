@@ -274,7 +274,7 @@ export function ChristiesTestimonials() {
                 <div key={i} className="w-[90%] flex-shrink-0 max-[767px]:w-[90%] max-[479px]:w-[92%]">
                   {/* Card — desktop / tablet layout */}
                   <div
-                    className="w-full flex gap-12 pl-6 pr-12 py-6 max-[991px]:flex-col max-[991px]:gap-12 max-[767px]:hidden"
+                    className="w-full flex gap-12 pl-6 pr-12 py-6 h-[560px] max-[991px]:flex-col max-[991px]:gap-12 max-[991px]:h-auto max-[767px]:hidden"
                     style={{
                       backgroundColor: tokens.cardBg,
                       backdropFilter: `blur(${tokens.cardBlur})`,
@@ -283,9 +283,11 @@ export function ChristiesTestimonials() {
                       borderRadius: tokens.cardRadius,
                     }}
                   >
-                    {/* Portrait image — aspect-ratio locked, scales down with the row */}
+                    {/* Portrait image — aspect-ratio locked; h-full needs the row's now-definite
+                        height above, otherwise the aspect-ratio width calc is indeterminate and
+                        the image falls back to its raw (oversized) intrinsic size */}
                     <div
-                      className="shrink-0 overflow-hidden max-[991px]:w-full"
+                      className="h-full shrink-0 overflow-hidden max-[991px]:w-full max-[991px]:h-auto"
                       style={{ aspectRatio: '1808 / 2400', borderRadius: tokens.imageRadius }}
                     >
                       <img
@@ -298,7 +300,7 @@ export function ChristiesTestimonials() {
                     </div>
 
                     {/* Right content */}
-                    <div className="flex flex-1 flex-col justify-between items-start gap-12 pt-4">
+                    <div className="flex flex-1 min-w-0 flex-col justify-between items-start gap-12 pt-4">
                       {/* Quote block */}
                       <div className="flex flex-col gap-6 items-start justify-start w-full">
                         {/* Name + Job Title/Label */}
