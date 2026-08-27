@@ -141,6 +141,9 @@ export function ChristiesTestimonials() {
   React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
   const isDragging = React.useRef(false);
+  // True only between an actual pointerdown and its matching up/cancel — guards
+  // against pointermove, which fires on mouse hover with no button pressed
+  const pointerActive = React.useRef(false);
   const dragStartX = React.useRef(0);
   const dragStartY = React.useRef(0);
   // null until the gesture's primary axis is determined, so a vertical scroll
@@ -152,6 +155,7 @@ export function ChristiesTestimonials() {
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!trackRef.current || stepPx === 0) return;
+    pointerActive.current = true;
     dragStartX.current = e.clientX;
     dragStartY.current = e.clientY;
     dragAxis.current = null;
@@ -159,7 +163,7 @@ export function ChristiesTestimonials() {
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!trackRef.current) return;
+    if (!trackRef.current || !pointerActive.current) return;
     const deltaX = e.clientX - dragStartX.current;
     const deltaY = e.clientY - dragStartY.current;
 
@@ -186,6 +190,7 @@ export function ChristiesTestimonials() {
 
   const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     const wasDraggingX = isDragging.current && dragAxis.current === 'x';
+    pointerActive.current = false;
     isDragging.current = false;
     dragAxis.current = null;
     if (!wasDraggingX || !trackRef.current) return;
