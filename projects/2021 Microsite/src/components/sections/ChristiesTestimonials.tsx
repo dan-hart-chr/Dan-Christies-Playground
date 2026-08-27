@@ -467,7 +467,7 @@ export function ChristiesTestimonials() {
                       <div className="w-full mt-6 flex flex-row gap-3 items-center">
                         <Button type="Secondary" mode="Dark" className="!w-auto !px-4 flex-1 min-w-0 overflow-hidden">
                           <MailIcon />
-                          <span className="truncate min-w-0 flex-1 text-left">{`CONNECT WITH ${firstName(slide.authorName).toUpperCase()}`}</span>
+                          <span className="truncate min-w-0 flex-1 text-left">CONNECT</span>
                         </Button>
                         <div className="flex gap-2 items-center shrink-0">
                           <SocialIconButton icon="x" href="#" label={`Follow ${firstName(slide.authorName)} on X`} />
@@ -505,9 +505,9 @@ export function ChristiesTestimonials() {
       <style>{`
         @media (max-width: 767px) {
           .testimonials-dot-nav { margin-top: 2rem; }
-          .team-heading { font-size: 1rem !important; }
+          .team-heading { font-size: 2rem !important; }
           .specialists-flag { padding: 0.5rem !important; }
-          .specialists-flag-text { text-transform: lowercase !important; font-weight: 300 !important; }
+          .specialists-flag-text { text-transform: capitalize !important; font-weight: 300 !important; letter-spacing: normal !important; }
         }
       `}</style>
     </section>

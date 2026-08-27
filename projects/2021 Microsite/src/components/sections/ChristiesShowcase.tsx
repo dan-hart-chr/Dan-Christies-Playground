@@ -208,7 +208,7 @@ export function ChristiesShowcase() {
           animation-play-state: paused;
         }
         @media (max-width: 767px) {
-          .christies-showcase .showcase-heading { font-size: 1rem !important; margin-bottom: 1.5rem !important; }
+          .christies-showcase .showcase-heading { font-size: 2rem !important; margin-bottom: 1.5rem !important; }
         }
       `}</style>
     </section>
