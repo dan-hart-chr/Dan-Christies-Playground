@@ -104,37 +104,9 @@ export function ChristiesHero() {
         }}
       >
         <div className="flex flex-col justify-between items-start w-full h-full gap-10">
-          {/* Top: wordmark + labels */}
+          {/* Top: wordmark */}
           <div className="flex flex-col w-full gap-3">
             <img src={logo2021} alt="20/21" className="w-full h-auto" />
-            <div className="flex justify-between items-end w-full">
-              <div
-                className="uppercase tracking-widest"
-                style={{
-                  fontFamily: tokens.fontSans,
-                  fontSize: tokens.sizeLabel,
-                  lineHeight: '1',
-                  fontWeight: 500,
-                  letterSpacing: '0.15em',
-                  color: tokens.textColor,
-                }}
-              >
-                Auctions &amp; Private Sales
-              </div>
-              <div
-                className="uppercase tracking-widest"
-                style={{
-                  fontFamily: tokens.fontSans,
-                  fontSize: tokens.sizeLabel,
-                  lineHeight: '1',
-                  fontWeight: 500,
-                  letterSpacing: '0.15em',
-                  color: tokens.textColor,
-                }}
-              >
-                Est. 1766
-              </div>
-            </div>
           </div>
 
           {/* Bottom: animated heading (buttons removed per request) */}

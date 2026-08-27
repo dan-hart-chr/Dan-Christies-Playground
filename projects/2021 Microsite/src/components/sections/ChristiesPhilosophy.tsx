@@ -84,7 +84,7 @@ export function ChristiesPhilosophy() {
 
           {/* Body copy */}
           <div
-            className={`max-w-[820px] text-center transition-all duration-700 ease-out ${
+            className={`max-w-[900px] text-center transition-all duration-700 ease-out ${
               visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             }`}
             style={{ transitionDelay: '150ms' }}
