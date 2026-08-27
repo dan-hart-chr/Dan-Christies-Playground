@@ -42,8 +42,8 @@ const tokens = {
   fontSerif: 'var(--font-family-arizona-serif)',
   fontSans: 'var(--font-family-arizona-sans)',
 
-  sizeHeading: '3.5rem', // fontSizes["5xl-lg"]
-  sizeLabel: '0.75rem', // fontSizes["label-s"]
+  sizeHeading: '2.625rem', // fontSizes["5xl-lg"] scaled 0.75x
+  sizeLabel: '0.625rem', // fontSizes["label-s"] scaled 0.75x
 };
 
 export function ChristiesHero() {
@@ -95,19 +95,19 @@ export function ChristiesHero() {
         className="relative w-full flex flex-col justify-between items-start"
         style={{
           zIndex: 2,
-          maxWidth: '1800px',
+          maxWidth: '1350px',
           marginLeft: 'auto',
           marginRight: 'auto',
-          paddingLeft: '32px',
-          paddingRight: '32px',
-          paddingTop: '20px',
-          paddingBottom: '80px',
+          paddingLeft: '24px',
+          paddingRight: '24px',
+          paddingTop: '15px',
+          paddingBottom: '60px',
           height: '100%',
         }}
       >
-        <div className="flex flex-col justify-between items-start w-full h-full gap-10">
+        <div className="flex flex-col justify-between items-start w-full h-full gap-[30px]">
           {/* Top: wordmark — reveals left-to-right (wipe + fade), synced with the heading animation below */}
-          <div className="flex flex-col w-full gap-3">
+          <div className="flex flex-col w-full gap-[9px]">
             <div className="w-full overflow-hidden">
               <img
                 src={logo2021}
@@ -122,12 +122,12 @@ export function ChristiesHero() {
           </div>
 
           {/* Bottom: animated heading (buttons removed per request) */}
-          <div ref={headingRef} className="hero-words flex flex-wrap gap-x-3" style={{ maxWidth: '720px' }}>
+          <div ref={headingRef} className="hero-words flex flex-wrap gap-x-[9px]" style={{ maxWidth: '540px' }}>
             {words.map((word, i) => (
               <div
                 key={i}
                 className="overflow-hidden"
-                style={{ marginBottom: '-15px', paddingBottom: '15px' }}
+                style={{ marginBottom: '-11px', paddingBottom: '11px' }}
               >
                 <div
                   className="hero-word transition-transform duration-700 ease-out"
@@ -152,8 +152,8 @@ export function ChristiesHero() {
 
       <style>{`
         @media (max-width: 767px) {
-          .christies-hero .hero-word { font-size: 2rem !important; }
-          .christies-hero .hero-words { column-gap: 0.4rem !important; }
+          .christies-hero .hero-word { font-size: 1.5rem !important; }
+          .christies-hero .hero-words { column-gap: 0.3rem !important; }
         }
       `}</style>
     </section>

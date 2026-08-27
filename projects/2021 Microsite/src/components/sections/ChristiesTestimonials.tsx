@@ -86,16 +86,16 @@ const tokens = {
   fontSerif: 'var(--font-family-arizona-serif)',
   fontSans: 'var(--font-family-arizona-sans)',
 
-  // typography.fontSizes — closest Christie's token to original sizes
-  sizeH2: '3.5rem',      // fontSizes["5xl-lg"]  ≈ 56px
-  sizeQuote: '2.25rem',  // fontSizes["4xl"]     ≈ 36px
-  sizeLabel: '0.75rem',  // fontSizes["label-s"]
-  sizeBody: '1rem',      // fontSizes["body"]
+  // typography.fontSizes — closest Christie's token to original sizes, scaled 0.75x
+  sizeH2: '2.625rem',   // fontSizes["5xl-lg"] scaled
+  sizeQuote: '1.6875rem', // fontSizes["4xl"] scaled
+  sizeLabel: '0.625rem', // fontSizes["label-s"] scaled
+  sizeBody: '0.75rem',   // fontSizes["body"] scaled
 
-  // radius
-  cardRadius: '16px',    // radius-2 (Figma)
-  imageRadius: '12px',   // radius.sm
-  labelRadius: '12px',
+  // radius, scaled 0.75x
+  cardRadius: '12px',
+  imageRadius: '9px',
+  labelRadius: '9px',
 };
 
 function firstName(fullName: string) {
@@ -226,12 +226,12 @@ export function ChristiesTestimonials() {
 
       {/* Main container */}
       <div
-        className="relative z-[2] w-full mx-auto px-12 max-[991px]:px-8 max-[767px]:px-5"
-        style={{ maxWidth: '1800px' }}
+        className="relative z-[2] w-full mx-auto px-9 max-[991px]:px-6 max-[767px]:px-[15px]"
+        style={{ maxWidth: '1350px' }}
       >
         {/* Headline + arrows row */}
-        <div className="testimonials-headline-row relative flex items-start justify-between mb-20">
-          <div className="specialists-header flex flex-col gap-8 items-start">
+        <div className="testimonials-headline-row relative flex items-start justify-between mb-[60px]">
+          <div className="specialists-header flex flex-col gap-6 items-start">
             {/* Label pill */}
             <div
               className="specialists-flag flex items-center justify-center"
@@ -240,7 +240,7 @@ export function ChristiesTestimonials() {
                 borderRadius: tokens.labelRadius,
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',
-                padding: '12px 16px',
+                padding: '9px 12px',
               }}
             >
               <span
@@ -261,7 +261,7 @@ export function ChristiesTestimonials() {
             {/* H2 — Christie's serif heading */}
             <h2
               ref={headingRef}
-              className={`team-heading m-0 transition-all duration-700 ease-out max-[479px]:text-[2.5rem] ${
+              className={`team-heading m-0 transition-all duration-700 ease-out max-[479px]:text-[1.875rem] ${
                 headingVisible ? 'opacity-100 blur-0' : 'opacity-0 blur-[20px]'
               }`}
               style={{
@@ -271,7 +271,7 @@ export function ChristiesTestimonials() {
                 fontWeight: 300, // fontWeight.light
                 letterSpacing: '-0.03em',
                 color: tokens.sectionText,
-                maxWidth: '800px',
+                maxWidth: '600px',
               }}
             >
               Get to know the team
@@ -279,7 +279,7 @@ export function ChristiesTestimonials() {
           </div>
 
           {/* Arrow buttons */}
-          <div className="flex items-center gap-4 flex-shrink-0 mt-2 max-[767px]:hidden">
+          <div className="flex items-center gap-3 flex-shrink-0 mt-1.5 max-[767px]:hidden">
             <SliderButton onClick={handlePrev} direction="prev" />
             <SliderButton onClick={handleNext} direction="next" />
           </div>
@@ -296,7 +296,7 @@ export function ChristiesTestimonials() {
           >
             <div
               ref={trackRef}
-              className="flex gap-2"
+              className="flex gap-1.5"
               style={{
                 transform: `translateX(-${currentSlide * stepPx}px)`,
                 transition: 'transform 750ms cubic-bezier(0.16, 1, 0.3, 1)',
@@ -306,7 +306,7 @@ export function ChristiesTestimonials() {
                 <div key={i} className="w-[90%] flex-shrink-0 max-[767px]:w-[90%] max-[479px]:w-[92%]">
                   {/* Card — desktop / tablet layout */}
                   <div
-                    className="w-full flex gap-12 pl-6 pr-12 py-6 h-[560px] max-[991px]:flex-col max-[991px]:gap-12 max-[991px]:h-auto max-[767px]:hidden"
+                    className="w-full flex gap-9 pl-[18px] pr-9 py-[18px] h-[420px] max-[991px]:flex-col max-[991px]:gap-9 max-[991px]:h-auto max-[767px]:hidden"
                     style={{
                       backgroundColor: tokens.cardBg,
                       backdropFilter: `blur(${tokens.cardBlur})`,
@@ -332,16 +332,16 @@ export function ChristiesTestimonials() {
                     </div>
 
                     {/* Right content */}
-                    <div className="flex flex-1 min-w-0 flex-col justify-between items-start gap-12 pt-4">
+                    <div className="flex flex-1 min-w-0 flex-col justify-between items-start gap-9 pt-3">
                       {/* Quote block */}
-                      <div className="flex flex-col gap-6 items-start justify-start w-full">
+                      <div className="flex flex-col gap-[18px] items-start justify-start w-full">
                         {/* Name + Job Title/Label */}
-                        <div className="flex flex-col gap-1 items-start w-full">
+                        <div className="flex flex-col gap-[3px] items-start w-full">
                           <p
                             style={{
                               fontFamily: tokens.fontSerif,
                               fontWeight: 300,
-                              fontSize: '2rem',
+                              fontSize: '1.5rem',
                               lineHeight: '1.2',
                               color: tokens.cardText,
                               margin: 0,
@@ -353,7 +353,7 @@ export function ChristiesTestimonials() {
                             style={{
                               fontFamily: tokens.fontSans,
                               fontWeight: 300,
-                              fontSize: '1rem',
+                              fontSize: '0.75rem',
                               lineHeight: '1.4',
                               color: tokens.cardText,
                               margin: 0,
@@ -366,7 +366,7 @@ export function ChristiesTestimonials() {
                         <div
                           style={{
                             fontFamily: tokens.fontSerif,
-                            fontSize: '1.5rem',
+                            fontSize: '1.125rem',
                             lineHeight: '1.2',
                             fontWeight: 200,
                             letterSpacing: '-0.02em',
@@ -378,12 +378,12 @@ export function ChristiesTestimonials() {
                       </div>
 
                       {/* CTAs — connect + social */}
-                      <div className="flex gap-4 items-center">
-                        <Button type="Secondary" mode="Dark" className="!w-auto">
+                      <div className="flex gap-3 items-center">
+                        <Button type="Secondary" mode="Dark" className="!w-auto !h-9 !px-3 !gap-1.5 !text-[10px]">
                           <MailIcon />
                           {`CONNECT WITH ${firstName(slide.authorName).toUpperCase()}`}
                         </Button>
-                        <div className="flex gap-2 items-center">
+                        <div className="flex gap-1.5 items-center">
                           <SocialIconButton icon="x" href="#" label={`Follow ${firstName(slide.authorName)} on X`} />
                           <SocialIconButton icon="instagram" href="#" label={`Follow ${firstName(slide.authorName)} on Instagram`} />
                         </div>
@@ -393,7 +393,7 @@ export function ChristiesTestimonials() {
 
                   {/* Card — mobile slate layout */}
                   <div
-                    className="hidden max-[767px]:flex flex-col justify-between gap-10 items-center w-full h-full p-6"
+                    className="hidden max-[767px]:flex flex-col justify-between gap-[30px] items-center w-full h-full p-[18px]"
                     style={{
                       backgroundColor: tokens.cardBg,
                       backdropFilter: `blur(${tokens.cardBlur})`,
@@ -406,7 +406,7 @@ export function ChristiesTestimonials() {
                     <div className="flex flex-col items-center w-full">
                       {/* Circular portrait */}
                       <div
-                        className="rounded-full overflow-hidden shrink-0 w-[204px] h-[204px]"
+                        className="rounded-full overflow-hidden shrink-0 w-[153px] h-[153px]"
                       >
                         <img
                           src={slide.image}
@@ -418,12 +418,12 @@ export function ChristiesTestimonials() {
                       </div>
 
                       {/* Name + Job Title/Label — centered */}
-                      <div className="flex flex-col items-center gap-1 text-center mt-3 w-[192px]">
+                      <div className="flex flex-col items-center gap-[3px] text-center mt-[9px] w-[144px]">
                         <p
                           style={{
                             fontFamily: tokens.fontSerif,
                             fontWeight: 300,
-                            fontSize: '1.5rem',
+                            fontSize: '1.125rem',
                             lineHeight: '1.2',
                             color: tokens.cardText,
                             margin: 0,
@@ -435,7 +435,7 @@ export function ChristiesTestimonials() {
                           style={{
                             fontFamily: tokens.fontSans,
                             fontWeight: 300,
-                            fontSize: '0.875rem',
+                            fontSize: '0.625rem',
                             lineHeight: '1.4',
                             color: tokens.cardText,
                             margin: 0,
@@ -454,7 +454,7 @@ export function ChristiesTestimonials() {
                         style={{
                           fontFamily: tokens.fontSans,
                           fontWeight: 300,
-                          fontSize: '1rem',
+                          fontSize: '0.75rem',
                           lineHeight: '1.4',
                           color: tokens.cardText,
                           margin: 0,
@@ -464,12 +464,12 @@ export function ChristiesTestimonials() {
                       </p>
 
                       {/* CTAs — single row; connect button flexes/truncates to fit */}
-                      <div className="w-full mt-6 flex flex-row gap-3 items-center">
-                        <Button type="Secondary" mode="Dark" className="!w-auto !px-4">
+                      <div className="w-full mt-[18px] flex flex-row gap-[9px] items-center">
+                        <Button type="Secondary" mode="Dark" className="!w-auto !px-3 !h-9 !gap-1.5 !text-[10px]">
                           <MailIcon />
                           CONNECT
                         </Button>
-                        <div className="flex gap-2 items-center shrink-0">
+                        <div className="flex gap-1.5 items-center shrink-0">
                           <SocialIconButton icon="x" href="#" label={`Follow ${firstName(slide.authorName)} on X`} />
                           <SocialIconButton icon="instagram" href="#" label={`Follow ${firstName(slide.authorName)} on Instagram`} />
                         </div>
@@ -482,15 +482,15 @@ export function ChristiesTestimonials() {
           </div>
 
           {/* Mobile dot nav */}
-          <div className="testimonials-dot-nav hidden max-[767px]:flex items-center justify-center gap-2">
+          <div className="testimonials-dot-nav hidden max-[767px]:flex items-center justify-center gap-1.5">
             {slides.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrentSlide(i)}
                 className="rounded-full transition-all duration-300"
                 style={{
-                  width: currentSlide === i ? '16px' : '8px',
-                  height: '8px',
+                  width: currentSlide === i ? '12px' : '6px',
+                  height: '6px',
                   backgroundColor: currentSlide === i ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,0.32)',
                   border: 'none',
                   cursor: 'pointer',
@@ -504,13 +504,13 @@ export function ChristiesTestimonials() {
 
       <style>{`
         @media (max-width: 767px) {
-          .christies-testimonials { padding-top: 3rem !important; padding-bottom: 3rem !important; }
-          .testimonials-dot-nav { margin-top: 2rem; }
-          .testimonials-headline-row { margin-bottom: 3rem !important; }
-          .specialists-header { gap: 1rem !important; }
-          .team-heading { font-size: 2rem !important; }
-          .specialists-flag { padding: 0.5rem !important; }
-          .specialists-flag-text { text-transform: capitalize !important; font-weight: 300 !important; letter-spacing: normal !important; font-size: 1rem !important; }
+          .christies-testimonials { padding-top: 2.25rem !important; padding-bottom: 2.25rem !important; }
+          .testimonials-dot-nav { margin-top: 1.5rem; }
+          .testimonials-headline-row { margin-bottom: 2.25rem !important; }
+          .specialists-header { gap: 0.75rem !important; }
+          .team-heading { font-size: 1.5rem !important; }
+          .specialists-flag { padding: 0.375rem !important; }
+          .specialists-flag-text { text-transform: capitalize !important; font-weight: 300 !important; letter-spacing: normal !important; font-size: 0.75rem !important; }
         }
       `}</style>
     </section>
@@ -531,8 +531,8 @@ function SliderButton({ onClick, direction }: { onClick: () => void; direction: 
       onMouseUp={() => setActive(false)}
       className="flex items-center justify-center flex-shrink-0"
       style={{
-        width: '48px',
-        height: '48px',
+        width: '36px',
+        height: '36px',
         borderRadius: '100vw',
         border: `1.5px solid ${hovered ? '#ffffff' : 'rgba(255,255,255,0.16)'}`,
         backgroundColor: 'rgba(255,255,255,0.10)',
@@ -546,13 +546,13 @@ function SliderButton({ onClick, direction }: { onClick: () => void; direction: 
       }}
     >
       {direction === 'prev' ? (
-        <span className="flex items-center justify-center" style={{ width: '11px' }}>
+        <span className="flex items-center justify-center" style={{ width: '8px' }}>
           <svg width="100%" height="100%" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9.66797 2L1.66797 10L9.66797 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
           </svg>
         </span>
       ) : (
-        <span className="flex items-center justify-center ml-[3px]" style={{ width: '11px' }}>
+        <span className="flex items-center justify-center ml-[3px]" style={{ width: '8px' }}>
           <svg width="100%" height="100%" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M1.33203 18L9.33203 10L1.33203 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
           </svg>
@@ -579,7 +579,7 @@ function SocialIconButton({
       target="_blank"
       rel="noopener noreferrer"
       className="flex items-center justify-center rounded-full border border-solid border-white text-white transition-colors duration-200 hover:bg-white hover:text-black shrink-0"
-      style={{ width: '48px', height: '48px' }}
+      style={{ width: '36px', height: '36px' }}
     >
       {icon === 'x' ? <XIcon /> : <InstagramIcon />}
     </a>
@@ -588,7 +588,7 @@ function SocialIconButton({
 
 function MailIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
       <path d="M1.5 4L8 9L14.5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
@@ -598,7 +598,7 @@ function MailIcon() {
 // X (Twitter) logo mark — path exported from Figma node 70:497 (X 16px)
 function XIcon() {
   return (
-    <svg width="13" height="12" viewBox="0 0 12.7765 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="10" height="9" viewBox="0 0 12.7765 12" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M0.0311503 0L4.964 6.61871L0 12H1.1172L5.46317 7.2886L8.9746 12H12.7765L7.56607 5.009L12.1865 0H11.0693L7.0669 4.33911L3.83302 0H0.0311503ZM1.67407 0.825802H3.42066L11.1333 11.1741H9.38671L1.67407 0.825802Z"
         fill="currentColor"
@@ -609,7 +609,7 @@ function XIcon() {
 
 function InstagramIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="1.5" y="1.5" width="13" height="13" rx="4" stroke="currentColor" strokeWidth="1.5" />
       <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.5" />
       <circle cx="11.5" cy="4.5" r="0.75" fill="currentColor" />

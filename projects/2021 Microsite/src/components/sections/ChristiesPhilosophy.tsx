@@ -30,7 +30,7 @@ const tokens = {
   fontFlare: 'var(--font-family-arizona-flare)',
   fontSans: 'var(--font-family-arizona-sans)',
 
-  sizeLabel: '1.125rem', // fontSizes["xl-sans"] — matches Figma spec exactly
+  sizeLabel: '0.875rem', // fontSizes["xl-sans"] scaled 0.75x
 };
 
 export function ChristiesPhilosophy() {
@@ -56,14 +56,14 @@ export function ChristiesPhilosophy() {
   return (
     <section
       ref={sectionRef}
-      className="christies-philosophy relative py-[120px] max-[991px]:py-16 max-[479px]:pt-[100px] max-[479px]:pb-12"
+      className="christies-philosophy relative py-[90px] max-[991px]:py-12 max-[479px]:pt-[75px] max-[479px]:pb-9"
       style={{ backgroundColor: tokens.sectionBg, color: tokens.textColor }}
     >
-      <div className="w-full max-w-[1800px] mx-auto px-8 max-[479px]:px-4">
-        <div className="flex flex-col items-center gap-6">
+      <div className="w-full max-w-[1350px] mx-auto px-6 max-[479px]:px-3">
+        <div className="flex flex-col items-center gap-[18px]">
           {/* Label */}
           <div
-            className={`intro-flag rounded-[24px] px-5 py-3 transition-all duration-700 ease-out ${
+            className={`intro-flag rounded-[18px] px-[15px] py-[9px] transition-all duration-700 ease-out ${
               visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
             style={{ backgroundColor: '#213328', border: `1px solid ${tokens.labelBorder}` }}
@@ -73,7 +73,7 @@ export function ChristiesPhilosophy() {
               style={{
                 fontFamily: tokens.fontSans,
                 fontWeight: 300,
-                fontSize: '1.2rem',
+                fontSize: '0.875rem',
                 lineHeight: '1.2',
                 color: tokens.textColor,
               }}
@@ -84,19 +84,19 @@ export function ChristiesPhilosophy() {
 
           {/* Body copy */}
           <div
-            className={`max-w-[900px] text-center transition-all duration-700 ease-out ${
+            className={`max-w-[675px] text-center transition-all duration-700 ease-out ${
               visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             }`}
             style={{ transitionDelay: '150ms' }}
           >
             <p
-              className="philosophy-copy m-0 mb-[54px] max-[991px]:mb-9 max-[767px]:mb-8 max-[479px]:mb-6"
+              className="philosophy-copy m-0 mb-[40px] max-[991px]:mb-[27px] max-[767px]:mb-6 max-[479px]:mb-[18px]"
               style={{
                 fontFamily: tokens.fontFlare,
                 fontWeight: 100,
-                fontSize: '2.5rem',
-                lineHeight: '54px',
-                letterSpacing: '-0.8px',
+                fontSize: '1.875rem',
+                lineHeight: '40.5px',
+                letterSpacing: '-0.6px',
               }}
             >
               At Christie&rsquo;s, we believe collecting crosses boundaries of all kinds, limited only by
@@ -107,9 +107,9 @@ export function ChristiesPhilosophy() {
               style={{
                 fontFamily: tokens.fontFlare,
                 fontWeight: 100,
-                fontSize: '2.5rem',
-                lineHeight: '54px',
-                letterSpacing: '-0.8px',
+                fontSize: '1.875rem',
+                lineHeight: '40.5px',
+                letterSpacing: '-0.6px',
               }}
             >
               In that spirit, we created 20/21, a first-of-its-kind department that combines the art and
@@ -122,16 +122,16 @@ export function ChristiesPhilosophy() {
 
       <style>{`
         @media (max-width: 991px) {
-          .christies-philosophy p.philosophy-copy { font-size: 2rem !important; line-height: 44px !important; }
+          .christies-philosophy p.philosophy-copy { font-size: 1.5rem !important; line-height: 33px !important; }
         }
         @media (max-width: 767px) {
-          .christies-philosophy { padding-top: 3rem !important; padding-bottom: 3rem !important; }
-          .christies-philosophy p.philosophy-copy { font-size: 1.5rem !important; line-height: 32px !important; }
-          .christies-philosophy .intro-flag { padding: 0.5rem !important; }
-          .christies-philosophy .intro-flag-text { font-size: 1rem !important; }
+          .christies-philosophy { padding-top: 2.25rem !important; padding-bottom: 2.25rem !important; }
+          .christies-philosophy p.philosophy-copy { font-size: 1.125rem !important; line-height: 24px !important; }
+          .christies-philosophy .intro-flag { padding: 0.375rem !important; }
+          .christies-philosophy .intro-flag-text { font-size: 0.75rem !important; }
         }
         @media (max-width: 479px) {
-          .christies-philosophy p.philosophy-copy { font-size: 1.5rem !important; line-height: 32px !important; }
+          .christies-philosophy p.philosophy-copy { font-size: 1.125rem !important; line-height: 24px !important; }
         }
       `}</style>
     </section>
