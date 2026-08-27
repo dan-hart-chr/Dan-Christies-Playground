@@ -2,12 +2,23 @@
 /**
  * Christie's Testimonials — adapted from BYQ andfold-testimonials-1
  *
+ * Slate redesign per Figma (20/21 Wireframe, node 70:486):
+ *   - Card height reduced (desktop/tablet); portrait now aspect-ratio locked
+ *     (1808:2400) instead of a fixed-height crop, so it scales down with the
+ *     row instead of a fixed 624px box.
+ *   - Card bg → colors.black-400 @ 90% opacity + 6px backdrop blur; text → white.
+ *   - CTA row replaced with a "CONNECT WITH {name}" button plus X / Instagram
+ *     icon buttons. All three invert to a white fill / black icon+text on hover
+ *     (see Button.jsx Secondary+Dark mode).
+ *   - Colour/blur/CTA changes are mirrored on the mobile slate too; the mobile
+ *     card's height/layout is otherwise unchanged.
+ *
  * Token substitutions applied:
  *   Fonts:  LT Superior Serif → ABCArizonaSerif
  *           42 Dotsans        → ABCArizonaSans
  *   Colors: section bg        → #000000  (colors.black)
- *           card bg           → #F0E8D7  (colors.brand-natural-white / 500)
- *           card text         → #000000  (colors.black)
+ *           card bg           → rgba(51,51,51,0.9)  (colors.black-400 @ 90%)
+ *           card text         → #FFFFFF  (colors.white)
  *           label text        → #960000  (colors.brand-c-red)
  *           label bg          → rgba(150,0,0,0.08)
  *
@@ -60,10 +71,11 @@ const tokens = {
   sectionBg: '#000000',
   // colors.white
   sectionText: '#FFFFFF',
-  // colors.brand-natural-white / 500
-  cardBg: '#F0E8D7',
-  // colors.black
-  cardText: '#000000',
+  // colors.black-400 @ 90% opacity, paired with a 6px backdrop blur
+  cardBg: 'rgba(51, 51, 51, 0.9)',
+  cardBlur: '6px',
+  // colors.white
+  cardText: '#FFFFFF',
   // colors.brand-c-red
   labelText: '#FFFFFF',
   labelBg: 'rgba(40, 40, 40, 0.65)',
@@ -80,10 +92,14 @@ const tokens = {
   sizeBody: '1rem',      // fontSizes["body"]
 
   // radius
-  cardRadius: '24px',    // radius.md
+  cardRadius: '16px',    // radius-2 (Figma)
   imageRadius: '12px',   // radius.sm
   labelRadius: '12px',
 };
+
+function firstName(fullName: string) {
+  return fullName.split(' ')[0];
+}
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export function ChristiesTestimonials() {
@@ -258,23 +274,23 @@ export function ChristiesTestimonials() {
                 <div key={i} className="w-[90%] flex-shrink-0 max-[767px]:w-[90%] max-[479px]:w-[92%]">
                   {/* Card — desktop / tablet layout */}
                   <div
-                    className="w-full grid gap-12 p-6 max-[991px]:grid-cols-1 max-[991px]:gap-12 max-[767px]:hidden"
+                    className="w-full flex gap-12 pl-6 pr-12 py-6 max-[991px]:flex-col max-[991px]:gap-12 max-[767px]:hidden"
                     style={{
                       backgroundColor: tokens.cardBg,
+                      backdropFilter: `blur(${tokens.cardBlur})`,
+                      WebkitBackdropFilter: `blur(${tokens.cardBlur})`,
                       color: tokens.cardText,
                       borderRadius: tokens.cardRadius,
-                      gridTemplateColumns: '1fr 1.5fr',
                     }}
                   >
-                    {/* Portrait image */}
+                    {/* Portrait image — aspect-ratio locked, scales down with the row */}
                     <div
-                      className="flex items-center justify-center w-full overflow-hidden max-[991px]:h-[350px]"
-                      style={{ height: '624px', borderRadius: tokens.imageRadius }}
+                      className="shrink-0 overflow-hidden max-[991px]:w-full"
+                      style={{ aspectRatio: '1808 / 2400', borderRadius: tokens.imageRadius }}
                     >
                       <img
                         src={slide.image}
                         loading="lazy"
-                        sizes="(max-width: 991px) 727px, 940px"
                         alt={slide.authorName}
                         draggable={false}
                         className="object-cover w-full h-full"
@@ -282,10 +298,7 @@ export function ChristiesTestimonials() {
                     </div>
 
                     {/* Right content */}
-                    <div
-                      className="flex flex-col justify-between items-start gap-12"
-                      style={{ paddingTop: '16px', paddingRight: '16px', paddingBottom: '16px' }}
-                    >
+                    <div className="flex flex-1 flex-col justify-between items-start gap-12 pt-4">
                       {/* Quote block */}
                       <div className="flex flex-col gap-6 items-start justify-start w-full">
                         {/* Name + Job Title/Label */}
@@ -330,12 +343,17 @@ export function ChristiesTestimonials() {
                         </div>
                       </div>
 
-                      {/* Read More Button */}
-                      <Button
-                        type="Secondary"
-                        mode="Light"
-                        buttonCopy="READ MORE"
-                      />
+                      {/* CTAs — connect + social */}
+                      <div className="flex gap-4 items-center">
+                        <Button type="Secondary" mode="Dark" className="!w-auto">
+                          <MailIcon />
+                          {`CONNECT WITH ${firstName(slide.authorName).toUpperCase()}`}
+                        </Button>
+                        <div className="flex gap-2 items-center">
+                          <SocialIconButton icon="x" href="#" label={`Follow ${firstName(slide.authorName)} on X`} />
+                          <SocialIconButton icon="instagram" href="#" label={`Follow ${firstName(slide.authorName)} on Instagram`} />
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -344,6 +362,8 @@ export function ChristiesTestimonials() {
                     className="hidden max-[767px]:flex flex-col justify-between gap-10 items-center w-full h-full p-6"
                     style={{
                       backgroundColor: tokens.cardBg,
+                      backdropFilter: `blur(${tokens.cardBlur})`,
+                      WebkitBackdropFilter: `blur(${tokens.cardBlur})`,
                       color: tokens.cardText,
                       borderRadius: tokens.cardRadius,
                     }}
@@ -409,14 +429,16 @@ export function ChristiesTestimonials() {
                         {slide.quote}
                       </p>
 
-                      {/* Read More Button — full width */}
-                      <div className="w-full mt-6">
-                        <Button
-                          type="Secondary"
-                          mode="Light"
-                          buttonCopy="READ MORE"
-                          className="!w-full"
-                        />
+                      {/* CTAs — full width connect + social icons */}
+                      <div className="w-full mt-6 flex flex-col gap-3 items-start">
+                        <Button type="Secondary" mode="Dark" className="!w-full">
+                          <MailIcon />
+                          {`CONNECT WITH ${firstName(slide.authorName).toUpperCase()}`}
+                        </Button>
+                        <div className="flex gap-2 items-center">
+                          <SocialIconButton icon="x" href="#" label={`Follow ${firstName(slide.authorName)} on X`} />
+                          <SocialIconButton icon="instagram" href="#" label={`Follow ${firstName(slide.authorName)} on Instagram`} />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -491,6 +513,57 @@ function SliderButton({ onClick, direction }: { onClick: () => void; direction: 
         </span>
       )}
     </button>
+  );
+}
+
+// ─── Social icon button — inverts to white fill / black icon on hover ─────────
+function SocialIconButton({
+  icon,
+  href,
+  label,
+}: {
+  icon: 'x' | 'instagram';
+  href: string;
+  label: string;
+}) {
+  return (
+    <a
+      href={href}
+      aria-label={label}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center justify-center rounded-full border border-solid border-white text-white transition-colors duration-200 hover:bg-white hover:text-black shrink-0"
+      style={{ width: '48px', height: '48px' }}
+    >
+      {icon === 'x' ? <XIcon /> : <InstagramIcon />}
+    </a>
+  );
+}
+
+function MailIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M1.5 4L8 9L14.5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function XIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M1 1L15 15M15 1L1 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function InstagramIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1.5" y="1.5" width="13" height="13" rx="4" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="11.5" cy="4.5" r="0.75" fill="currentColor" />
+    </svg>
   );
 }
 

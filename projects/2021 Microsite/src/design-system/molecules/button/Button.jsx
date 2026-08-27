@@ -25,7 +25,7 @@ export default function Button({
       : "bg-black text-white hover:bg-gray-800";
   } else if (type === "Secondary") {
     colorClasses = mode === "Dark"
-      ? "border border-solid border-white text-white hover:border-[#666]"
+      ? "border border-solid border-white text-white hover:bg-white hover:text-black"
       : "border border-solid border-black text-black hover:border-[#666]";
   } else if (type === "Link/Tertiary") {
     colorClasses = "text-black underline hover:no-underline";
