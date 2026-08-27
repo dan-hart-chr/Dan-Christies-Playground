@@ -125,12 +125,12 @@ export function ChristiesPhilosophy() {
           .christies-philosophy p.philosophy-copy { font-size: 2rem !important; line-height: 44px !important; }
         }
         @media (max-width: 767px) {
-          .christies-philosophy p.philosophy-copy { font-size: 1.25rem !important; line-height: 32px !important; }
-          .christies-philosophy .intro-flag { padding: 0.2rem !important; }
+          .christies-philosophy p.philosophy-copy { font-size: 1.5rem !important; line-height: 32px !important; }
+          .christies-philosophy .intro-flag { padding: 0.5rem !important; }
           .christies-philosophy .intro-flag-text { font-size: 1rem !important; }
         }
         @media (max-width: 479px) {
-          .christies-philosophy p.philosophy-copy { font-size: 1.25rem !important; line-height: 32px !important; }
+          .christies-philosophy p.philosophy-copy { font-size: 1.5rem !important; line-height: 32px !important; }
         }
       `}</style>
     </section>

@@ -122,7 +122,7 @@ export function ChristiesHero() {
           </div>
 
           {/* Bottom: animated heading (buttons removed per request) */}
-          <div ref={headingRef} className="flex flex-wrap gap-x-3" style={{ maxWidth: '720px' }}>
+          <div ref={headingRef} className="hero-words flex flex-wrap gap-x-3" style={{ maxWidth: '720px' }}>
             {words.map((word, i) => (
               <div
                 key={i}
@@ -153,6 +153,7 @@ export function ChristiesHero() {
       <style>{`
         @media (max-width: 767px) {
           .christies-hero .hero-word { font-size: 2rem !important; }
+          .christies-hero .hero-words { column-gap: 0.4rem !important; }
         }
       `}</style>
     </section>

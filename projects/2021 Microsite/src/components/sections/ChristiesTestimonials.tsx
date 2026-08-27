@@ -234,7 +234,7 @@ export function ChristiesTestimonials() {
           <div className="flex flex-col gap-8 items-start">
             {/* Label pill */}
             <div
-              className="flex items-center justify-center"
+              className="specialists-flag flex items-center justify-center"
               style={{
                 backgroundColor: tokens.labelBg,
                 borderRadius: tokens.labelRadius,
@@ -244,7 +244,7 @@ export function ChristiesTestimonials() {
               }}
             >
               <span
-                className="uppercase tracking-widest"
+                className="specialists-flag-text uppercase tracking-widest"
                 style={{
                   fontFamily: tokens.fontSans,
                   fontSize: tokens.sizeLabel,
@@ -261,7 +261,7 @@ export function ChristiesTestimonials() {
             {/* H2 — Christie's serif heading */}
             <h2
               ref={headingRef}
-              className={`m-0 transition-all duration-700 ease-out max-[479px]:text-[2.5rem] ${
+              className={`team-heading m-0 transition-all duration-700 ease-out max-[479px]:text-[2.5rem] ${
                 headingVisible ? 'opacity-100 blur-0' : 'opacity-0 blur-[20px]'
               }`}
               style={{
@@ -505,6 +505,9 @@ export function ChristiesTestimonials() {
       <style>{`
         @media (max-width: 767px) {
           .testimonials-dot-nav { margin-top: 2rem; }
+          .team-heading { font-size: 1rem !important; }
+          .specialists-flag { padding: 0.5rem !important; }
+          .specialists-flag-text { text-transform: lowercase !important; font-weight: 300 !important; }
         }
       `}</style>
     </section>

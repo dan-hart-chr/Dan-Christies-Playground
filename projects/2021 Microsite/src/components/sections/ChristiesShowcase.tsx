@@ -152,7 +152,7 @@ export function ChristiesShowcase() {
         {/* Heading */}
         <h2
           ref={headingRef}
-          className={`leading-[1.1] transition-all duration-700 ease-out text-7xl max-[991px]:text-6xl max-[767px]:text-5xl max-[479px]:text-4xl ${
+          className={`showcase-heading leading-[1.1] transition-all duration-700 ease-out text-7xl max-[991px]:text-6xl max-[767px]:text-5xl max-[479px]:text-4xl ${
             headingVisible ? 'opacity-100 blur-0' : 'opacity-0 blur-[12px]'
           }`}
           style={{ fontFamily: tokens.fontSerif, fontWeight: 300, color: tokens.headingColor, margin: 0, marginBottom: '1rem' }}
@@ -206,6 +206,9 @@ export function ChristiesShowcase() {
         }
         .animate-marquee-showcase:hover {
           animation-play-state: paused;
+        }
+        @media (max-width: 767px) {
+          .christies-showcase .showcase-heading { font-size: 1rem !important; margin-bottom: 1.5rem !important; }
         }
       `}</style>
     </section>
