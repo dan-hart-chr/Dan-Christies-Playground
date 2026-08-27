@@ -261,7 +261,7 @@ export function ChristiesTestimonials() {
             {/* H2 — Christie's serif heading */}
             <h2
               ref={headingRef}
-              className={`m-0 transition-all duration-700 ease-out ${
+              className={`m-0 transition-all duration-700 ease-out max-[479px]:text-[2.5rem] ${
                 headingVisible ? 'opacity-100 blur-0' : 'opacity-0 blur-[20px]'
               }`}
               style={{

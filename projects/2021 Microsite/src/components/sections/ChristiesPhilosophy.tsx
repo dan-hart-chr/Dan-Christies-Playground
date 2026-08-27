@@ -66,14 +66,14 @@ export function ChristiesPhilosophy() {
             className={`rounded-[24px] px-5 py-3 transition-all duration-700 ease-out ${
               visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
-            style={{ border: `1px solid ${tokens.labelBorder}` }}
+            style={{ backgroundColor: '#213328', border: `1px solid ${tokens.labelBorder}` }}
           >
             <p
               className="whitespace-nowrap m-0"
               style={{
                 fontFamily: tokens.fontSans,
                 fontWeight: 300,
-                fontSize: tokens.sizeLabel,
+                fontSize: '1.2rem',
                 lineHeight: '1.2',
                 color: tokens.textColor,
               }}
@@ -128,7 +128,7 @@ export function ChristiesPhilosophy() {
           .christies-philosophy p { font-size: 1.75rem !important; line-height: 38px !important; }
         }
         @media (max-width: 479px) {
-          .christies-philosophy p { font-size: 1.5rem !important; line-height: 32px !important; }
+          .christies-philosophy p { font-size: 2.5rem !important; line-height: 48px !important; }
         }
       `}</style>
     </section>
