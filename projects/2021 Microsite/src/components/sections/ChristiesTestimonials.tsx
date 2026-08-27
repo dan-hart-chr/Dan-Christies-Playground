@@ -142,27 +142,53 @@ export function ChristiesTestimonials() {
 
   const isDragging = React.useRef(false);
   const dragStartX = React.useRef(0);
+  const dragStartY = React.useRef(0);
+  // null until the gesture's primary axis is determined, so a vertical scroll
+  // swipe isn't misread as horizontal drag ("phantom touch" advancing slides)
+  const dragAxis = React.useRef<'x' | 'y' | null>(null);
+  const AXIS_LOCK_THRESHOLD = 8; // px of movement before committing to an axis
   const SNAP_THRESHOLD = 60; // px required to advance a slide
   const TRANSITION = 'transform 750ms cubic-bezier(0.16, 1, 0.3, 1)';
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!trackRef.current || stepPx === 0) return;
-    isDragging.current = true;
     dragStartX.current = e.clientX;
-    trackRef.current.style.transition = 'none';
-    e.currentTarget.setPointerCapture(e.pointerId);
+    dragStartY.current = e.clientY;
+    dragAxis.current = null;
+    isDragging.current = false;
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!isDragging.current || !trackRef.current) return;
-    const delta = e.clientX - dragStartX.current;
+    if (!trackRef.current) return;
+    const deltaX = e.clientX - dragStartX.current;
+    const deltaY = e.clientY - dragStartY.current;
+
+    if (dragAxis.current === null) {
+      if (Math.abs(deltaX) < AXIS_LOCK_THRESHOLD && Math.abs(deltaY) < AXIS_LOCK_THRESHOLD) return;
+      // Commit to whichever axis dominates the gesture so far
+      dragAxis.current = Math.abs(deltaX) > Math.abs(deltaY) ? 'x' : 'y';
+      if (dragAxis.current === 'x') {
+        isDragging.current = true;
+        trackRef.current.style.transition = 'none';
+        try {
+          e.currentTarget.setPointerCapture(e.pointerId);
+        } catch {
+          // Pointer may already be gone (e.g. a fast cancel) — safe to ignore
+        }
+      }
+    }
+
+    // Vertical gestures are left alone so the page scrolls natively
+    if (dragAxis.current !== 'x' || !isDragging.current) return;
     const base = -(currentSlideRef.current * stepPx);
-    trackRef.current.style.transform = `translateX(${base + delta}px)`;
+    trackRef.current.style.transform = `translateX(${base + deltaX}px)`;
   };
 
   const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!isDragging.current || !trackRef.current) return;
+    const wasDraggingX = isDragging.current && dragAxis.current === 'x';
     isDragging.current = false;
+    dragAxis.current = null;
+    if (!wasDraggingX || !trackRef.current) return;
     const delta = e.clientX - dragStartX.current;
     let next = currentSlideRef.current;
     if (delta < -SNAP_THRESHOLD) next = Math.min(slides.length - 1, next + 1);
@@ -431,13 +457,13 @@ export function ChristiesTestimonials() {
                         {slide.quote}
                       </p>
 
-                      {/* CTAs — full width connect + social icons */}
-                      <div className="w-full mt-6 flex flex-col gap-3 items-start">
-                        <Button type="Secondary" mode="Dark" className="!w-full">
+                      {/* CTAs — single row; connect button flexes/truncates to fit */}
+                      <div className="w-full mt-6 flex flex-row gap-3 items-center">
+                        <Button type="Secondary" mode="Dark" className="!w-auto !px-4 flex-1 min-w-0 overflow-hidden">
                           <MailIcon />
-                          {`CONNECT WITH ${firstName(slide.authorName).toUpperCase()}`}
+                          <span className="truncate min-w-0 flex-1 text-left">{`CONNECT WITH ${firstName(slide.authorName).toUpperCase()}`}</span>
                         </Button>
-                        <div className="flex gap-2 items-center">
+                        <div className="flex gap-2 items-center shrink-0">
                           <SocialIconButton icon="x" href="#" label={`Follow ${firstName(slide.authorName)} on X`} />
                           <SocialIconButton icon="instagram" href="#" label={`Follow ${firstName(slide.authorName)} on Instagram`} />
                         </div>
@@ -450,7 +476,7 @@ export function ChristiesTestimonials() {
           </div>
 
           {/* Mobile dot nav */}
-          <div className="hidden max-[767px]:flex items-center justify-center gap-2 mt-3">
+          <div className="testimonials-dot-nav hidden max-[767px]:flex items-center justify-center gap-2">
             {slides.map((_, i) => (
               <button
                 key={i}
@@ -469,6 +495,12 @@ export function ChristiesTestimonials() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 767px) {
+          .testimonials-dot-nav { margin-top: 2rem; }
+        }
+      `}</style>
     </section>
   );
 }
@@ -551,10 +583,14 @@ function MailIcon() {
   );
 }
 
+// X (Twitter) logo mark — path exported from Figma node 70:497 (X 16px)
 function XIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M1 1L15 15M15 1L1 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <svg width="13" height="12" viewBox="0 0 12.7765 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M0.0311503 0L4.964 6.61871L0 12H1.1172L5.46317 7.2886L8.9746 12H12.7765L7.56607 5.009L12.1865 0H11.0693L7.0669 4.33911L3.83302 0H0.0311503ZM1.67407 0.825802H3.42066L11.1333 11.1741H9.38671L1.67407 0.825802Z"
+        fill="currentColor"
+      />
     </svg>
   );
 }
