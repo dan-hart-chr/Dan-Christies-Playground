@@ -68,7 +68,7 @@ export function ChristiesHero() {
 
   return (
     <section
-      className="relative flex justify-start items-end"
+      className="christies-hero relative flex justify-start items-end"
       style={{ height: '100svh', color: tokens.textColor, top: 0 }}
     >
       {/* Background Video */}
@@ -130,7 +130,7 @@ export function ChristiesHero() {
                 style={{ marginBottom: '-15px', paddingBottom: '15px' }}
               >
                 <div
-                  className="transition-transform duration-700 ease-out"
+                  className="hero-word transition-transform duration-700 ease-out"
                   style={{
                     fontFamily: tokens.fontSerif,
                     fontSize: tokens.sizeHeading,
@@ -149,6 +149,12 @@ export function ChristiesHero() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 767px) {
+          .christies-hero .hero-word { font-size: 2rem !important; }
+        }
+      `}</style>
     </section>
   );
 }

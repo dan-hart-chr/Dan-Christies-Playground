@@ -63,13 +63,13 @@ export function ChristiesPhilosophy() {
         <div className="flex flex-col items-center gap-6">
           {/* Label */}
           <div
-            className={`rounded-[24px] px-5 py-3 transition-all duration-700 ease-out ${
+            className={`intro-flag rounded-[24px] px-5 py-3 transition-all duration-700 ease-out ${
               visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
             style={{ backgroundColor: '#213328', border: `1px solid ${tokens.labelBorder}` }}
           >
             <p
-              className="whitespace-nowrap m-0"
+              className="intro-flag-text whitespace-nowrap m-0"
               style={{
                 fontFamily: tokens.fontSans,
                 fontWeight: 300,
@@ -90,7 +90,7 @@ export function ChristiesPhilosophy() {
             style={{ transitionDelay: '150ms' }}
           >
             <p
-              className="m-0 mb-[54px] max-[991px]:mb-9 max-[767px]:mb-8 max-[479px]:mb-6"
+              className="philosophy-copy m-0 mb-[54px] max-[991px]:mb-9 max-[767px]:mb-8 max-[479px]:mb-6"
               style={{
                 fontFamily: tokens.fontFlare,
                 fontWeight: 100,
@@ -103,7 +103,7 @@ export function ChristiesPhilosophy() {
               imagination and desire.
             </p>
             <p
-              className="m-0"
+              className="philosophy-copy m-0"
               style={{
                 fontFamily: tokens.fontFlare,
                 fontWeight: 100,
@@ -122,13 +122,15 @@ export function ChristiesPhilosophy() {
 
       <style>{`
         @media (max-width: 991px) {
-          .christies-philosophy p { font-size: 2rem !important; line-height: 44px !important; }
+          .christies-philosophy p.philosophy-copy { font-size: 2rem !important; line-height: 44px !important; }
         }
         @media (max-width: 767px) {
-          .christies-philosophy p { font-size: 1.75rem !important; line-height: 38px !important; }
+          .christies-philosophy p.philosophy-copy { font-size: 1.25rem !important; line-height: 32px !important; }
+          .christies-philosophy .intro-flag { padding: 0.2rem !important; }
+          .christies-philosophy .intro-flag-text { font-size: 1rem !important; }
         }
         @media (max-width: 479px) {
-          .christies-philosophy p { font-size: 2.5rem !important; line-height: 48px !important; }
+          .christies-philosophy p.philosophy-copy { font-size: 1.25rem !important; line-height: 32px !important; }
         }
       `}</style>
     </section>

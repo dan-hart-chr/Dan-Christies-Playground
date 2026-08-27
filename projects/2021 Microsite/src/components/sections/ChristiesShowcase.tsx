@@ -15,18 +15,18 @@
  * Token substitutions applied:
  *   Fonts:  Playfair Display  → ABCArizonaSerif
  *           Inter             → ABCArizonaSans
- *   Colors: bg #eeeae3        → colors.brand-natural-white
- *           heading #181e25   → colors.black
- *           body #181e25 @70% → colors.black
+ *   Colors: bg #eeeae3        → rgb(45, 45, 45)
+ *           heading #181e25   → colors.white
+ *           body #181e25 @70% → colors.white
  *           dark card #181e25 → colors.black
  */
 
 import * as React from 'react';
 
 const tokens = {
-  sectionBg: '#F0E8D7', // colors.brand-natural-white
-  headingColor: '#000000', // colors.black
-  bodyColor: '#000000', // colors.black
+  sectionBg: 'rgb(45, 45, 45)',
+  headingColor: '#FFFFFF', // colors.white
+  bodyColor: '#FFFFFF', // colors.white
   cardBg: '#000000', // colors.black
   cardText: '#FFFFFF', // colors.white
 
