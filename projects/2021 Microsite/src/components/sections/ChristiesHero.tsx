@@ -13,7 +13,9 @@
  *           overlay                 → #000000 (colors.black) @ 40% opacity
  *
  * Wordmark swapped for the "20/21 Full Logo" SVG (Figma node 5:57), same
- * size/position as the frame it was exported from.
+ * size/position as the frame it was exported from. It reveals with a
+ * left-to-right clip-path wipe + fade, synced to the same trigger as the
+ * heading word reveal below it.
  *
  * Background video replaced with the Christie's "gavelslam" clip (Figma
  * node 5:167 pointed to a native Figma video embed, which can't be exported
@@ -98,15 +100,25 @@ export function ChristiesHero() {
           marginRight: 'auto',
           paddingLeft: '32px',
           paddingRight: '32px',
-          paddingTop: '97px',
+          paddingTop: '20px',
           paddingBottom: '80px',
           height: '100%',
         }}
       >
         <div className="flex flex-col justify-between items-start w-full h-full gap-10">
-          {/* Top: wordmark */}
+          {/* Top: wordmark — reveals left-to-right (wipe + fade), synced with the heading animation below */}
           <div className="flex flex-col w-full gap-3">
-            <img src={logo2021} alt="20/21" className="w-full h-auto" />
+            <div className="w-full overflow-hidden">
+              <img
+                src={logo2021}
+                alt="20/21"
+                className="w-full h-auto transition-all duration-1000 ease-out"
+                style={{
+                  clipPath: wordsVisible ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
+                  opacity: wordsVisible ? 1 : 0,
+                }}
+              />
+            </div>
           </div>
 
           {/* Bottom: animated heading (buttons removed per request) */}
