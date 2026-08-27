@@ -148,7 +148,7 @@ export function ChristiesShowcase() {
 
   return (
     <section className="christies-showcase w-full overflow-hidden" style={{ backgroundColor: tokens.sectionBg }}>
-      <div className="max-w-[940px] mx-auto px-5 pt-24 pb-16 flex flex-col items-center text-center max-[767px]:pt-16 max-[767px]:pb-10">
+      <div className="showcase-top max-w-[940px] mx-auto px-5 pt-24 pb-16 flex flex-col items-center text-center max-[767px]:pt-16 max-[767px]:pb-10">
         {/* Heading */}
         <h2
           ref={headingRef}
@@ -179,7 +179,7 @@ export function ChristiesShowcase() {
       </div>
 
       {/* Marquee strip */}
-      <div className="relative w-full overflow-hidden pb-16 max-[767px]:pb-10">
+      <div className="showcase-marquee-wrap relative w-full overflow-hidden pb-16 max-[767px]:pb-10">
         <div
           className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
           style={{ background: `linear-gradient(to right, ${tokens.sectionBg}, transparent)` }}
@@ -208,6 +208,8 @@ export function ChristiesShowcase() {
           animation-play-state: paused;
         }
         @media (max-width: 767px) {
+          .christies-showcase .showcase-top { padding-top: 3rem !important; }
+          .christies-showcase .showcase-marquee-wrap { padding-bottom: 3rem !important; }
           .christies-showcase .showcase-heading { font-size: 2rem !important; margin-bottom: 1.5rem !important; }
         }
       `}</style>

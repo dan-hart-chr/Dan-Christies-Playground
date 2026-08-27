@@ -125,6 +125,7 @@ export function ChristiesPhilosophy() {
           .christies-philosophy p.philosophy-copy { font-size: 2rem !important; line-height: 44px !important; }
         }
         @media (max-width: 767px) {
+          .christies-philosophy { padding-top: 3rem !important; padding-bottom: 3rem !important; }
           .christies-philosophy p.philosophy-copy { font-size: 1.5rem !important; line-height: 32px !important; }
           .christies-philosophy .intro-flag { padding: 0.5rem !important; }
           .christies-philosophy .intro-flag-text { font-size: 1rem !important; }

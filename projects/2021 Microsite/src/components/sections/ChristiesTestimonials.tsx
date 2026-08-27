@@ -40,28 +40,28 @@ const slides = [
     authorName: 'Alex Rotter',
     handle: "Global President, Christie's",
     quote:
-      "Alex Rotter is an Austrian man with a deep appreciation for the arts. He is the global president of Christie's. There are few people who are as well acquainted with Warhol as him. He has an impressive collection of jackets and it feels like he saves some of them for evening sales. He\u2019s a friend to animals and humans alike. Blop Blop Blop.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt laborum.",
     image: alexRotterImg,
   },
   {
     authorName: 'Max Carter',
     handle: 'Global Chairman, 20/21',
     quote:
-      "Here is a little blurb about Max Carter. He is an important guy around here. People like Max because he helps them do their jobs. People recognize that Max is good at his job and they also recognize him by his hair. Max enjoys art and has been at Christie\u2019s since he was born. He is friends with King Charles. When you click read more it could drive to an interview with Tilly?",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt laborum.",
     image: maxCarterImg,
   },
   {
     authorName: 'Sara Friedlander',
     handle: 'Chairman, PWC',
     quote:
-      "He\u2019re is where we put some info about Ms. Sara Friedlander. She is a friend to both animals and humans. Her parents were rabbis and growing up every Saturday they let her choose between going to temple or a museum. She always chose museum and now she is part of the upper echelon of Christie\u2019s elite. She is proudly from the UWS.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt laborum.",
     image: saraFriedlanderImg,
   },
   {
     authorName: 'Johanna Flaum',
     handle: 'Vice Chairman, PWC',
     quote:
-      "Ms. Johanna Flaum is that girl. She has an office in a very nice part of Rockefeller Center and is always down to share feedback. She doesn\u2019t play around! She has a pretty encycolpedic knowledge of major Post-War and Contemporary artists. Mess with her and you will be sorry. Johanna does not suffer fools and I bet you she\u2019d say that too! She went to Penn which is like the best.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt laborum.",
     image: johannaFlaumImg,
   },
 ];
@@ -209,7 +209,7 @@ export function ChristiesTestimonials() {
 
   return (
     <section
-      className="relative z-[2] py-[120px] overflow-hidden"
+      className="christies-testimonials relative z-[2] py-[120px] overflow-hidden"
       style={{ backgroundColor: tokens.sectionBg, color: tokens.sectionText }}
     >
       {/* Blurred background image layer (unchanged) */}
@@ -230,8 +230,8 @@ export function ChristiesTestimonials() {
         style={{ maxWidth: '1800px' }}
       >
         {/* Headline + arrows row */}
-        <div className="relative flex items-start justify-between mb-20">
-          <div className="flex flex-col gap-8 items-start">
+        <div className="testimonials-headline-row relative flex items-start justify-between mb-20">
+          <div className="specialists-header flex flex-col gap-8 items-start">
             {/* Label pill */}
             <div
               className="specialists-flag flex items-center justify-center"
@@ -465,9 +465,9 @@ export function ChristiesTestimonials() {
 
                       {/* CTAs — single row; connect button flexes/truncates to fit */}
                       <div className="w-full mt-6 flex flex-row gap-3 items-center">
-                        <Button type="Secondary" mode="Dark" className="!w-auto !px-4 flex-1 min-w-0 overflow-hidden">
+                        <Button type="Secondary" mode="Dark" className="!w-auto !px-4">
                           <MailIcon />
-                          <span className="truncate min-w-0 flex-1 text-left">CONNECT</span>
+                          CONNECT
                         </Button>
                         <div className="flex gap-2 items-center shrink-0">
                           <SocialIconButton icon="x" href="#" label={`Follow ${firstName(slide.authorName)} on X`} />
@@ -504,10 +504,13 @@ export function ChristiesTestimonials() {
 
       <style>{`
         @media (max-width: 767px) {
+          .christies-testimonials { padding-top: 3rem !important; padding-bottom: 3rem !important; }
           .testimonials-dot-nav { margin-top: 2rem; }
+          .testimonials-headline-row { margin-bottom: 3rem !important; }
+          .specialists-header { gap: 1rem !important; }
           .team-heading { font-size: 2rem !important; }
           .specialists-flag { padding: 0.5rem !important; }
-          .specialists-flag-text { text-transform: capitalize !important; font-weight: 300 !important; letter-spacing: normal !important; }
+          .specialists-flag-text { text-transform: capitalize !important; font-weight: 300 !important; letter-spacing: normal !important; font-size: 1rem !important; }
         }
       `}</style>
     </section>
