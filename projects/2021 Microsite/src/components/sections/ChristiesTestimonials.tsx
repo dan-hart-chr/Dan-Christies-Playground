@@ -4,8 +4,9 @@
  *
  * Slate redesign per Figma (20/21 Wireframe, node 70:486):
  *   - Card height reduced (desktop/tablet); portrait now aspect-ratio locked
- *     (1808:2400) instead of a fixed-height crop, so it scales down with the
- *     row instead of a fixed 624px box.
+ *     (1790:2400 — trimmed from the Figma 1808:2400 spec to clip a stray
+ *     outline artifact at the image edges) instead of a fixed-height crop,
+ *     so it scales down with the row instead of a fixed 624px box.
  *   - Card bg → colors.black-400 @ 90% opacity + 6px backdrop blur; text → white.
  *   - CTA row replaced with a "CONNECT WITH {name}" button plus X / Instagram
  *     icon buttons. All three invert to a white fill / black icon+text on hover
@@ -319,7 +320,7 @@ export function ChristiesTestimonials() {
                         the image falls back to its raw (oversized) intrinsic size */}
                     <div
                       className="h-full shrink-0 overflow-hidden max-[991px]:w-full max-[991px]:h-auto"
-                      style={{ aspectRatio: '1808 / 2400', borderRadius: tokens.imageRadius }}
+                      style={{ aspectRatio: '1790 / 2400', borderRadius: tokens.imageRadius }}
                     >
                       <img
                         src={slide.image}
@@ -365,9 +366,9 @@ export function ChristiesTestimonials() {
                         <div
                           style={{
                             fontFamily: tokens.fontSerif,
-                            fontSize: '1.75rem',
+                            fontSize: '1.5rem',
                             lineHeight: '1.2',
-                            fontWeight: 300,
+                            fontWeight: 200,
                             letterSpacing: '-0.02em',
                             color: tokens.cardText,
                           }}
