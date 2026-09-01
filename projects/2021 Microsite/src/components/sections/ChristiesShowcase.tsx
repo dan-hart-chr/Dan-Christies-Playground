@@ -2,18 +2,18 @@
 /**
  * Christie's Showcase — adapted from BYQ evermind-hero-2 (Hero with Marquee)
  *
- * Per request: the "BYQ Studio celebrates..." announcement pill and both CTA
- * buttons were stripped out entirely — only the heading, body copy, and the
- * auto-scrolling marquee strip remain. The decorative dots divider was also
- * dropped, and the marquee's "Read case study" link was converted to a
- * static stat card so nothing clickable/button-like remains in the section.
+ * Per request: the "BYQ Studio celebrates..." announcement pill and the
+ * original template CTA buttons were stripped out — only the heading, body
+ * copy, and the auto-scrolling marquee strip remain from the BYQ reference.
  *
- * Every marquee slate (images + stat card) is locked to a uniform 3:4 ratio.
- *
- * Restyled per the "20/21 Categories" Figma update (node 11:2972): background
- * swapped for the maroon-to-charcoal gradient, and each slate's caption moved
- * from a floating pill on the image to a left-border label + description
- * block underneath it. Marquee auto-scroll behaviour is unchanged.
+ * Restyled per the "20/21 Categories" Figma update (node 21:365):
+ *   - Background: maroon-to-charcoal gradient (unchanged from the prior pass).
+ *   - Cards enlarged to the real spec (400x480, was 225x300), each slate's
+ *     caption as a left-border label + description block underneath it.
+ *   - Real category artwork pulled from Figma (imgFrame23–27) and downsized
+ *     locally for web (originals up to 15MB — resized to <=900px/~78% jpeg).
+ *   - Added the "SEE ALL CATEGORIES" button (Figma node 21:376) below the
+ *     marquee, static (not part of the auto-scroll).
  *
  * Token substitutions applied:
  *   Fonts:  Playfair Display  → ABCArizonaSerif
@@ -25,12 +25,18 @@
  */
 
 import * as React from 'react';
+// @ts-ignore
+import Button from '@christies-ds/molecules/button/Button.jsx';
+import surrealism1 from '../../assets/images/categories/surrealism-1.jpg';
+import popArt from '../../assets/images/categories/pop-art.jpg';
+import impressionism from '../../assets/images/categories/impressionism.jpg';
+import postWarContemporary from '../../assets/images/categories/post-war-contemporary.jpg';
+import surrealism2 from '../../assets/images/categories/surrealism-2.jpg';
 
 const tokens = {
   sectionBg: 'linear-gradient(to bottom, #530000 23.271%, #2d2d2d)',
   headingColor: '#FFFFFF', // colors.white
   bodyColor: '#FFFFFF', // colors.white
-  cardBg: '#000000', // colors.black
   cardText: '#FFFFFF', // colors.white
   captionBorder: 'rgba(153, 153, 153, 0.5)',
 
@@ -41,16 +47,16 @@ const tokens = {
   sizeBody: '0.875rem', // fontSizes["xl-sans"] scaled 0.75x
 };
 
-// Uniform 3:4 slate size shared by every marquee item (images + stat card)
-const SLATE_HEIGHT = 300;
-const SLATE_WIDTH = (SLATE_HEIGHT * 3) / 4;
+// Uniform slate size shared by every marquee item (Figma node 21:365 spec)
+const SLATE_WIDTH = 400;
+const SLATE_HEIGHT = 480;
 
 const MARQUEE_IMAGES = [
-  { src: 'https://byqsupply-components.netlify.app/evermind/images/TestimonialImage.webp', caption: 'Post War & Contemporary|Decoding the most enigmatic art movement of the twentieth century.' },
-  { src: 'https://byqsupply-components.netlify.app/evermind/images/FeatureImage.webp', caption: 'Impressionism|Decoding the most enigmatic art movement of the twentieth century.' },
-  { src: 'https://byqsupply-components.netlify.app/evermind/images/MarqueeCube.webp', caption: 'Pop Art|Decoding the most enigmatic art movement of the twentieth century.' },
-  { src: 'https://byqsupply-components.netlify.app/evermind/images/AboutBcity.webp', caption: 'Surrealism|Decoding the most enigmatic art movement of the twentieth century.' },
-  { src: 'https://byqsupply-components.netlify.app/evermind/images/ServiceImage.webp', caption: 'Prints & Editions|Decoding the most enigmatic art movement of the twentieth century.' },
+  { src: surrealism1, caption: 'Surrealism|Decoding the most enigmatic art movement of the twentieth century.' },
+  { src: popArt, caption: 'Pop Art|Decoding the most enigmatic art movement of the twentieth century.' },
+  { src: impressionism, caption: 'Impressionism|Decoding the most enigmatic art movement of the twentieth century.' },
+  { src: postWarContemporary, caption: 'Post War & Contemporary|Decoding the most enigmatic art movement of the twentieth century.' },
+  { src: surrealism2, caption: 'Surrealism|Decoding the most enigmatic art movement of the twentieth century.' },
 ];
 
 function SlateCaption({ text }: { text: string }) {
@@ -83,38 +89,26 @@ function MarqueeSet() {
         <div key={i} className="flex flex-col flex-shrink-0">
           <div
             className="relative overflow-hidden rounded-2xl flex-shrink-0"
-            style={{ width: SLATE_WIDTH, height: SLATE_HEIGHT, aspectRatio: '3 / 4' }}
+            style={{ width: SLATE_WIDTH, height: SLATE_HEIGHT }}
           >
             <img src={img.src} loading="lazy" alt="" className="w-full h-full object-cover" />
           </div>
           <SlateCaption text={img.caption} />
         </div>
       ))}
-
-      {/* Stat card — static, no link/button */}
-      <div
-        className="flex-shrink-0 rounded-2xl p-6 flex flex-col justify-between"
-        style={{ width: SLATE_WIDTH, height: SLATE_HEIGHT, aspectRatio: '3 / 4', backgroundColor: tokens.cardBg, color: tokens.cardText }}
-      >
-        <div className="flex flex-col gap-3">
-          <div
-            className="text-[10px] font-semibold tracking-widest uppercase"
-            style={{ fontFamily: tokens.fontSans, color: 'rgba(255,255,255,0.48)' }}
-          >
-            In the frame
-          </div>
-          <div className="leading-snug" style={{ fontFamily: tokens.fontSans, fontWeight: 500, fontSize: '0.875rem' }}>
-            20/21 brings two centuries of artistic ambition together under one roof.
-          </div>
-        </div>
-        <div className="flex flex-col gap-[3px]">
-          <div style={{ fontFamily: tokens.fontSerif, fontSize: '2.25rem', fontWeight: 300 }}>200+</div>
-          <div style={{ fontFamily: tokens.fontSans, fontSize: '0.625rem', color: 'rgba(255,255,255,0.64)' }}>
-            Years of artistic history
-          </div>
-        </div>
-      </div>
     </div>
+  );
+}
+
+// — "See all categories" button (Figma node 21:376) — static, sits below the marquee
+function GridViewIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor" />
+      <rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor" />
+      <rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor" />
+      <rect x="9" y="9" width="5" height="5" rx="1" fill="currentColor" />
+    </svg>
   );
 }
 
@@ -202,6 +196,14 @@ export function ChristiesShowcase() {
           <MarqueeSet />
           <MarqueeSet />
         </div>
+      </div>
+
+      {/* See all categories */}
+      <div className="flex justify-center pb-20 max-[767px]:pb-12">
+        <Button type="Primary" mode="Light" className="!gap-2">
+          <GridViewIcon />
+          See all categories
+        </Button>
       </div>
 
       <style>{`

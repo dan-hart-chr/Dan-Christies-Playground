@@ -2,35 +2,31 @@
 /**
  * Christie's Philosophy — adapted from BYQ franco-hero-6 (Hero Text with Inline Images)
  *
- * Content and copy overridden per Figma:
- * https://www.figma.com/design/kseLCorDTXBX2kCOVYzUn3/Untitled?node-id=1-19
- *   - Inline collage images removed — replaced with plain centered body copy.
- *   - Label copy: "Two Centuries, One Philosophy"
- *   - Body font: ABC Arizona Flare (Thin) at 40px / 54px line-height, -0.8px tracking (desktop)
- *
- * Section padding, container width, label-pill treatment, and the
- * max-[991px] / max-[767px] / max-[479px] breakpoint steps are carried over
- * unchanged from the BYQ reference — only sizing/copy values were swapped.
+ * Restyled per Figma node 21:360 ("franco-hero-6-desktop"):
+ *   - Label pill removed — "Two Centuries, One Philosophy" is now a plain
+ *     italic serif line, no background/border.
+ *   - A short divider line (25px, white @ 50%) now sits between the label
+ *     and the body copy.
+ *   - Body font size/line-height bumped to 32px/48px (from 30px/40.5px),
+ *     max-width widened to 840px.
+ *   - Section bg is now solid maroon (#530000) — the same start color used
+ *     in ChristiesShowcase's gradient, so the two sections read as continuous.
  *
  * Token substitutions applied:
- *   Fonts:  Instrument Serif → ABCArizonaFlare (Thin)
- *           DM Mono          → ABCArizonaSans (Light)
- *   Colors: section bg       → #000000 (colors.black)
+ *   Fonts:  Instrument Serif → ABCArizonaFlare (Light)
+ *   Colors: section bg       → #530000 (matches ChristiesShowcase gradient start)
  *           text / label     → #FFFFFF (colors.white)
- *           label border     → rgba(255,255,255,0.16)
+ *           divider          → rgba(255,255,255,0.5)
  */
 
 import * as React from 'react';
 
 const tokens = {
-  sectionBg: '#000000', // colors.black
+  sectionBg: '#530000',
   textColor: '#FFFFFF', // colors.white
-  labelBorder: 'rgba(255, 255, 255, 0.16)',
+  dividerColor: 'rgba(255, 255, 255, 0.5)',
 
   fontFlare: 'var(--font-family-arizona-flare)',
-  fontSans: 'var(--font-family-arizona-sans)',
-
-  sizeLabel: '0.875rem', // fontSizes["xl-sans"] scaled 0.75x
 };
 
 export function ChristiesPhilosophy() {
@@ -60,31 +56,35 @@ export function ChristiesPhilosophy() {
       style={{ backgroundColor: tokens.sectionBg, color: tokens.textColor }}
     >
       <div className="w-full max-w-[1350px] mx-auto px-6 max-[479px]:px-3">
-        <div className="flex flex-col items-center gap-[18px]">
-          {/* Label */}
-          <div
-            className={`intro-flag rounded-[18px] px-[15px] py-[9px] transition-all duration-700 ease-out ${
+        <div className="flex flex-col items-center gap-6">
+          {/* Label — plain italic line, no pill */}
+          <p
+            className={`philosophy-label m-0 transition-all duration-700 ease-out ${
               visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
-            style={{ backgroundColor: '#213328', border: `1px solid ${tokens.labelBorder}` }}
+            style={{
+              fontFamily: tokens.fontFlare,
+              fontStyle: 'italic',
+              fontWeight: 300,
+              fontSize: '1.5rem',
+              lineHeight: '1.2',
+              color: tokens.textColor,
+            }}
           >
-            <p
-              className="intro-flag-text whitespace-nowrap m-0"
-              style={{
-                fontFamily: tokens.fontSans,
-                fontWeight: 300,
-                fontSize: '0.875rem',
-                lineHeight: '1.2',
-                color: tokens.textColor,
-              }}
-            >
-              Two Centuries, One Philosophy
-            </p>
-          </div>
+            Two Centuries, One Philosophy
+          </p>
+
+          {/* Divider */}
+          <div
+            className={`transition-all duration-700 ease-out ${
+              visible ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{ width: '25px', height: '1px', backgroundColor: tokens.dividerColor, transitionDelay: '100ms' }}
+          />
 
           {/* Body copy */}
           <div
-            className={`max-w-[675px] text-center transition-all duration-700 ease-out ${
+            className={`max-w-[840px] text-center transition-all duration-700 ease-out ${
               visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             }`}
             style={{ transitionDelay: '150ms' }}
@@ -93,10 +93,10 @@ export function ChristiesPhilosophy() {
               className="philosophy-copy m-0 mb-[40px] max-[991px]:mb-[27px] max-[767px]:mb-6 max-[479px]:mb-[18px]"
               style={{
                 fontFamily: tokens.fontFlare,
-                fontWeight: 100,
-                fontSize: '1.875rem',
-                lineHeight: '40.5px',
-                letterSpacing: '-0.6px',
+                fontWeight: 300,
+                fontSize: '2rem',
+                lineHeight: '48px',
+                letterSpacing: '-0.64px',
               }}
             >
               At Christie&rsquo;s, we believe collecting crosses boundaries of all kinds, limited only by
@@ -106,10 +106,10 @@ export function ChristiesPhilosophy() {
               className="philosophy-copy m-0"
               style={{
                 fontFamily: tokens.fontFlare,
-                fontWeight: 100,
-                fontSize: '1.875rem',
-                lineHeight: '40.5px',
-                letterSpacing: '-0.6px',
+                fontWeight: 300,
+                fontSize: '2rem',
+                lineHeight: '48px',
+                letterSpacing: '-0.64px',
               }}
             >
               In that spirit, we created 20/21, a first-of-its-kind department that combines the art and
@@ -127,8 +127,7 @@ export function ChristiesPhilosophy() {
         @media (max-width: 767px) {
           .christies-philosophy { padding-top: 2.25rem !important; padding-bottom: 2.25rem !important; }
           .christies-philosophy p.philosophy-copy { font-size: 1.125rem !important; line-height: 24px !important; }
-          .christies-philosophy .intro-flag { padding: 0.375rem !important; }
-          .christies-philosophy .intro-flag-text { font-size: 0.75rem !important; }
+          .christies-philosophy p.philosophy-label { font-size: 1.125rem !important; }
         }
         @media (max-width: 479px) {
           .christies-philosophy p.philosophy-copy { font-size: 1.125rem !important; line-height: 24px !important; }

@@ -2,9 +2,14 @@
 /**
  * Christie's Hero — adapted from BYQ franco-hero-1 (Hero with Video Background)
  *
- * Per request: both CTA buttons ("Buy Template" / "Learn more") and the
- * "Watch Video" lightbox card were stripped out entirely — only the video
- * background, wordmark, labels, and animated heading remain.
+ * Per request: both CTA buttons ("Buy Template" / "Learn more") were
+ * stripped out entirely — the video background, wordmark, labels, and
+ * animated heading remain.
+ *
+ * The "Watch Video" button (Figma node 21:348) was reinstated in the bottom
+ * right corner per the latest design pass. It fades/slides in on the same
+ * trigger as the heading words, timed to land just after the last word
+ * finishes revealing.
  *
  * Token substitutions applied:
  *   Fonts:  Instrument Serif        → ABCArizonaSerif
@@ -20,11 +25,16 @@
  * Background video replaced with the Christie's "gavelslam" clip (Figma
  * node 5:167 pointed to a native Figma video embed, which can't be exported
  * as bytes via the API — the user supplied the real asset directly).
+ *
+ * Watch Video button dimensions/type sizes scaled 0.75x to match the rest of
+ * this hero's already-scaled BYQ token substitutions.
  */
 
 import * as React from 'react';
 import logo2021 from '../../assets/images/2021-full-logo.svg';
 import gavelSlamVideo from '../../assets/videos/gavelslam.mp4';
+import watchVideoThumbnail from '../../assets/images/watch-video-thumbnail.jpg';
+import playIcon from '../../assets/icons/play.svg';
 
 const words = [
   'Extraordinary',
@@ -121,31 +131,35 @@ export function ChristiesHero() {
             </div>
           </div>
 
-          {/* Bottom: animated heading (buttons removed per request) */}
-          <div ref={headingRef} className="hero-words flex flex-wrap gap-x-[9px]" style={{ maxWidth: '540px' }}>
-            {words.map((word, i) => (
-              <div
-                key={i}
-                className="overflow-hidden"
-                style={{ marginBottom: '-11px', paddingBottom: '11px' }}
-              >
+          {/* Bottom row: animated heading (buttons removed per request) + Watch Video button */}
+          <div className="flex flex-row items-end justify-between gap-6 w-full max-[767px]:flex-col max-[767px]:items-start max-[767px]:gap-4">
+            <div ref={headingRef} className="hero-words flex flex-wrap gap-x-[9px]" style={{ maxWidth: '540px' }}>
+              {words.map((word, i) => (
                 <div
-                  className="hero-word transition-transform duration-700 ease-out"
-                  style={{
-                    fontFamily: tokens.fontSerif,
-                    fontSize: tokens.sizeHeading,
-                    fontWeight: 300,
-                    lineHeight: '1',
-                    letterSpacing: '-0.02em',
-                    color: tokens.textColor,
-                    transform: wordsVisible ? 'translate3d(0, 0%, 0)' : 'translate3d(0, 200%, 0)',
-                    transitionDelay: `${i * 80}ms`,
-                  }}
+                  key={i}
+                  className="overflow-hidden"
+                  style={{ marginBottom: '-11px', paddingBottom: '11px' }}
                 >
-                  {word}
+                  <div
+                    className="hero-word transition-transform duration-700 ease-out"
+                    style={{
+                      fontFamily: tokens.fontSerif,
+                      fontSize: tokens.sizeHeading,
+                      fontWeight: 300,
+                      lineHeight: '1',
+                      letterSpacing: '-0.02em',
+                      color: tokens.textColor,
+                      transform: wordsVisible ? 'translate3d(0, 0%, 0)' : 'translate3d(0, 200%, 0)',
+                      transitionDelay: `${i * 80}ms`,
+                    }}
+                  >
+                    {word}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            <WatchVideoButton visible={wordsVisible} delayMs={words.length * 80 + 200} />
           </div>
         </div>
       </div>
@@ -157,6 +171,54 @@ export function ChristiesHero() {
         }
       `}</style>
     </section>
+  );
+}
+
+// — Watch Video button (Figma node 21:348) — fades/slides in after the heading words finish
+function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: number }) {
+  return (
+    <button
+      type="button"
+      className="watch-video-btn flex flex-col items-start shrink-0 transition-all duration-700 ease-out"
+      style={{
+        width: '189px',
+        padding: '6px',
+        borderRadius: '6px',
+        backgroundColor: 'rgba(220, 218, 215, 0.9)',
+        backdropFilter: 'blur(6px)',
+        WebkitBackdropFilter: 'blur(6px)',
+        border: 'none',
+        cursor: 'pointer',
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(24px)',
+        transitionDelay: `${delayMs}ms`,
+      }}
+    >
+      <div className="flex flex-col gap-1.5 w-full items-start">
+        <div className="relative w-full overflow-hidden" style={{ borderRadius: '6px', aspectRatio: '177 / 101' }}>
+          <img src={watchVideoThumbnail} alt="" className="absolute inset-0 w-full h-full object-cover" />
+          <span
+            className="absolute flex items-center justify-center rounded-full"
+            style={{
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              backgroundColor: '#ece7d9',
+              padding: '9px',
+              boxShadow: '0 0 6px rgba(0,0,0,0.25)',
+            }}
+          >
+            <img src={playIcon} alt="" style={{ width: '12px', height: '12px' }} />
+          </span>
+        </div>
+        <span
+          className="w-full text-center uppercase"
+          style={{ fontFamily: tokens.fontSans, fontWeight: 500, fontSize: tokens.sizeLabel, lineHeight: '1.2', color: '#000000' }}
+        >
+          Watch Video
+        </span>
+      </div>
+    </button>
   );
 }
 
