@@ -2,28 +2,30 @@
 /**
  * Christie's Testimonials — adapted from BYQ andfold-testimonials-1
  *
- * Slate redesign per Figma (20/21 Wireframe, node 70:486):
- *   - Card height reduced (desktop/tablet); portrait now aspect-ratio locked
- *     (1790:2400 — trimmed from the Figma 1808:2400 spec to clip a stray
- *     outline artifact at the image edges) instead of a fixed-height crop,
- *     so it scales down with the row instead of a fixed 624px box.
- *   - Card bg → colors.black-400 @ 90% opacity + 6px backdrop blur; text → white.
- *   - CTA row replaced with a "CONNECT WITH {name}" button plus X / Instagram
- *     icon buttons. All three invert to a white fill / black icon+text on hover
- *     (see Button.jsx Secondary+Dark mode).
- *   - Colour/blur/CTA changes are mirrored on the mobile slate too; the mobile
- *     card's height/layout is otherwise unchanged.
+ * Restyled per the "Meet the team" Figma update (node 21:401):
+ *   - Section bg swapped from black + blurred photo layer to a plain
+ *     linear-gradient(#2d2d2d -> #737373 @125.13%) — no more photo layer.
+ *   - "Specialists" pill label removed; heading now reads "Meet the team"
+ *     (60px Flare) with a lorem ipsum sub-paragraph underneath (no pill).
+ *   - Desktop card: fixed 1033px width (was 90%), 560px height (was 420px),
+ *     16px gap between cards (was 6px), asymmetric padding pl-24/pr-48/py-24
+ *     (was symmetric 18px), rounded-16 (was 12), portrait aspect-ratio
+ *     1808:2400 (was 1790:2400). Name bumped to 40px, title to 16px, bio to
+ *     24px — all now ABCArizonaFlare (Light) to match the rest of the page's
+ *     headings, replacing the old Serif/sans mix.
+ *   - The off-screen (next) card is blurred 7px @ 70% opacity, and this is
+ *     now mapped continuously to drag position (not just an on/off snap) —
+ *     see `applyCardVisualState` below.
+ *   - CTA row unchanged (CONNECT WITH {name} + X / Instagram icon buttons),
+ *     gap bumped to 16px per spec.
+ *   - Mobile slate layout/typography is unaffected — only the desktop card.
  *
  * Token substitutions applied:
- *   Fonts:  LT Superior Serif → ABCArizonaSerif
+ *   Fonts:  LT Superior Serif → ABCArizonaSerif / ABCArizonaFlare
  *           42 Dotsans        → ABCArizonaSans
- *   Colors: section bg        → #000000  (colors.black)
- *           card bg           → rgba(51,51,51,0.9)  (colors.black-400 @ 90%)
+ *   Colors: section bg        → linear-gradient(#2d2d2d, #737373 125.13%)
+ *           card bg           → rgba(42,42,42,0.9) + 6px backdrop blur
  *           card text         → #FFFFFF  (colors.white)
- *           label text        → #960000  (colors.brand-c-red)
- *           label bg          → rgba(150,0,0,0.08)
- *
- * All animations, slider mechanics, and responsive behaviour are unchanged.
  */
 
 import * as React from 'react';
@@ -40,7 +42,7 @@ const slides = [
     authorName: 'Alex Rotter',
     handle: "Global President, Christie's",
     quote:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt laborum.",
+      "Alex Rotter is an Austrian man with a deep appreciation for the arts. He is the global president of Christie's. There are few people who are as well acquainted with Warhol as him. He has an impressive collection of jackets and it feels like he saves some of them for evening sales. He's a friend to animals and humans alike. Blop Blop Blop.",
     image: alexRotterImg,
   },
   {
@@ -68,35 +70,30 @@ const slides = [
 
 // ─── Token-mapped style constants ─────────────────────────────────────────────
 const tokens = {
-  // colors.black
-  sectionBg: '#000000',
+  sectionBg: 'linear-gradient(to bottom, #2d2d2d 0%, #737373 125.13%)',
   // colors.white
   sectionText: '#FFFFFF',
-  // colors.black-400 @ 90% opacity, paired with a 6px backdrop blur
-  cardBg: 'rgba(51, 51, 51, 0.9)',
+  // rgba(42,42,42) @ 90% opacity, paired with a 6px backdrop blur
+  cardBg: 'rgba(42, 42, 42, 0.9)',
   cardBlur: '6px',
   // colors.white
   cardText: '#FFFFFF',
-  // colors.brand-c-red
-  labelText: '#FFFFFF',
-  labelBg: 'rgba(40, 40, 40, 0.65)',
-  introText: '#960000', // colors.brand-c-red
 
   // typography.fontFamily — resolved via CSS vars from arizona-fonts.css
-  fontSerif: 'var(--font-family-arizona-serif)',
+  fontFlare: 'var(--font-family-arizona-flare)',
   fontSans: 'var(--font-family-arizona-sans)',
 
-  // typography.fontSizes — closest Christie's token to original sizes, scaled 0.75x
-  sizeH2: '2.625rem',   // fontSizes["5xl-lg"] scaled
-  sizeQuote: '1.6875rem', // fontSizes["4xl"] scaled
-  sizeLabel: '0.625rem', // fontSizes["label-s"] scaled
-  sizeBody: '0.75rem',   // fontSizes["body"] scaled
+  sizeH2: '3.75rem', // 60px, matches Categories/Philosophy heading scale
+  sizeBody: '1rem', // 16px sub-paragraph
 
-  // radius, scaled 0.75x
-  cardRadius: '12px',
-  imageRadius: '9px',
-  labelRadius: '9px',
+  cardRadius: '16px',
+  imageRadius: '12px',
 };
+
+// Off-screen (non-active) card treatment — mapped continuously to drag position
+const NEIGHBOR_BLUR_PX = 7;
+const NEIGHBOR_OPACITY = 0.7;
+const CARD_TRANSITION = 'filter 750ms cubic-bezier(0.16, 1, 0.3, 1), opacity 750ms cubic-bezier(0.16, 1, 0.3, 1)';
 
 function firstName(fullName: string) {
   return fullName.split(' ')[0];
@@ -107,6 +104,8 @@ export function ChristiesTestimonials() {
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [stepPx, setStepPx] = React.useState(0);
   const trackRef = React.useRef<HTMLDivElement>(null);
+  // Desktop card boxes only (mobile slate is unaffected by the blur/opacity effect)
+  const cardRefs = React.useRef<(HTMLDivElement | null)[]>([]);
 
   // Heading entrance animation (unchanged from BYQ original)
   const headingRef = React.useRef<HTMLHeadingElement>(null);
@@ -140,6 +139,21 @@ export function ChristiesTestimonials() {
   // Keep a ref in sync so pointer handlers read current slide without stale closures
   const currentSlideRef = React.useRef(currentSlide);
   React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+  // Applies the blur/opacity treatment to every desktop card, given a
+  // (possibly fractional) index representing what's currently centered —
+  // fractional during a drag so the effect tracks the finger continuously.
+  // Only used to override the declarative per-card style below while an
+  // actual drag gesture is in progress; JSX handles the settled state.
+  const applyCardVisualState = (continuousIndex: number, animated: boolean) => {
+    cardRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const distance = Math.min(1, Math.abs(i - continuousIndex));
+      el.style.transition = animated ? CARD_TRANSITION : 'none';
+      el.style.filter = distance === 0 ? 'none' : `blur(${distance * NEIGHBOR_BLUR_PX}px)`;
+      el.style.opacity = String(1 - distance * (1 - NEIGHBOR_OPACITY));
+    });
+  };
 
   const isDragging = React.useRef(false);
   // True only between an actual pointerdown and its matching up/cancel — guards
@@ -187,6 +201,8 @@ export function ChristiesTestimonials() {
     if (dragAxis.current !== 'x' || !isDragging.current) return;
     const base = -(currentSlideRef.current * stepPx);
     trackRef.current.style.transform = `translateX(${base + deltaX}px)`;
+    // Blur/opacity track the same progress, on the X axis, as the drag itself
+    applyCardVisualState(currentSlideRef.current - deltaX / stepPx, false);
   };
 
   const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -201,6 +217,7 @@ export function ChristiesTestimonials() {
     else if (delta > SNAP_THRESHOLD) next = Math.max(0, next - 1);
     trackRef.current.style.transition = TRANSITION;
     trackRef.current.style.transform = `translateX(-${next * stepPx}px)`;
+    applyCardVisualState(next, true);
     setCurrentSlide(next);
   };
 
@@ -210,20 +227,8 @@ export function ChristiesTestimonials() {
   return (
     <section
       className="christies-testimonials relative z-[2] py-[120px] overflow-hidden"
-      style={{ backgroundColor: tokens.sectionBg, color: tokens.sectionText }}
+      style={{ background: tokens.sectionBg, color: tokens.sectionText }}
     >
-      {/* Blurred background image layer (unchanged) */}
-      <div className="absolute inset-0 w-full h-full flex" style={{ filter: 'blur(20px)', opacity: 0.35 }}>
-        <img
-          src="https://byqsupply-components.netlify.app/andfold/images/ArticleThumbnail2.jpeg"
-          loading="lazy"
-          srcSet="https://byqsupply-components.netlify.app/andfold/images/Portrait-in-Red-Top-p-500.jpeg 500w, https://byqsupply-components.netlify.app/andfold/images/Portrait-in-Red-Top-p-800.jpeg 800w, https://byqsupply-components.netlify.app/andfold/images/Portrait-in-Red-Top-p-1080.jpeg 1080w"
-          sizes="100vw"
-          alt=""
-          className="object-cover w-full h-full"
-        />
-      </div>
-
       {/* Main container */}
       <div
         className="relative z-[2] w-full mx-auto px-9 max-[991px]:px-6 max-[767px]:px-[15px]"
@@ -232,50 +237,39 @@ export function ChristiesTestimonials() {
         {/* Headline + arrows row */}
         <div className="testimonials-headline-row relative flex items-start justify-between mb-[60px]">
           <div className="specialists-header flex flex-col gap-6 items-start">
-            {/* Label pill */}
-            <div
-              className="specialists-flag flex items-center justify-center"
-              style={{
-                backgroundColor: tokens.labelBg,
-                borderRadius: tokens.labelRadius,
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-                padding: '9px 12px',
-              }}
-            >
-              <span
-                className="specialists-flag-text uppercase tracking-widest"
-                style={{
-                  fontFamily: tokens.fontSans,
-                  fontSize: tokens.sizeLabel,
-                  lineHeight: '1',
-                  fontWeight: 500,
-                  letterSpacing: '0.15em',
-                  color: tokens.labelText,
-                }}
-              >
-                Specialists
-              </span>
-            </div>
-
-            {/* H2 — Christie's serif heading */}
+            {/* H2 — Christie's Flare heading */}
             <h2
               ref={headingRef}
               className={`team-heading m-0 transition-all duration-700 ease-out max-[479px]:text-[1.875rem] ${
                 headingVisible ? 'opacity-100 blur-0' : 'opacity-0 blur-[20px]'
               }`}
               style={{
-                fontFamily: tokens.fontSerif,
+                fontFamily: tokens.fontFlare,
                 fontSize: tokens.sizeH2,
-                lineHeight: '1',
+                lineHeight: '1.067',
                 fontWeight: 300, // fontWeight.light
-                letterSpacing: '-0.03em',
                 color: tokens.sectionText,
                 maxWidth: '600px',
               }}
             >
-              Get to know the team
+              Meet the team
             </h2>
+
+            {/* Sub-paragraph */}
+            <p
+              className="team-subcopy m-0"
+              style={{
+                fontFamily: tokens.fontSans,
+                fontWeight: 300,
+                fontSize: tokens.sizeBody,
+                lineHeight: '1.4',
+                color: tokens.sectionText,
+                maxWidth: '484px',
+              }}
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+              et dolore magna aliqua.
+            </p>
           </div>
 
           {/* Arrow buttons */}
@@ -296,38 +290,47 @@ export function ChristiesTestimonials() {
           >
             <div
               ref={trackRef}
-              className="flex gap-1.5"
+              className="flex gap-4"
               style={{
                 transform: `translateX(-${currentSlide * stepPx}px)`,
                 transition: 'transform 750ms cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             >
               {slides.map((slide, i) => (
-                <div key={i} className="w-[90%] flex-shrink-0 max-[767px]:w-[90%] max-[479px]:w-[92%]">
+                <div key={i} className="w-full max-w-[1033px] flex-shrink-0 max-[767px]:w-[90%] max-[767px]:max-w-none max-[479px]:w-[92%]">
                   {/* Card — desktop / tablet layout */}
                   <div
-                    className="w-full flex gap-9 pl-[18px] pr-9 py-[18px] h-[420px] max-[991px]:flex-col max-[991px]:gap-9 max-[991px]:h-auto max-[767px]:hidden"
+                    ref={(el) => { cardRefs.current[i] = el; }}
+                    className="w-full flex gap-12 pl-6 pr-12 py-6 h-[560px] max-[991px]:flex-col max-[991px]:gap-9 max-[991px]:h-auto max-[767px]:hidden"
                     style={{
                       backgroundColor: tokens.cardBg,
                       backdropFilter: `blur(${tokens.cardBlur})`,
                       WebkitBackdropFilter: `blur(${tokens.cardBlur})`,
                       color: tokens.cardText,
                       borderRadius: tokens.cardRadius,
+                      boxShadow: '0px 0px 12px 0px rgba(0,0,0,0.2)',
+                      // Settled state (also the initial paint); drag overrides this imperatively
+                      transition: CARD_TRANSITION,
+                      filter: i === currentSlide ? 'none' : `blur(${NEIGHBOR_BLUR_PX}px)`,
+                      opacity: i === currentSlide ? 1 : NEIGHBOR_OPACITY,
                     }}
                   >
                     {/* Portrait image — aspect-ratio locked; h-full needs the row's now-definite
                         height above, otherwise the aspect-ratio width calc is indeterminate and
-                        the image falls back to its raw (oversized) intrinsic size */}
+                        the image falls back to its raw (oversized) intrinsic size.
+                        bg + redundant radius on the <img> guard against the rounded-corner/
+                        backdrop-filter "white seam" rendering artifact from the card's blur. */}
                     <div
                       className="h-full shrink-0 overflow-hidden max-[991px]:w-full max-[991px]:h-auto"
-                      style={{ aspectRatio: '1790 / 2400', borderRadius: tokens.imageRadius }}
+                      style={{ aspectRatio: '1808 / 2400', borderRadius: tokens.imageRadius, backgroundColor: '#000000' }}
                     >
                       <img
                         src={slide.image}
                         loading="lazy"
                         alt={slide.authorName}
                         draggable={false}
-                        className="object-cover w-full h-full"
+                        className="object-cover w-full h-full block"
+                        style={{ borderRadius: tokens.imageRadius }}
                       />
                     </div>
 
@@ -339,9 +342,9 @@ export function ChristiesTestimonials() {
                         <div className="flex flex-col gap-[3px] items-start w-full">
                           <p
                             style={{
-                              fontFamily: tokens.fontSerif,
+                              fontFamily: tokens.fontFlare,
                               fontWeight: 300,
-                              fontSize: '1.5rem',
+                              fontSize: '2.5rem',
                               lineHeight: '1.2',
                               color: tokens.cardText,
                               margin: 0,
@@ -353,7 +356,7 @@ export function ChristiesTestimonials() {
                             style={{
                               fontFamily: tokens.fontSans,
                               fontWeight: 300,
-                              fontSize: '0.75rem',
+                              fontSize: '1rem',
                               lineHeight: '1.4',
                               color: tokens.cardText,
                               margin: 0,
@@ -362,14 +365,13 @@ export function ChristiesTestimonials() {
                             {slide.handle}
                           </p>
                         </div>
-                        {/* Quote — Arizona Serif */}
+                        {/* Bio — Arizona Flare */}
                         <div
                           style={{
-                            fontFamily: tokens.fontSerif,
-                            fontSize: '1.125rem',
+                            fontFamily: tokens.fontFlare,
+                            fontSize: '1.5rem',
                             lineHeight: '1.2',
-                            fontWeight: 200,
-                            letterSpacing: '-0.02em',
+                            fontWeight: 300,
                             color: tokens.cardText,
                           }}
                         >
@@ -377,15 +379,15 @@ export function ChristiesTestimonials() {
                         </div>
                       </div>
 
-                      {/* CTAs — connect + social */}
-                      <div className="flex gap-3 items-center">
-                        <Button type="Secondary" mode="Dark" className="!w-auto !h-9 !px-3 !gap-1.5 !text-[10px]">
+                      {/* CTAs — connect + social (240x49 / 50x49, Figma node 21:421-425) */}
+                      <div className="flex gap-4 items-center">
+                        <Button type="Secondary" mode="Dark" className="!h-[49px]">
                           <MailIcon />
                           {`CONNECT WITH ${firstName(slide.authorName).toUpperCase()}`}
                         </Button>
-                        <div className="flex gap-1.5 items-center">
-                          <SocialIconButton icon="x" href="#" label={`Follow ${firstName(slide.authorName)} on X`} />
-                          <SocialIconButton icon="instagram" href="#" label={`Follow ${firstName(slide.authorName)} on Instagram`} />
+                        <div className="flex gap-2 items-center">
+                          <SocialIconButton icon="x" href="#" label={`Follow ${firstName(slide.authorName)} on X`} width="50px" height="49px" />
+                          <SocialIconButton icon="instagram" href="#" label={`Follow ${firstName(slide.authorName)} on Instagram`} width="50px" height="49px" />
                         </div>
                       </div>
                     </div>
@@ -421,7 +423,7 @@ export function ChristiesTestimonials() {
                       <div className="flex flex-col items-center gap-[3px] text-center mt-[9px] w-[144px]">
                         <p
                           style={{
-                            fontFamily: tokens.fontSerif,
+                            fontFamily: tokens.fontFlare,
                             fontWeight: 300,
                             fontSize: '1.125rem',
                             lineHeight: '1.2',
@@ -517,7 +519,7 @@ export function ChristiesTestimonials() {
   );
 }
 
-// ─── Slider arrow button (hover/active states unchanged from BYQ original) ────
+// ─── Slider arrow button — bg/border/shadow updated per Figma node 21:409 ─────
 function SliderButton({ onClick, direction }: { onClick: () => void; direction: 'prev' | 'next' }) {
   const [hovered, setHovered] = React.useState(false);
   const [active, setActive] = React.useState(false);
@@ -531,13 +533,12 @@ function SliderButton({ onClick, direction }: { onClick: () => void; direction: 
       onMouseUp={() => setActive(false)}
       className="flex items-center justify-center flex-shrink-0"
       style={{
-        width: '36px',
-        height: '36px',
+        width: '44px',
+        height: '44px',
         borderRadius: '100vw',
-        border: `1.5px solid ${hovered ? '#ffffff' : 'rgba(255,255,255,0.16)'}`,
-        backgroundColor: 'rgba(255,255,255,0.10)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
+        border: `1px solid ${hovered ? '#ffffff' : '#6e6259'}`,
+        backgroundColor: 'rgba(191, 184, 175, 0.6)',
+        boxShadow: '0px 0px 12px 0px rgba(0,0,0,0.1)',
         color: '#ffffff',
         cursor: 'pointer',
         transition: 'border-color 0.3s, transform 0.2s',
@@ -546,13 +547,13 @@ function SliderButton({ onClick, direction }: { onClick: () => void; direction: 
       }}
     >
       {direction === 'prev' ? (
-        <span className="flex items-center justify-center" style={{ width: '8px' }}>
+        <span className="flex items-center justify-center" style={{ width: '10px' }}>
           <svg width="100%" height="100%" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9.66797 2L1.66797 10L9.66797 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
           </svg>
         </span>
       ) : (
-        <span className="flex items-center justify-center ml-[3px]" style={{ width: '8px' }}>
+        <span className="flex items-center justify-center ml-[3px]" style={{ width: '10px' }}>
           <svg width="100%" height="100%" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M1.33203 18L9.33203 10L1.33203 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
           </svg>
@@ -567,10 +568,14 @@ function SocialIconButton({
   icon,
   href,
   label,
+  width = '36px',
+  height = '36px',
 }: {
   icon: 'x' | 'instagram';
   href: string;
   label: string;
+  width?: string;
+  height?: string;
 }) {
   return (
     <a
@@ -579,7 +584,7 @@ function SocialIconButton({
       target="_blank"
       rel="noopener noreferrer"
       className="flex items-center justify-center rounded-full border border-solid border-white text-white transition-colors duration-200 hover:bg-white hover:text-black shrink-0"
-      style={{ width: '36px', height: '36px' }}
+      style={{ width, height }}
     >
       {icon === 'x' ? <XIcon /> : <InstagramIcon />}
     </a>

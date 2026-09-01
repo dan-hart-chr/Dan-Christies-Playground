@@ -7,13 +7,16 @@
  * copy, and the auto-scrolling marquee strip remain from the BYQ reference.
  *
  * Restyled per the "20/21 Categories" Figma update (node 21:365):
- *   - Background: maroon-to-charcoal gradient (unchanged from the prior pass).
+ *   - Background: maroon-to-charcoal gradient, top stop bumped to #640303
+ *     (was #530000) so it reads as distinct from ChristiesPhilosophy above it.
  *   - Cards enlarged to the real spec (400x480, was 225x300), each slate's
  *     caption as a left-border label + description block underneath it.
  *   - Real category artwork pulled from Figma (imgFrame23–27) and downsized
  *     locally for web (originals up to 15MB — resized to <=900px/~78% jpeg).
  *   - Added the "SEE ALL CATEGORIES" button (Figma node 21:376) below the
  *     marquee, static (not part of the auto-scroll).
+ *   - Heading/body copy swapped to match Figma exactly ("20/21 Categories" +
+ *     lorem ipsum placeholder), replacing the earlier real copy.
  *
  * Token substitutions applied:
  *   Fonts:  Playfair Display  → ABCArizonaSerif
@@ -34,7 +37,7 @@ import postWarContemporary from '../../assets/images/categories/post-war-contemp
 import surrealism2 from '../../assets/images/categories/surrealism-2.jpg';
 
 const tokens = {
-  sectionBg: 'linear-gradient(to bottom, #530000 23.271%, #2d2d2d)',
+  sectionBg: 'linear-gradient(to bottom, #640303 23.271%, #2d2d2d)',
   headingColor: '#FFFFFF', // colors.white
   bodyColor: '#FFFFFF', // colors.white
   cardText: '#FFFFFF', // colors.white
@@ -159,7 +162,7 @@ export function ChristiesShowcase() {
           }`}
           style={{ fontFamily: tokens.fontSerif, fontWeight: 300, color: tokens.headingColor, margin: 0, marginBottom: '0.75rem' }}
         >
-          Every era finds its stage
+          20/21 Categories
         </h2>
 
         {/* Body */}
@@ -174,8 +177,8 @@ export function ChristiesShowcase() {
             className="m-0 leading-relaxed max-w-[420px] max-[767px]:text-base"
             style={{ fontFamily: tokens.fontSans, fontSize: tokens.sizeBody, fontWeight: 300, color: tokens.bodyColor }}
           >
-            From the boldest icons of the twentieth century to the most vital voices working today, 20/21 brings
-            two hundred years of artistic ambition into a single, continuing conversation.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+            et dolore magna aliqua.
           </p>
         </div>
       </div>
@@ -200,7 +203,7 @@ export function ChristiesShowcase() {
 
       {/* See all categories */}
       <div className="flex justify-center pb-20 max-[767px]:pb-12">
-        <Button type="Primary" mode="Light" className="!gap-2">
+        <Button type="Primary" mode="Light" className="see-all-categories-btn !gap-2">
           <GridViewIcon />
           See all categories
         </Button>
@@ -221,6 +224,10 @@ export function ChristiesShowcase() {
           .christies-showcase .showcase-top { padding-top: 2.25rem !important; }
           .christies-showcase .showcase-marquee-wrap { padding-bottom: 2.25rem !important; }
           .christies-showcase .showcase-heading { font-size: 1.5rem !important; margin-bottom: 1.125rem !important; }
+        }
+        .see-all-categories-btn:hover {
+          background-color: #ffffff !important;
+          color: #000000 !important;
         }
       `}</style>
     </section>
