@@ -2,6 +2,8 @@ import { ChristiesHero } from './components/sections/ChristiesHero';
 import { ChristiesPhilosophy } from './components/sections/ChristiesPhilosophy';
 import { ChristiesShowcase } from './components/sections/ChristiesShowcase';
 import { ChristiesTestimonials } from './components/sections/ChristiesTestimonials';
+import { ChristiesAuctions } from './components/sections/ChristiesAuctions';
+import { ChristiesFooter } from './components/sections/ChristiesFooter';
 
 export default function App() {
   return (
@@ -10,6 +12,8 @@ export default function App() {
       <ChristiesPhilosophy />
       <ChristiesShowcase />
       <ChristiesTestimonials />
+      <ChristiesAuctions />
+      <ChristiesFooter />
     </main>
   );
 }

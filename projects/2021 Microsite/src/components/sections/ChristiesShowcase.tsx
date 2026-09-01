@@ -8,14 +8,17 @@
  * dropped, and the marquee's "Read case study" link was converted to a
  * static stat card so nothing clickable/button-like remains in the section.
  *
- * Every marquee slate (images + stat card) is locked to a uniform 3:4 ratio,
- * and each photo carries a bottom-left caption using the same pill "flag"
- * style as ChristiesPhilosophy's "Two Centuries, One Philosophy" label.
+ * Every marquee slate (images + stat card) is locked to a uniform 3:4 ratio.
+ *
+ * Restyled per the "20/21 Categories" Figma update (node 11:2972): background
+ * swapped for the maroon-to-charcoal gradient, and each slate's caption moved
+ * from a floating pill on the image to a left-border label + description
+ * block underneath it. Marquee auto-scroll behaviour is unchanged.
  *
  * Token substitutions applied:
  *   Fonts:  Playfair Display  → ABCArizonaSerif
  *           Inter             → ABCArizonaSans
- *   Colors: bg #eeeae3        → rgb(45, 45, 45)
+ *   Colors: bg #eeeae3        → linear-gradient(#530000 23.271%, #2d2d2d)
  *           heading #181e25   → colors.white
  *           body #181e25 @70% → colors.white
  *           dark card #181e25 → colors.black
@@ -24,15 +27,12 @@
 import * as React from 'react';
 
 const tokens = {
-  sectionBg: 'rgb(45, 45, 45)',
+  sectionBg: 'linear-gradient(to bottom, #530000 23.271%, #2d2d2d)',
   headingColor: '#FFFFFF', // colors.white
   bodyColor: '#FFFFFF', // colors.white
   cardBg: '#000000', // colors.black
   cardText: '#FFFFFF', // colors.white
-
-  // flag/label style reused from ChristiesPhilosophy's "Two Centuries, One Philosophy" pill
-  flagBg: '#213328',
-  flagBorder: 'rgba(255, 255, 255, 0.16)',
+  captionBorder: 'rgba(153, 153, 153, 0.5)',
 
   fontSerif: 'var(--font-family-arizona-serif)',
   fontSans: 'var(--font-family-arizona-sans)',
@@ -46,24 +46,31 @@ const SLATE_HEIGHT = 300;
 const SLATE_WIDTH = (SLATE_HEIGHT * 3) / 4;
 
 const MARQUEE_IMAGES = [
-  { src: 'https://byqsupply-components.netlify.app/evermind/images/TestimonialImage.webp', caption: 'Post-War & Contemporary' },
-  { src: 'https://byqsupply-components.netlify.app/evermind/images/FeatureImage.webp', caption: 'Modern & Impressionist' },
-  { src: 'https://byqsupply-components.netlify.app/evermind/images/MarqueeCube.webp', caption: 'Design & Decorative Arts' },
-  { src: 'https://byqsupply-components.netlify.app/evermind/images/AboutBcity.webp', caption: 'Photographs' },
-  { src: 'https://byqsupply-components.netlify.app/evermind/images/ServiceImage.webp', caption: 'Prints & Editions' },
+  { src: 'https://byqsupply-components.netlify.app/evermind/images/TestimonialImage.webp', caption: 'Post War & Contemporary|Decoding the most enigmatic art movement of the twentieth century.' },
+  { src: 'https://byqsupply-components.netlify.app/evermind/images/FeatureImage.webp', caption: 'Impressionism|Decoding the most enigmatic art movement of the twentieth century.' },
+  { src: 'https://byqsupply-components.netlify.app/evermind/images/MarqueeCube.webp', caption: 'Pop Art|Decoding the most enigmatic art movement of the twentieth century.' },
+  { src: 'https://byqsupply-components.netlify.app/evermind/images/AboutBcity.webp', caption: 'Surrealism|Decoding the most enigmatic art movement of the twentieth century.' },
+  { src: 'https://byqsupply-components.netlify.app/evermind/images/ServiceImage.webp', caption: 'Prints & Editions|Decoding the most enigmatic art movement of the twentieth century.' },
 ];
 
 function SlateCaption({ text }: { text: string }) {
+  const [label, description] = text.split('|');
   return (
     <div
-      className="absolute bottom-4 left-4 rounded-[18px] px-[15px] py-[9px]"
-      style={{ backgroundColor: tokens.flagBg, border: `1px solid ${tokens.flagBorder}` }}
+      className="flex flex-col gap-2 items-start pl-3 mt-4"
+      style={{ width: SLATE_WIDTH, borderLeft: `1px solid ${tokens.captionBorder}` }}
     >
       <p
-        className="whitespace-nowrap m-0"
-        style={{ fontFamily: tokens.fontSans, fontWeight: 300, fontSize: '0.75rem', lineHeight: '1.2', color: tokens.cardText }}
+        className="m-0 uppercase"
+        style={{ fontFamily: tokens.fontSerif, fontWeight: 300, fontSize: '1.25rem', lineHeight: '1.056', letterSpacing: '0.1875rem', color: tokens.cardText }}
       >
-        {text}
+        {label}
+      </p>
+      <p
+        className="m-0"
+        style={{ fontFamily: tokens.fontSans, fontWeight: 300, fontSize: '1rem', lineHeight: '1.4', color: tokens.cardText }}
+      >
+        {description}
       </p>
     </div>
   );
@@ -71,14 +78,15 @@ function SlateCaption({ text }: { text: string }) {
 
 function MarqueeSet() {
   return (
-    <div className="flex flex-row gap-4 flex-shrink-0">
+    <div className="flex flex-row gap-4 flex-shrink-0 items-start">
       {MARQUEE_IMAGES.map((img, i) => (
-        <div
-          key={i}
-          className="relative overflow-hidden rounded-2xl flex-shrink-0"
-          style={{ width: SLATE_WIDTH, height: SLATE_HEIGHT, aspectRatio: '3 / 4' }}
-        >
-          <img src={img.src} loading="lazy" alt="" className="w-full h-full object-cover" />
+        <div key={i} className="flex flex-col flex-shrink-0">
+          <div
+            className="relative overflow-hidden rounded-2xl flex-shrink-0"
+            style={{ width: SLATE_WIDTH, height: SLATE_HEIGHT, aspectRatio: '3 / 4' }}
+          >
+            <img src={img.src} loading="lazy" alt="" className="w-full h-full object-cover" />
+          </div>
           <SlateCaption text={img.caption} />
         </div>
       ))}
@@ -147,7 +155,7 @@ export function ChristiesShowcase() {
   }, []);
 
   return (
-    <section className="christies-showcase w-full overflow-hidden" style={{ backgroundColor: tokens.sectionBg }}>
+    <section className="christies-showcase w-full overflow-hidden" style={{ background: tokens.sectionBg }}>
       <div className="showcase-top max-w-[705px] mx-auto px-[15px] pt-[72px] pb-12 flex flex-col items-center text-center max-[767px]:pt-12 max-[767px]:pb-[30px]">
         {/* Heading */}
         <h2
@@ -182,11 +190,11 @@ export function ChristiesShowcase() {
       <div className="showcase-marquee-wrap relative w-full overflow-hidden pb-12 max-[767px]:pb-[30px]">
         <div
           className="absolute left-0 top-0 bottom-0 w-[72px] z-10 pointer-events-none"
-          style={{ background: `linear-gradient(to right, ${tokens.sectionBg}, transparent)` }}
+          style={{ background: `linear-gradient(to right, #2d2d2d, transparent)` }}
         />
         <div
           className="absolute right-0 top-0 bottom-0 w-[72px] z-10 pointer-events-none"
-          style={{ background: `linear-gradient(to left, ${tokens.sectionBg}, transparent)` }}
+          style={{ background: `linear-gradient(to left, #2d2d2d, transparent)` }}
         />
 
         <div className="flex flex-row gap-4 animate-marquee-showcase w-max">
