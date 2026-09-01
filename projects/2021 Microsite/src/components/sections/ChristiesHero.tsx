@@ -41,6 +41,15 @@
  *     exposes a gap at the edges. Parallax and zoom live on separate
  *     elements so the zoom's transition doesn't bleed into scroll updates.
  *   - Both are skipped under prefers-reduced-motion.
+ *
+ * Heading reveal (per request, referencing kononenkogroup.com): the
+ * reference site splits its headings into lines, each wrapped in an
+ * overflow-clipped mask, and slides them in with a single JS-driven
+ * animation pass (GSAP) rather than N separate CSS transitions each with
+ * their own transition-delay. Reproduced here at the word level with the
+ * native Web Animations API (`Element.animate`) — `revealWords` loops over
+ * every word once and calls `.animate()` with a computed per-index delay,
+ * instead of setting a `transitionDelay` per word and letting CSS drive it.
  */
 
 import * as React from 'react';
@@ -74,12 +83,31 @@ const tokens = {
 
 export function ChristiesHero() {
   const headingRef = React.useRef<HTMLDivElement>(null);
+  const wordRefs = React.useRef<(HTMLDivElement | null)[]>([]);
   const [wordsVisible, setWordsVisible] = React.useState(false);
 
   const sectionRef = React.useRef<HTMLElement>(null);
   const parallaxRef = React.useRef<HTMLDivElement>(null);
   const [zoomedOut, setZoomedOut] = React.useState(false);
   const [prefersReducedMotion] = React.useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  // Word reveal — a single JS-driven pass over the word elements (Web
+  // Animations API), matching the reference site's mask+translateY line
+  // reveal (one script orchestrating every line) instead of N separate CSS
+  // transitions each carrying their own hardcoded transition-delay.
+  const revealWords = React.useCallback(() => {
+    wordRefs.current.forEach((el, i) => {
+      if (!el) return;
+      if (prefersReducedMotion) {
+        el.style.transform = 'translate3d(0, 0%, 0)';
+        return;
+      }
+      el.animate(
+        [{ transform: 'translate3d(0, 200%, 0)' }, { transform: 'translate3d(0, 0%, 0)' }],
+        { duration: 700, delay: i * 80, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' }
+      );
+    });
+  }, [prefersReducedMotion]);
 
   React.useEffect(() => {
     const el = headingRef.current;
@@ -88,6 +116,7 @@ export function ChristiesHero() {
       ([e]) => {
         if (e.isIntersecting) {
           setWordsVisible(true);
+          revealWords();
           obs.disconnect();
         }
       },
@@ -95,7 +124,7 @@ export function ChristiesHero() {
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, []);
+  }, [revealWords]);
 
   // Zoom-out intro — one-time. useEffect (unlike useLayoutEffect) already
   // fires after the browser paints, so the zoomed-in start state is visible
@@ -209,7 +238,8 @@ export function ChristiesHero() {
                   style={{ marginBottom: '-11px', paddingBottom: '11px' }}
                 >
                   <div
-                    className="hero-word transition-transform duration-700 ease-out"
+                    ref={(el) => { wordRefs.current[i] = el; }}
+                    className="hero-word"
                     style={{
                       fontFamily: tokens.fontSerif,
                       fontSize: tokens.sizeHeading,
@@ -217,8 +247,7 @@ export function ChristiesHero() {
                       lineHeight: '1',
                       letterSpacing: '-0.02em',
                       color: tokens.textColor,
-                      transform: wordsVisible ? 'translate3d(0, 0%, 0)' : 'translate3d(0, 200%, 0)',
-                      transitionDelay: `${i * 80}ms`,
+                      transform: 'translate3d(0, 200%, 0)',
                     }}
                   >
                     {word}
