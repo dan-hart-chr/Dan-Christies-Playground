@@ -322,7 +322,7 @@ export function ChristiesTestimonials() {
                         backdrop-filter "white seam" rendering artifact from the card's blur. */}
                     <div
                       className="h-full shrink-0 overflow-hidden max-[991px]:w-full max-[991px]:h-auto"
-                      style={{ aspectRatio: '1808 / 2400', borderRadius: tokens.imageRadius, backgroundColor: '#000000' }}
+                      style={{ aspectRatio: '1800 / 2400', borderRadius: tokens.imageRadius, backgroundColor: '#000000' }}
                     >
                       <img
                         src={slide.image}

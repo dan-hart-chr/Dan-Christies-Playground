@@ -28,6 +28,19 @@
  *
  * Watch Video button dimensions/type sizes scaled 0.75x to match the rest of
  * this hero's already-scaled BYQ token substitutions.
+ *
+ * Video motion (per request, referencing kononenkogroup.com):
+ *   - Zoom-out intro: the video itself starts at scale(1.15) and eases down
+ *     to scale(1) once on mount — a one-time CSS transition on the <video>.
+ *   - Scroll parallax: a wrapper div around the video gets a scroll-linked
+ *     translateY (0–18% of its own height, applied instantly with no CSS
+ *     transition) as the hero scrolls past, so the video lags behind the
+ *     page scroll relative to the Philosophy section sliding in underneath
+ *     — same technique as the reference site's hero image. That wrapper is
+ *     oversized (negative top offset + extra height) so the shift never
+ *     exposes a gap at the edges. Parallax and zoom live on separate
+ *     elements so the zoom's transition doesn't bleed into scroll updates.
+ *   - Both are skipped under prefers-reduced-motion.
  */
 
 import * as React from 'react';
@@ -35,6 +48,9 @@ import logo2021 from '../../assets/images/2021-full-logo.svg';
 import gavelSlamVideo from '../../assets/videos/gavelslam.mp4';
 import watchVideoThumbnail from '../../assets/images/watch-video-thumbnail.jpg';
 import playIcon from '../../assets/icons/play.svg';
+
+const PARALLAX_MAX_PERCENT = 18;
+const ZOOM_OUT_DURATION_MS = 2200;
 
 const words = [
   'Extraordinary',
@@ -60,6 +76,11 @@ export function ChristiesHero() {
   const headingRef = React.useRef<HTMLDivElement>(null);
   const [wordsVisible, setWordsVisible] = React.useState(false);
 
+  const sectionRef = React.useRef<HTMLElement>(null);
+  const parallaxRef = React.useRef<HTMLDivElement>(null);
+  const [zoomedOut, setZoomedOut] = React.useState(false);
+  const [prefersReducedMotion] = React.useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
   React.useEffect(() => {
     const el = headingRef.current;
     if (!el) return;
@@ -76,22 +97,69 @@ export function ChristiesHero() {
     return () => obs.disconnect();
   }, []);
 
+  // Zoom-out intro — one-time. useEffect (unlike useLayoutEffect) already
+  // fires after the browser paints, so the zoomed-in start state is visible
+  // for a frame before this flips it, giving the transition something to animate.
+  React.useEffect(() => {
+    setZoomedOut(true);
+  }, []);
+
+  // Scroll parallax — the video lags behind the page scroll as the hero
+  // passes by, capped once the section has fully scrolled out of view.
+  // Applied directly (no CSS transition, no rAF throttling — a single
+  // getBoundingClientRect + style write per scroll event is cheap) so it
+  // tracks the scroll 1:1 with no rubber-banding or lag; the oversized box
+  // (negative top + extra height) means shifting it down never exposes a
+  // gap at the wrapper's edges.
+  React.useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const update = () => {
+      const section = sectionRef.current;
+      const parallax = parallaxRef.current;
+      if (!section || !parallax) return;
+      const rect = section.getBoundingClientRect();
+      const progress = Math.min(1, Math.max(0, -rect.top / rect.height));
+      parallax.style.transform = `translate3d(0, ${progress * PARALLAX_MAX_PERCENT}%, 0)`;
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       className="christies-hero relative flex justify-start items-end"
       style={{ height: '100svh', color: tokens.textColor, top: 0 }}
     >
-      {/* Background Video */}
+      {/* Background Video — outer box is oversized (top offset + extra height)
+          so the parallax div can translate down without exposing a gap.
+          Parallax (instant) and zoom-out (transitioned) are on separate
+          elements so one's transition doesn't bleed into the other. */}
       <div className="absolute inset-0 w-full h-full overflow-hidden" style={{ zIndex: 0 }}>
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+        <div
+          ref={parallaxRef}
+          className="absolute left-0 w-full"
+          style={{ top: `-${PARALLAX_MAX_PERCENT}%`, height: `${100 + PARALLAX_MAX_PERCENT}%` }}
         >
-          <source src={gavelSlamVideo} type="video/mp4" />
-        </video>
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{
+              transform: `scale(${zoomedOut ? 1 : 1.15})`,
+              transition: prefersReducedMotion ? 'none' : `transform ${ZOOM_OUT_DURATION_MS}ms cubic-bezier(0.16, 1, 0.3, 1)`,
+            }}
+          >
+            <source src={gavelSlamVideo} type="video/mp4" />
+          </video>
+        </div>
       </div>
 
       {/* Dark overlay */}
