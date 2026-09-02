@@ -84,7 +84,7 @@ export function ChristiesPhilosophy() {
       <div className="w-full max-w-[1350px] mx-auto px-16 max-[991px]:px-8 max-[767px]:px-6 max-[479px]:px-3">
         <div className="flex gap-[114px] max-[991px]:gap-12 max-[767px]:flex-col max-[767px]:gap-6">
           {/* Title column — left side */}
-          <div className="flex items-center justify-center min-w-max max-[767px]:min-w-0">
+          <div className="flex items-start justify-center min-w-max max-[767px]:min-w-0">
             <div className="philosophy-title flex flex-wrap gap-x-[9px]" style={{ maxWidth: '600px' }}>
               {titleWords.map((word, i) => (
                 <div

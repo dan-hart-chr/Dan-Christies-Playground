@@ -2,17 +2,15 @@
 /**
  * Christie's Hero — adapted from BYQ franco-hero-1 (Hero with Video Background)
  *
- * Per request: both CTA buttons ("Buy Template" / "Learn more") were
- * stripped out entirely — the video background, wordmark, labels, and
- * animated heading remain.
- *
- * The "Watch Video" button (Figma node 21:348) was reinstated in the bottom
- * right corner per the latest design pass. It fades/slides in on the same
- * trigger as the heading words, timed to land just after the last word
- * finishes revealing.
+ * Per latest design updates (Figma node 11:2955):
+ *   - Title font: ABC Arizona Flare Thin (100 weight), 64px, -1.28px tracking
+ *   - Height: 80vh (reduced from 100svh) so intro section visible on load
+ *   - Padding: aligned to intro section (px-16 / px-8 / px-6 / px-3 per breakpoint)
+ *   - Watch Video button reinstated in bottom right corner
+ *   - Animated heading words fade in via Web Animations API (revealWords)
  *
  * Token substitutions applied:
- *   Fonts:  Instrument Serif        → ABCArizonaSerif
+ *   Fonts:  Instrument Serif        → ABCArizonaFlare (Thin)
  *           DM Mono / Inter         → ABCArizonaSans
  *   Colors: text / wordmark / label → #FFFFFF (colors.white)
  *           overlay                 → #000000 (colors.black) @ 40% opacity
@@ -74,10 +72,10 @@ const tokens = {
   overlayColor: '#000000', // colors.black
   textColor: '#FFFFFF', // colors.white
 
-  fontSerif: 'var(--font-family-arizona-serif)',
+  fontFlare: 'var(--font-family-arizona-flare)',
   fontSans: 'var(--font-family-arizona-sans)',
 
-  sizeHeading: '2.625rem', // fontSizes["5xl-lg"] scaled 0.75x
+  sizeHeading: '64px', // 64px per Figma node 11:2958
   sizeLabel: '0.625rem', // fontSizes["label-s"] scaled 0.75x
 };
 
@@ -163,7 +161,7 @@ export function ChristiesHero() {
     <section
       ref={sectionRef}
       className="christies-hero relative flex justify-start items-end"
-      style={{ height: '100svh', color: tokens.textColor, top: 0 }}
+      style={{ height: '80vh', color: tokens.textColor, top: 0 }}
     >
       {/* Background Video — outer box is oversized (top offset + extra height)
           so the parallax div can translate down without exposing a gap.
@@ -199,14 +197,12 @@ export function ChristiesHero() {
 
       {/* Main content container */}
       <div
-        className="relative w-full flex flex-col justify-between items-start"
+        className="relative w-full flex flex-col justify-between items-start px-16 max-[991px]:px-8 max-[767px]:px-6 max-[479px]:px-3"
         style={{
           zIndex: 2,
           maxWidth: '1350px',
           marginLeft: 'auto',
           marginRight: 'auto',
-          paddingLeft: '24px',
-          paddingRight: '24px',
           paddingTop: '15px',
           paddingBottom: '60px',
           height: '100%',
@@ -241,11 +237,11 @@ export function ChristiesHero() {
                     ref={(el) => { wordRefs.current[i] = el; }}
                     className="hero-word"
                     style={{
-                      fontFamily: tokens.fontSerif,
+                      fontFamily: tokens.fontFlare,
                       fontSize: tokens.sizeHeading,
-                      fontWeight: 300,
-                      lineHeight: '1',
-                      letterSpacing: '-0.02em',
+                      fontWeight: 100,
+                      lineHeight: '1.1',
+                      letterSpacing: '-1.28px',
                       color: tokens.textColor,
                       transform: 'translate3d(0, 200%, 0)',
                     }}
