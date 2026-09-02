@@ -91,32 +91,32 @@ function ArrowRightIcon() {
 function AuctionRow({ auction, showDivider }: { auction: Auction; showDivider: boolean }) {
   return (
     <div style={{ borderTop: showDivider ? `1px solid ${tokens.dividerColor}` : 'none' }}>
-      <div className="flex items-center gap-12 py-6 max-[767px]:flex-wrap max-[767px]:gap-4">
+      <div className="flex items-center gap-12 py-6 max-[767px]:flex-wrap max-[767px]:gap-4 max-[479px]:gap-2">
         <div className="w-[114px] h-[71px] rounded shrink-0 overflow-hidden max-[479px]:w-[80px] max-[479px]:h-[50px]">
           <img src={auction.thumbnail} loading="lazy" alt="" className="w-full h-full object-cover" />
         </div>
 
-        <div className="flex flex-col gap-3 items-start shrink-0 w-[54px]">
-          <p className="m-0" style={{ fontFamily: tokens.fontSerif, fontWeight: 300, fontSize: '1.5rem', lineHeight: '1.2', color: tokens.titleColor }}>
+        <div className="flex flex-col gap-3 items-start shrink-0 w-[54px] max-[479px]:w-12">
+          <p className="m-0" style={{ fontFamily: tokens.fontSerif, fontWeight: 300, fontSize: `clamp(18px, 3vw, 24px)`, lineHeight: '1.2', color: tokens.titleColor }}>
             {auction.day}
           </p>
-          <p className="m-0 uppercase" style={{ fontFamily: tokens.fontSans, fontWeight: 500, fontSize: '0.75rem', lineHeight: '1.2', color: tokens.metaColor }}>
+          <p className="m-0 uppercase" style={{ fontFamily: tokens.fontSans, fontWeight: 500, fontSize: `clamp(12px, 1.5vw, 12px)`, lineHeight: '1.2', color: tokens.metaColor }}>
             {auction.month}
           </p>
         </div>
 
         <div className="flex flex-col gap-3 items-start flex-1 min-w-0">
-          <p className="m-0 truncate w-full" style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: '1.75rem', lineHeight: '1.2', color: tokens.titleColor }}>
+          <p className="m-0 truncate w-full" style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: `clamp(16px, 3vw, 28px)`, lineHeight: '1.2', color: tokens.titleColor }}>
             {auction.title}
           </p>
-          <p className="m-0 uppercase" style={{ fontFamily: tokens.fontSans, fontWeight: 500, fontSize: '0.75rem', lineHeight: '1.2', color: tokens.metaColor }}>
+          <p className="m-0 uppercase" style={{ fontFamily: tokens.fontSans, fontWeight: 500, fontSize: `clamp(12px, 1.5vw, 12px)`, lineHeight: '1.2', color: tokens.metaColor }}>
             {auction.location}
           </p>
         </div>
 
         <div
-          className="px-4 py-2 rounded shrink-0 uppercase"
-          style={{ ...FLAG_STYLES[auction.flag.variant], fontFamily: tokens.fontSans, fontWeight: 500, fontSize: '0.75rem', lineHeight: '1.2' }}
+          className="px-4 py-2 rounded shrink-0 uppercase text-nowrap"
+          style={{ ...FLAG_STYLES[auction.flag.variant], fontFamily: tokens.fontSans, fontWeight: 500, fontSize: `clamp(11px, 1.5vw, 12px)`, lineHeight: '1.2' }}
         >
           {auction.flag.label}
         </div>
@@ -133,13 +133,13 @@ export function ChristiesAuctions() {
         style={{ backgroundColor: tokens.cardBg }}
       >
         <div className="flex items-center justify-between mb-6 max-[479px]:flex-col max-[479px]:items-start max-[479px]:gap-3">
-          <p className="m-0" style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: '2rem', lineHeight: '1.2', color: tokens.titleColor }}>
+          <p className="m-0" style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: `clamp(20px, 4vw, 32px)`, lineHeight: '1.2', color: tokens.titleColor }}>
             Upcoming auctions
           </p>
           <a
             href="#"
             className="flex items-center gap-4 no-underline"
-            style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: '1.25rem', lineHeight: '1.2', color: tokens.titleColor }}
+            style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: `clamp(16px, 3vw, 20px)`, lineHeight: '1.2', color: tokens.titleColor }}
           >
             View auction calendar
             <ArrowRightIcon />

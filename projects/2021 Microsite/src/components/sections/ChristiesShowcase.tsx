@@ -72,13 +72,13 @@ function SlateCaption({ text }: { text: string }) {
     >
       <p
         className="m-0 uppercase"
-        style={{ fontFamily: tokens.fontSerif, fontWeight: 300, fontSize: '1.25rem', lineHeight: '1.056', letterSpacing: '0.1875rem', color: tokens.cardText }}
+        style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: `clamp(16px, 2vw, 20px)`, lineHeight: '1.056', letterSpacing: '0.1875rem', color: tokens.cardText }}
       >
         {label}
       </p>
       <p
         className="m-0"
-        style={{ fontFamily: tokens.fontSans, fontWeight: 300, fontSize: '1rem', lineHeight: '1.4', color: tokens.cardText }}
+        style={{ fontFamily: tokens.fontSans, fontWeight: 300, fontSize: `clamp(14px, 1.5vw, 16px)`, lineHeight: '1.4', color: tokens.cardText }}
       >
         {description}
       </p>
@@ -154,14 +154,21 @@ export function ChristiesShowcase() {
 
   return (
     <section className="christies-showcase w-full overflow-hidden" style={{ background: tokens.sectionBg }}>
-      <div className="showcase-top max-w-[705px] mx-auto px-[15px] pt-[72px] pb-12 flex flex-col items-center text-center max-[767px]:pt-12 max-[767px]:pb-[30px]">
+      <div className="showcase-top max-w-[705px] mx-auto px-[15px] pt-[72px] pb-12 flex flex-col items-center text-center max-[767px]:pt-12 max-[767px]:pb-[30px] max-[479px]:pt-8 max-[479px]:pb-6">
         {/* Heading */}
         <h2
           ref={headingRef}
-          className={`showcase-heading leading-[1.1] transition-all duration-700 ease-out text-7xl max-[991px]:text-6xl max-[767px]:text-5xl max-[479px]:text-4xl ${
+          className={`showcase-heading leading-[1.1] transition-all duration-700 ease-out ${
             headingVisible ? 'opacity-100 blur-0' : 'opacity-0 blur-[12px]'
           }`}
-          style={{ fontFamily: tokens.fontFlare, fontWeight: 100, color: tokens.headingColor, margin: 0, marginBottom: '0.75rem' }}
+          style={{ 
+            fontFamily: tokens.fontFlare, 
+            fontWeight: 100, 
+            color: tokens.headingColor, 
+            margin: 0, 
+            marginBottom: '0.75rem',
+            fontSize: `clamp(28px, 7vw, 54px)`,
+          }}
         >
           20/21 Categories
         </h2>
@@ -175,8 +182,13 @@ export function ChristiesShowcase() {
           style={{ transitionDelay: '150ms' }}
         >
           <p
-            className="m-0 leading-relaxed max-w-[420px] max-[767px]:text-base"
-            style={{ fontFamily: tokens.fontSans, fontSize: tokens.sizeBody, fontWeight: 300, color: tokens.bodyColor }}
+            className="m-0 leading-relaxed max-w-[420px]"
+            style={{ 
+              fontFamily: tokens.fontSans, 
+              fontSize: `clamp(14px, 2.2vw, 15px)`,
+              fontWeight: 300, 
+              color: tokens.bodyColor 
+            }}
           >
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
             et dolore magna aliqua.

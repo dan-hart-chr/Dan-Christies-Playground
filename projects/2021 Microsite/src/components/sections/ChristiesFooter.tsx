@@ -51,10 +51,10 @@ export function ChristiesFooter() {
       >
         <div className="absolute inset-0 bg-[rgba(0,0,0,0.35)] rounded-[24px]" />
         <div className="relative z-10 flex flex-col gap-6 max-w-[603px]">
-          <p className="m-0" style={{ fontFamily: tokens.fontFlare, fontWeight: 100, fontSize: '3.75rem', lineHeight: '1.067', color: tokens.textColor }}>
+          <p className="m-0" style={{ fontFamily: tokens.fontFlare, fontWeight: 100, fontSize: `clamp(28px, 7vw, 60px)`, lineHeight: '1.067', color: tokens.textColor }}>
             Browse every category
           </p>
-          <p className="m-0" style={{ fontFamily: tokens.fontSans, fontWeight: 300, fontSize: '1rem', lineHeight: '1.4', color: tokens.textColor }}>
+          <p className="m-0" style={{ fontFamily: tokens.fontSans, fontWeight: 300, fontSize: `clamp(14px, 2.2vw, 16px)`, lineHeight: '1.4', color: tokens.textColor }}>
             A Webflow template crafted for forward-thinking companies and businesses who value clarity, warmth, and adaptability.
           </p>
         </div>

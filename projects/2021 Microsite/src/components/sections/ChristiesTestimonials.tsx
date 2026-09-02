@@ -240,16 +240,16 @@ export function ChristiesTestimonials() {
             {/* H2 — Christie's Flare heading */}
             <h2
               ref={headingRef}
-              className={`team-heading m-0 transition-all duration-700 ease-out max-[479px]:text-[1.875rem] ${
+              className={`team-heading m-0 transition-all duration-700 ease-out ${
                 headingVisible ? 'opacity-100 blur-0' : 'opacity-0 blur-[20px]'
               }`}
               style={{
                 fontFamily: tokens.fontFlare,
-                fontSize: tokens.sizeH2,
                 lineHeight: '1.067',
                 fontWeight: 100, // fontWeight.thin
                 color: tokens.sectionText,
                 maxWidth: '600px',
+                fontSize: `clamp(24px, 7vw, 60px)`,
               }}
             >
               Meet the team
@@ -261,7 +261,7 @@ export function ChristiesTestimonials() {
               style={{
                 fontFamily: tokens.fontSans,
                 fontWeight: 300,
-                fontSize: tokens.sizeBody,
+                fontSize: `clamp(14px, 2vw, 16px)`,
                 lineHeight: '1.4',
                 color: tokens.sectionText,
                 maxWidth: '484px',

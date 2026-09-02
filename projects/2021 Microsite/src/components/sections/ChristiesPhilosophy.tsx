@@ -85,39 +85,47 @@ export function ChristiesPhilosophy() {
         <div className="flex gap-[114px] max-[991px]:gap-12 max-[767px]:flex-col max-[767px]:gap-6">
           {/* Title column — left side */}
           <div className="flex items-start justify-center min-w-max max-[767px]:min-w-0">
-            <div className="philosophy-title flex flex-wrap gap-x-[9px]" style={{ maxWidth: '600px' }}>
-              {titleWords.map((word, i) => (
-                <div
-                  key={i}
-                  className="overflow-hidden"
-                  style={{ marginBottom: '-11px', paddingBottom: '11px' }}
-                >
+            <div className="philosophy-title flex flex-wrap gap-x-[9px] max-[991px]:gap-x-1.5 max-[479px]:gap-x-1" style={{ maxWidth: '600px' }}>
+              {titleWords.map((word, i) => {
+                // Responsive sizing: 56px → 38px → 28px → 22px
+                const desktopSize = 56;
+                const tabletSize = 38;
+                const mobileSize = 28;
+                const smallMobileSize = 22;
+                
+                return (
                   <div
-                    ref={(el) => {
-                      titleWordRefs.current[i] = el;
-                    }}
-                    className="philosophy-word"
-                    style={{
-                      fontFamily: tokens.fontFlare,
-                      fontSize: '56px',
-                      fontWeight: 100,
-                      lineHeight: '1.1',
-                      letterSpacing: '-1.12px',
-                      color: tokens.textColor,
-                      transform: 'translate3d(0, 200%, 0)',
-                      whiteSpace: 'nowrap',
-                    }}
+                    key={i}
+                    className="overflow-hidden"
+                    style={{ marginBottom: '-11px', paddingBottom: '11px' }}
                   >
-                    {word}
+                    <div
+                      ref={(el) => {
+                        titleWordRefs.current[i] = el;
+                      }}
+                      className="philosophy-word"
+                      style={{
+                        fontFamily: tokens.fontFlare,
+                        fontWeight: 100,
+                        lineHeight: '1.1',
+                        color: tokens.textColor,
+                        transform: 'translate3d(0, 200%, 0)',
+                        whiteSpace: 'nowrap',
+                        fontSize: `clamp(${smallMobileSize}px, 5vw, ${desktopSize}px)`,
+                        letterSpacing: `clamp(-0.44px, -1.6vw, -1.12px)`,
+                      }}
+                    >
+                      {word}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
           {/* Body column — right side */}
           <div className="flex-1 flex items-start" style={{ maxWidth: '840px' }}>
-            <div className="philosophy-body flex flex-wrap gap-x-[4px] gap-y-0" style={{ wordBreak: 'break-word' }}>
+            <div className="philosophy-body flex flex-wrap gap-x-[4px] gap-y-0 max-[479px]:gap-x-0.5" style={{ wordBreak: 'break-word' }}>
               {bodyWords.map((word, i) => (
                 <div
                   key={i}
@@ -131,13 +139,13 @@ export function ChristiesPhilosophy() {
                     className="philosophy-body-word"
                     style={{
                       fontFamily: tokens.fontFlare,
-                      fontSize: '24px',
                       fontWeight: 300,
                       lineHeight: '1.4',
-                      letterSpacing: '-0.48px',
                       color: tokens.textColor,
                       transform: 'translate3d(0, 200%, 0)',
                       display: 'inline',
+                      fontSize: `clamp(14px, 2.5vw, 24px)`,
+                      letterSpacing: `clamp(-0.28px, -0.7vw, -0.48px)`,
                     }}
                   >
                     {word}
