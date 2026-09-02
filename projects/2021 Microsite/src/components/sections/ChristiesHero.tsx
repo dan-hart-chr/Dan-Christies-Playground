@@ -65,7 +65,7 @@ const words = [
   'deserves',
   'an',
   'extraordinary',
-  'stage.',
+  'stage',
 ];
 
 const tokens = {
@@ -161,7 +161,7 @@ export function ChristiesHero() {
     <section
       ref={sectionRef}
       className="christies-hero relative flex justify-start items-end"
-      style={{ height: '80vh', color: tokens.textColor, top: 0 }}
+      style={{ height: '90vh', color: tokens.textColor, top: 0 }}
     >
       {/* Background Video — outer box is oversized (top offset + extra height)
           so the parallax div can translate down without exposing a gap.
@@ -200,7 +200,7 @@ export function ChristiesHero() {
         className="relative w-full flex flex-col justify-between items-start px-16 max-[991px]:px-8 max-[767px]:px-6 max-[479px]:px-3"
         style={{
           zIndex: 2,
-          maxWidth: '1350px',
+          maxWidth: '1600px',
           marginLeft: 'auto',
           marginRight: 'auto',
           paddingTop: '15px',
