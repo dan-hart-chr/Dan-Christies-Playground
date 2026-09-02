@@ -247,7 +247,7 @@ export function ChristiesTestimonials() {
                 fontFamily: tokens.fontFlare,
                 fontSize: tokens.sizeH2,
                 lineHeight: '1.067',
-                fontWeight: 300, // fontWeight.light
+                fontWeight: 100, // fontWeight.thin
                 color: tokens.sectionText,
                 maxWidth: '600px',
               }}

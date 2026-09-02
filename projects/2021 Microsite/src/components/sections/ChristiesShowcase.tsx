@@ -43,6 +43,7 @@ const tokens = {
   cardText: '#FFFFFF', // colors.white
   captionBorder: 'rgba(153, 153, 153, 0.5)',
 
+  fontFlare: 'var(--font-family-arizona-flare)',
   fontSerif: 'var(--font-family-arizona-serif)',
   fontSans: 'var(--font-family-arizona-sans)',
 
@@ -160,7 +161,7 @@ export function ChristiesShowcase() {
           className={`showcase-heading leading-[1.1] transition-all duration-700 ease-out text-7xl max-[991px]:text-6xl max-[767px]:text-5xl max-[479px]:text-4xl ${
             headingVisible ? 'opacity-100 blur-0' : 'opacity-0 blur-[12px]'
           }`}
-          style={{ fontFamily: tokens.fontSerif, fontWeight: 300, color: tokens.headingColor, margin: 0, marginBottom: '0.75rem' }}
+          style={{ fontFamily: tokens.fontFlare, fontWeight: 100, color: tokens.headingColor, margin: 0, marginBottom: '0.75rem' }}
         >
           20/21 Categories
         </h2>
