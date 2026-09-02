@@ -242,8 +242,8 @@ export function ChristiesHero() {
                       lineHeight: '1.1',
                       color: tokens.textColor,
                       transform: 'translate3d(0, 200%, 0)',
-                      fontSize: `clamp(28px, 7vw, 64px)`,
-                      letterSpacing: `clamp(-0.56px, -1.75vw, -1.28px)`,
+                      fontSize: `clamp(30px, 7.7vw, 64px)`,
+                      letterSpacing: `clamp(-0.6px, -1.92vw, -1.28px)`,
                     }}
                   >
                     {word}
@@ -273,13 +273,13 @@ function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: num
       type="button"
       className="watch-video-btn flex flex-col max-[767px]:flex-row items-start max-[767px]:items-center shrink-0 transition-all duration-700 ease-out"
       style={{
-        width: `clamp(189px, 90vw, 189px)`,
+        width: '100%',
         maxWidth: '100%',
         height: 'auto',
         maxHeight: '83px',
-        padding: `clamp(6px, 2vw, 8px)`,
-        gap: `clamp(6px, 2vw, 8px)`,
-        borderRadius: `clamp(6px, 2vw, 8px)`,
+        padding: '8px',
+        gap: '8px',
+        borderRadius: '8px',
         backgroundColor: 'rgba(220, 218, 215, 0.9)',
         backdropFilter: 'blur(6px)',
         WebkitBackdropFilter: 'blur(6px)',
@@ -294,7 +294,7 @@ function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: num
       <div 
         className="relative shrink-0 overflow-hidden" 
         style={{ 
-          borderRadius: `clamp(6px, 2vw, 8px)`,
+          borderRadius: '8px',
           width: `clamp(80px, 35vw, 137px)`,
           aspectRatio: '137 / 83',
         }}
@@ -325,7 +325,7 @@ function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: num
         style={{ 
           fontFamily: tokens.fontSans, 
           fontWeight: 500, 
-          fontSize: `clamp(11px, 2.5vw, 14px)`,
+          fontSize: '14px',
           lineHeight: '1.2', 
           color: '#000000',
           minWidth: 0,
