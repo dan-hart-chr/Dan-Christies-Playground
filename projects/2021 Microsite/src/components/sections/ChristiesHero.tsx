@@ -161,7 +161,7 @@ export function ChristiesHero() {
     <section
       ref={sectionRef}
       className="christies-hero relative flex justify-start items-end"
-      style={{ height: '90vh', color: tokens.textColor, top: 0 }}
+      style={{ minHeight: 'clamp(400px, 90vh, 100vh)', color: tokens.textColor, top: 0 }}
     >
       {/* Background Video — outer box is oversized (top offset + extra height)
           so the parallax div can translate down without exposing a gap.

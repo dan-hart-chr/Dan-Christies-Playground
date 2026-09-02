@@ -100,7 +100,7 @@ function AuctionRow({ auction, showDivider }: { auction: Auction; showDivider: b
           <p className="m-0" style={{ fontFamily: tokens.fontSerif, fontWeight: 300, fontSize: `clamp(18px, 3vw, 24px)`, lineHeight: '1.2', color: tokens.titleColor }}>
             {auction.day}
           </p>
-          <p className="m-0 uppercase" style={{ fontFamily: tokens.fontSans, fontWeight: 500, fontSize: `clamp(12px, 1.5vw, 12px)`, lineHeight: '1.2', color: tokens.metaColor }}>
+          <p className="m-0 uppercase" style={{ fontFamily: tokens.fontSans, fontWeight: 500, fontSize: `clamp(11px, 1.8vw, 14px)`, lineHeight: '1.2', color: tokens.metaColor }}>
             {auction.month}
           </p>
         </div>
@@ -109,14 +109,14 @@ function AuctionRow({ auction, showDivider }: { auction: Auction; showDivider: b
           <p className="m-0 truncate w-full" style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: `clamp(16px, 3vw, 28px)`, lineHeight: '1.2', color: tokens.titleColor }}>
             {auction.title}
           </p>
-          <p className="m-0 uppercase" style={{ fontFamily: tokens.fontSans, fontWeight: 500, fontSize: `clamp(12px, 1.5vw, 12px)`, lineHeight: '1.2', color: tokens.metaColor }}>
+          <p className="m-0 uppercase" style={{ fontFamily: tokens.fontSans, fontWeight: 500, fontSize: `clamp(11px, 1.8vw, 14px)`, lineHeight: '1.2', color: tokens.metaColor }}>
             {auction.location}
           </p>
         </div>
 
         <div
           className="px-4 py-2 rounded shrink-0 uppercase text-nowrap"
-          style={{ ...FLAG_STYLES[auction.flag.variant], fontFamily: tokens.fontSans, fontWeight: 500, fontSize: `clamp(11px, 1.5vw, 12px)`, lineHeight: '1.2' }}
+          style={{ ...FLAG_STYLES[auction.flag.variant], fontFamily: tokens.fontSans, fontWeight: 500, fontSize: `clamp(11px, 1.8vw, 14px)`, lineHeight: '1.2' }}
         >
           {auction.flag.label}
         </div>

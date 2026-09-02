@@ -297,7 +297,7 @@ export function ChristiesTestimonials() {
               }}
             >
               {slides.map((slide, i) => (
-                <div key={i} className="w-full max-w-[1033px] flex-shrink-0 max-[767px]:w-[90%] max-[767px]:max-w-none max-[479px]:w-[92%]">
+                <div key={i} className="w-full flex-shrink-0" style={{ maxWidth: 'clamp(280px, 90vw, 1033px)' }}>
                   {/* Card — desktop / tablet layout */}
                   <div
                     ref={(el) => { cardRefs.current[i] = el; }}
@@ -505,15 +505,7 @@ export function ChristiesTestimonials() {
       </div>
 
       <style>{`
-        @media (max-width: 767px) {
-          .christies-testimonials { padding-top: 2.25rem !important; padding-bottom: 2.25rem !important; }
-          .testimonials-dot-nav { margin-top: 1.5rem; }
-          .testimonials-headline-row { margin-bottom: 2.25rem !important; }
-          .specialists-header { gap: 0.75rem !important; }
-          .team-heading { font-size: 1.5rem !important; }
-          .specialists-flag { padding: 0.375rem !important; }
-          .specialists-flag-text { text-transform: capitalize !important; font-weight: 300 !important; letter-spacing: normal !important; font-size: 0.75rem !important; }
-        }
+        .testimonials-dot-nav { margin-top: 1.5rem; }
       `}</style>
     </section>
   );

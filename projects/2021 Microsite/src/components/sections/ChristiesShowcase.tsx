@@ -52,8 +52,11 @@ const tokens = {
 };
 
 // Uniform slate size shared by every marquee item (Figma node 21:365 spec)
-const SLATE_WIDTH = 400;
-const SLATE_HEIGHT = 480;
+// Now responsive: 281px on mobile (390px viewport), scales up to 400px desktop
+const getSlateWidth = () => typeof window !== 'undefined' ? `clamp(200px, 72vw, 400px)` : '400px';
+const getSlateHeight = () => typeof window !== 'undefined' ? `clamp(240px, 86vw, 480px)` : '480px';
+const SLATE_WIDTH = 400;  // fallback for server
+const SLATE_HEIGHT = 480; // fallback for server
 
 const MARQUEE_IMAGES = [
   { src: surrealism1, caption: 'Surrealism|Decoding the most enigmatic art movement of the twentieth century.' },
@@ -68,7 +71,7 @@ function SlateCaption({ text }: { text: string }) {
   return (
     <div
       className="flex flex-col gap-2 items-start mt-4"
-      style={{ width: SLATE_WIDTH }}
+      style={{ width: `clamp(200px, 72vw, ${SLATE_WIDTH}px)` }}
     >
       <p
         className="m-0 uppercase"
@@ -93,7 +96,7 @@ function MarqueeSet() {
         <div key={i} className="flex flex-col flex-shrink-0">
           <div
             className="relative overflow-hidden rounded-2xl flex-shrink-0"
-            style={{ width: SLATE_WIDTH, height: SLATE_HEIGHT }}
+            style={{ width: `clamp(200px, 72vw, ${SLATE_WIDTH}px)`, height: `clamp(240px, 86vw, ${SLATE_HEIGHT}px)`, aspectRatio: `${SLATE_WIDTH}/${SLATE_HEIGHT}` }}
           >
             <img src={img.src} loading="lazy" alt="" className="w-full h-full object-cover" />
           </div>
@@ -233,14 +236,9 @@ export function ChristiesShowcase() {
         .animate-marquee-showcase:hover {
           animation-play-state: paused;
         }
-        @media (max-width: 767px) {
-          .christies-showcase .showcase-top { padding-top: 2.25rem !important; }
-          .christies-showcase .showcase-marquee-wrap { padding-bottom: 2.25rem !important; }
-          .christies-showcase .showcase-heading { font-size: 1.5rem !important; margin-bottom: 1.125rem !important; }
-        }
         .see-all-categories-btn:hover {
-          background-color: #ffffff !important;
-          color: #000000 !important;
+          background-color: #ffffff;
+          color: #000000;
         }
       `}</style>
     </section>
