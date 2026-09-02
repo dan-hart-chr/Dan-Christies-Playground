@@ -203,10 +203,9 @@ export function ChristiesHero() {
           maxWidth: '1600px',
           marginLeft: 'auto',
           marginRight: 'auto',
-          height: '100%',
         }}
       >
-        <div className="flex flex-col justify-between items-start w-full h-full gap-[30px]">
+        <div className="flex flex-col justify-between items-start w-full h-full">
           {/* Top: wordmark — reveals left-to-right (wipe + fade), synced with the heading animation below */}
           <div className="flex flex-col w-full gap-[9px]">
             <div className="w-full overflow-hidden">
@@ -270,12 +269,9 @@ function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: num
   return (
     <button
       type="button"
-      className="watch-video-btn flex flex-col max-[767px]:flex-row items-start max-[767px]:items-center shrink-0 transition-all duration-700 ease-out"
+      className="watch-video-btn flex flex-col max-[767px]:flex-row items-start max-[767px]:items-center shrink-0 transition-all duration-700 ease-out w-[252px] max-[767px]:w-full max-[767px]:max-h-[83px]"
       style={{
-        width: '100%',
-        maxWidth: '100%',
         height: 'auto',
-        maxHeight: '83px',
         padding: '8px',
         gap: '8px',
         borderRadius: '8px',
@@ -289,12 +285,11 @@ function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: num
         transitionDelay: `${delayMs}ms`,
       }}
     >
-      {/* Thumbnail — 137px wide on mobile, maintains aspect ratio on desktop */}
+      {/* Thumbnail — full width of the 252px container on desktop, fixed 137px wide on mobile */}
       <div 
-        className="relative shrink-0 overflow-hidden" 
+        className="relative shrink-0 overflow-hidden w-full max-[767px]:w-[clamp(80px,35vw,137px)]" 
         style={{ 
           borderRadius: '8px',
-          width: `clamp(80px, 35vw, 137px)`,
           aspectRatio: '137 / 83',
         }}
       >

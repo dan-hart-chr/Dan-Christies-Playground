@@ -132,8 +132,10 @@ function AuctionRow({ auction, showDivider }: { auction: Auction; showDivider: b
           >
             {auction.flag.label}
           </div>
-          <p className="m-0 uppercase" style={{ fontFamily: tokens.fontSans, fontWeight: 500, fontSize: '12px', lineHeight: '1.2', color: tokens.titleColor }}>
-            {auction.day} {auction.month} | {auction.location}
+          <p className="m-0 uppercase flex items-center gap-2" style={{ fontFamily: tokens.fontSans, fontSize: '12px', lineHeight: '1.2', color: tokens.titleColor }}>
+            <span style={{ fontWeight: 500 }}>{auction.day} {auction.month}</span>
+            <span style={{ fontWeight: 400 }}>|</span>
+            <span style={{ fontWeight: 500 }}>{auction.location}</span>
           </p>
         </div>
         <p className="m-0" style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: '28px', lineHeight: '1.2', color: tokens.titleColor }}>
@@ -158,7 +160,7 @@ export function ChristiesAuctions() {
           <a
             href="#"
             className="flex items-center gap-4 no-underline"
-            style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: `clamp(16px, 3vw, 20px)`, lineHeight: '1.2', color: tokens.titleColor }}
+            style={{ fontFamily: tokens.fontSans, fontWeight: 300, fontSize: `clamp(16px, 3vw, 20px)`, lineHeight: '1.2', color: tokens.titleColor }}
           >
             View auction calendar
             <ArrowRightIcon />

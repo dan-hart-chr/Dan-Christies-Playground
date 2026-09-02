@@ -42,7 +42,7 @@ const slides = [
     authorName: 'Alex Rotter',
     handle: "Global President, Christie's",
     quote:
-      "Alex Rotter is an Austrian man with a deep appreciation for the arts. He is the global president of Christie's. There are few people who are as well acquainted with Warhol as him. He has an impressive collection of jackets and it feels like he saves some of them for evening sales. He's a friend to animals and humans alike. Blop Blop Blop.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt laborum.",
     image: alexRotterImg,
   },
   {
