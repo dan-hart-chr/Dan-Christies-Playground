@@ -39,7 +39,7 @@ const tokens = {
 
 export function ChristiesFooter() {
   return (
-    <footer className="christies-footer w-full px-6 pb-6 max-[767px]:px-3 max-[767px]:pb-3" style={{ backgroundColor: '#5D5D5D' }}>
+    <footer className="christies-footer w-full px-6 pb-6 max-[767px]:px-3 max-[767px]:pb-3 max-[479px]:px-0 max-[479px]:pb-0" style={{ backgroundColor: '#5D5D5D' }}>
       <div
         className="relative w-full max-w-[1392px] mx-auto rounded-[24px] px-10 py-[60px] flex flex-col gap-12 overflow-hidden max-[767px]:px-6 max-[767px]:py-9"
         style={{

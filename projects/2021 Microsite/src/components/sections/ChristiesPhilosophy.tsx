@@ -78,14 +78,15 @@ export function ChristiesPhilosophy() {
   return (
     <section
       ref={sectionRef}
-      className="christies-philosophy relative py-[80px] max-[991px]:py-12 max-[767px]:py-8 max-[479px]:py-6"
+      className="christies-philosophy relative py-[80px] max-[991px]:py-12 max-[767px]:py-8 max-[479px]:py-7"
       style={{ backgroundColor: tokens.sectionBg, color: tokens.textColor }}
     >
-      <div className="w-full max-w-[1600px] mx-auto px-16 max-[991px]:px-8 max-[767px]:px-6 max-[479px]:px-3">
-        <div className="flex gap-[114px] max-[991px]:gap-12 max-[767px]:flex-col max-[767px]:gap-6">
+      <div className="w-full max-w-[1600px] mx-auto px-16 max-[991px]:px-8 max-[767px]:px-6 max-[479px]:px-6">
+        <div className="flex gap-[114px] max-[991px]:gap-12 max-[767px]:flex-col max-[767px]:gap-[100px]">
           {/* Title column — left side */}
           <div className="flex items-start justify-center min-w-max max-[767px]:min-w-0">
-            <div className="philosophy-title flex flex-wrap gap-x-[9px] max-[991px]:gap-x-1.5 max-[479px]:gap-x-1" style={{ maxWidth: '600px' }}>
+            {/* columnGap scales with viewport instead of stepping down via gap-x-* so word spacing never collapses on narrow screens */}
+            <div className="philosophy-title flex flex-wrap" style={{ maxWidth: '600px', columnGap: 'clamp(8px, 2.3vw, 9px)' }}>
               {titleWords.map((word, i) => {
                 // Responsive sizing: 56px → 38px → 28px → 22px
                 const desktopSize = 56;
@@ -125,7 +126,7 @@ export function ChristiesPhilosophy() {
 
           {/* Body column — right side */}
           <div className="flex-1 flex items-start" style={{ maxWidth: '840px' }}>
-            <div className="philosophy-body flex flex-wrap gap-x-[4px] gap-y-0 max-[479px]:gap-x-0.5" style={{ wordBreak: 'break-word' }}>
+            <div className="philosophy-body flex flex-wrap gap-x-[4px] gap-y-0" style={{ wordBreak: 'break-word' }}>
               {bodyWords.map((word, i) => (
                 <div
                   key={i}

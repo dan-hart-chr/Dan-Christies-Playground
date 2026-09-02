@@ -197,14 +197,12 @@ export function ChristiesHero() {
 
       {/* Main content container */}
       <div
-        className="relative w-full flex flex-col justify-between items-start px-16 max-[991px]:px-8 max-[767px]:px-6 max-[479px]:px-3"
+        className="relative w-full flex flex-col justify-between items-start px-16 max-[991px]:px-8 max-[767px]:px-6 max-[479px]:px-5 pt-[15px] pb-[60px] max-[479px]:pt-5 max-[479px]:pb-5"
         style={{
           zIndex: 2,
           maxWidth: '1600px',
           marginLeft: 'auto',
           marginRight: 'auto',
-          paddingTop: '15px',
-          paddingBottom: '60px',
           height: '100%',
         }}
       >
@@ -226,7 +224,8 @@ export function ChristiesHero() {
 
           {/* Bottom row: animated heading (buttons removed per request) + Watch Video button */}
           <div className="flex flex-row items-end justify-between gap-6 w-full max-[767px]:flex-col max-[767px]:items-start max-[767px]:gap-4">
-            <div ref={headingRef} className="hero-words flex flex-wrap gap-x-[9px] max-[767px]:gap-x-1 max-[479px]:gap-x-0.5" style={{ maxWidth: '540px' }}>
+            {/* columnGap scales with viewport instead of stepping down via gap-x-* so word spacing never collapses on narrow screens */}
+            <div ref={headingRef} className="hero-words flex flex-wrap" style={{ maxWidth: '540px', columnGap: 'clamp(6px, 2.3vw, 9px)' }}>
               {words.map((word, i) => (
                 <div
                   key={i}

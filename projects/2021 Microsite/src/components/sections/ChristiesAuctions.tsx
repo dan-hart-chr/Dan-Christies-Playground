@@ -91,12 +91,13 @@ function ArrowRightIcon() {
 function AuctionRow({ auction, showDivider }: { auction: Auction; showDivider: boolean }) {
   return (
     <div style={{ borderTop: showDivider ? `1px solid ${tokens.dividerColor}` : 'none' }}>
-      <div className="flex items-center gap-12 py-6 max-[767px]:flex-wrap max-[767px]:gap-4 max-[479px]:gap-2">
-        <div className="w-[114px] h-[71px] rounded shrink-0 overflow-hidden max-[479px]:w-[80px] max-[479px]:h-[50px]">
+      {/* Tablet/desktop layout — thumbnail + inline row */}
+      <div className="hidden min-[480px]:flex items-center gap-12 py-6 max-[767px]:flex-wrap max-[767px]:gap-4">
+        <div className="w-[114px] h-[71px] rounded shrink-0 overflow-hidden">
           <img src={auction.thumbnail} loading="lazy" alt="" className="w-full h-full object-cover" />
         </div>
 
-        <div className="flex flex-col gap-3 items-start shrink-0 w-[54px] max-[479px]:w-12">
+        <div className="flex flex-col gap-3 items-start shrink-0 w-[54px]">
           <p className="m-0" style={{ fontFamily: tokens.fontSerif, fontWeight: 300, fontSize: `clamp(18px, 3vw, 24px)`, lineHeight: '1.2', color: tokens.titleColor }}>
             {auction.day}
           </p>
@@ -121,20 +122,38 @@ function AuctionRow({ auction, showDivider }: { auction: Auction; showDivider: b
           {auction.flag.label}
         </div>
       </div>
+
+      {/* Mobile layout (Figma node 21:238) — stacked, no thumbnail, title never truncates */}
+      <div className="flex min-[480px]:hidden flex-col gap-3 py-5">
+        <div className="flex gap-3 items-center">
+          <div
+            className="px-[10px] py-1 rounded uppercase text-nowrap"
+            style={{ ...FLAG_STYLES[auction.flag.variant], fontFamily: tokens.fontSans, fontWeight: 500, fontSize: '12px', lineHeight: '1.2' }}
+          >
+            {auction.flag.label}
+          </div>
+          <p className="m-0 uppercase" style={{ fontFamily: tokens.fontSans, fontWeight: 500, fontSize: '12px', lineHeight: '1.2', color: tokens.titleColor }}>
+            {auction.day} {auction.month} | {auction.location}
+          </p>
+        </div>
+        <p className="m-0" style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: '28px', lineHeight: '1.2', color: tokens.titleColor }}>
+          {auction.title}
+        </p>
+      </div>
     </div>
   );
 }
 
 export function ChristiesAuctions() {
   return (
-    <section className="christies-auctions w-full px-6 pt-[60px] pb-6 max-[767px]:px-3 max-[767px]:pt-9 max-[767px]:pb-3" style={{ backgroundColor: '#5D5D5D' }}>
+    <section className="christies-auctions w-full px-6 pt-[60px] pb-6 max-[767px]:px-3 max-[767px]:pt-9 max-[767px]:pb-3 max-[479px]:!bg-white max-[479px]:px-0 max-[479px]:pt-0 max-[479px]:pb-0" style={{ backgroundColor: '#5D5D5D' }}>
       <div
-        className="w-full max-w-[1392px] mx-auto rounded-[24px] px-12 py-[60px] max-[767px]:px-6 max-[767px]:py-9"
+        className="w-full max-w-[1392px] mx-auto rounded-[24px] px-12 py-[60px] max-[767px]:px-6 max-[767px]:py-9 max-[479px]:!rounded-none max-[479px]:!bg-white max-[479px]:px-4 max-[479px]:py-12"
         style={{ backgroundColor: tokens.cardBg }}
       >
         <div className="flex items-center justify-between mb-6 max-[479px]:flex-col max-[479px]:items-start max-[479px]:gap-3">
           <p className="m-0" style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: `clamp(20px, 7.2vw, 32px)`, lineHeight: '1.2', color: tokens.titleColor }}>
-            Upcoming auctions
+            Upcoming Auctions
           </p>
           <a
             href="#"
