@@ -133,7 +133,7 @@ export function ChristiesAuctions() {
         style={{ backgroundColor: tokens.cardBg }}
       >
         <div className="flex items-center justify-between mb-6 max-[479px]:flex-col max-[479px]:items-start max-[479px]:gap-3">
-          <p className="m-0" style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: `clamp(20px, 4vw, 32px)`, lineHeight: '1.2', color: tokens.titleColor }}>
+          <p className="m-0" style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: `clamp(20px, 7.2vw, 32px)`, lineHeight: '1.2', color: tokens.titleColor }}>
             Upcoming auctions
           </p>
           <a

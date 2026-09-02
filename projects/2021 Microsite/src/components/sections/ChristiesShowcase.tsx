@@ -167,7 +167,7 @@ export function ChristiesShowcase() {
             color: tokens.headingColor, 
             margin: 0, 
             marginBottom: '0.75rem',
-            fontSize: `clamp(28px, 7vw, 54px)`,
+            fontSize: `clamp(28px, 12vw, 54px)`,
           }}
         >
           20/21 Categories

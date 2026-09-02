@@ -249,7 +249,7 @@ export function ChristiesTestimonials() {
                 fontWeight: 100, // fontWeight.thin
                 color: tokens.sectionText,
                 maxWidth: '600px',
-                fontSize: `clamp(24px, 7vw, 60px)`,
+                fontSize: `clamp(24px, 12vw, 60px)`,
               }}
             >
               Meet the team

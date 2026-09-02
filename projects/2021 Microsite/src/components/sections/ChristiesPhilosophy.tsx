@@ -111,8 +111,8 @@ export function ChristiesPhilosophy() {
                         color: tokens.textColor,
                         transform: 'translate3d(0, 200%, 0)',
                         whiteSpace: 'nowrap',
-                        fontSize: `clamp(${smallMobileSize}px, 5vw, ${desktopSize}px)`,
-                        letterSpacing: `clamp(-0.44px, -1.6vw, -1.12px)`,
+                        fontSize: `clamp(${smallMobileSize}px, 12vw, ${desktopSize}px)`,
+                        letterSpacing: `clamp(-0.44px, -2.4vw, -1.12px)`,
                       }}
                     >
                       {word}
@@ -144,8 +144,8 @@ export function ChristiesPhilosophy() {
                       color: tokens.textColor,
                       transform: 'translate3d(0, 200%, 0)',
                       display: 'inline',
-                      fontSize: `clamp(14px, 2.5vw, 24px)`,
-                      letterSpacing: `clamp(-0.28px, -0.7vw, -0.48px)`,
+                      fontSize: `clamp(16px, 5.4vw, 24px)`,
+                      letterSpacing: `clamp(-0.28px, -1.4vw, -0.48px)`,
                     }}
                   >
                     {word}
