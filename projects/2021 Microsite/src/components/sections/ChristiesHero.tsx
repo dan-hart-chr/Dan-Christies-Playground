@@ -226,7 +226,7 @@ export function ChristiesHero() {
 
           {/* Bottom row: animated heading (buttons removed per request) + Watch Video button */}
           <div className="flex flex-row items-end justify-between gap-6 w-full max-[767px]:flex-col max-[767px]:items-start max-[767px]:gap-4">
-            <div ref={headingRef} className="hero-words flex flex-wrap gap-x-[9px]" style={{ maxWidth: '540px' }}>
+            <div ref={headingRef} className="hero-words flex flex-wrap gap-x-[9px] max-[767px]:gap-x-1 max-[479px]:gap-x-0.5" style={{ maxWidth: '540px' }}>
               {words.map((word, i) => (
                 <div
                   key={i}
@@ -238,12 +238,12 @@ export function ChristiesHero() {
                     className="hero-word"
                     style={{
                       fontFamily: tokens.fontFlare,
-                      fontSize: tokens.sizeHeading,
                       fontWeight: 100,
                       lineHeight: '1.1',
-                      letterSpacing: '-1.28px',
                       color: tokens.textColor,
                       transform: 'translate3d(0, 200%, 0)',
+                      fontSize: `clamp(28px, 7vw, 64px)`,
+                      letterSpacing: `clamp(-0.56px, -1.75vw, -1.28px)`,
                     }}
                   >
                     {word}
@@ -258,25 +258,28 @@ export function ChristiesHero() {
       </div>
 
       <style>{`
-        @media (max-width: 767px) {
-          .christies-hero .hero-word { font-size: 1.5rem !important; }
-          .christies-hero .hero-words { column-gap: 0.3rem !important; }
-        }
+        /* Responsive styling is now handled via clamp() in inline styles */
       `}</style>
     </section>
   );
 }
 
 // — Watch Video button (Figma node 21:348) — fades/slides in after the heading words finish
+// Mobile (max-767px): horizontal layout with thumbnail left, text right
+// Desktop: vertical layout with thumbnail on top, text below
 function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: number }) {
   return (
     <button
       type="button"
-      className="watch-video-btn flex flex-col items-start shrink-0 transition-all duration-700 ease-out"
+      className="watch-video-btn flex flex-col max-[767px]:flex-row items-start max-[767px]:items-center shrink-0 transition-all duration-700 ease-out"
       style={{
-        width: '189px',
-        padding: '6px',
-        borderRadius: '6px',
+        width: `clamp(189px, 90vw, 189px)`,
+        maxWidth: '100%',
+        height: 'auto',
+        maxHeight: '83px',
+        padding: `clamp(6px, 2vw, 8px)`,
+        gap: `clamp(6px, 2vw, 8px)`,
+        borderRadius: `clamp(6px, 2vw, 8px)`,
         backgroundColor: 'rgba(220, 218, 215, 0.9)',
         backdropFilter: 'blur(6px)',
         WebkitBackdropFilter: 'blur(6px)',
@@ -287,30 +290,49 @@ function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: num
         transitionDelay: `${delayMs}ms`,
       }}
     >
-      <div className="flex flex-col gap-1.5 w-full items-start">
-        <div className="relative w-full overflow-hidden" style={{ borderRadius: '6px', aspectRatio: '177 / 101' }}>
-          <img src={watchVideoThumbnail} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <span
-            className="absolute flex items-center justify-center rounded-full"
-            style={{
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              backgroundColor: '#ece7d9',
-              padding: '9px',
-              boxShadow: '0 0 6px rgba(0,0,0,0.25)',
-            }}
-          >
-            <img src={playIcon} alt="" style={{ width: '12px', height: '12px' }} />
-          </span>
-        </div>
+      {/* Thumbnail — 137px wide on mobile, maintains aspect ratio on desktop */}
+      <div 
+        className="relative shrink-0 overflow-hidden" 
+        style={{ 
+          borderRadius: `clamp(6px, 2vw, 8px)`,
+          width: `clamp(80px, 35vw, 137px)`,
+          aspectRatio: '137 / 83',
+        }}
+      >
+        <img src={watchVideoThumbnail} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <span
-          className="w-full text-center uppercase"
-          style={{ fontFamily: tokens.fontSans, fontWeight: 500, fontSize: tokens.sizeLabel, lineHeight: '1.2', color: '#000000' }}
+          className="absolute flex items-center justify-center rounded-full"
+          style={{
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: '#ece7d9',
+            padding: '6px',
+            boxShadow: '0 0 6px rgba(0,0,0,0.25)',
+            width: '28px',
+            height: '28px',
+            minWidth: '28px',
+            minHeight: '28px',
+          }}
         >
-          Watch Video
+          <img src={playIcon} alt="" style={{ width: '12px', height: '12px' }} />
         </span>
       </div>
+
+      {/* Watch Video text — visible on all breakpoints, centered positioning */}
+      <span
+        className="uppercase flex-1 text-center"
+        style={{ 
+          fontFamily: tokens.fontSans, 
+          fontWeight: 500, 
+          fontSize: `clamp(11px, 2.5vw, 14px)`,
+          lineHeight: '1.2', 
+          color: '#000000',
+          minWidth: 0,
+        }}
+      >
+        Watch Video
+      </span>
     </button>
   );
 }
