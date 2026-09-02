@@ -232,7 +232,7 @@ export function ChristiesTestimonials() {
       {/* Main container */}
       <div
         className="relative z-[2] w-full mx-auto px-9 max-[991px]:px-6 max-[767px]:px-[15px]"
-        style={{ maxWidth: '1350px' }}
+        style={{ maxWidth: '1600px' }}
       >
         {/* Headline + arrows row */}
         <div className="testimonials-headline-row relative flex items-start justify-between mb-[60px]">

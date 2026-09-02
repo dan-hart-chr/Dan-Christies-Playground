@@ -66,8 +66,8 @@ function SlateCaption({ text }: { text: string }) {
   const [label, description] = text.split('|');
   return (
     <div
-      className="flex flex-col gap-2 items-start pl-3 mt-4"
-      style={{ width: SLATE_WIDTH, borderLeft: `1px solid ${tokens.captionBorder}` }}
+      className="flex flex-col gap-2 items-start mt-4"
+      style={{ width: SLATE_WIDTH }}
     >
       <p
         className="m-0 uppercase"

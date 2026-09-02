@@ -127,7 +127,7 @@ function AuctionRow({ auction, showDivider }: { auction: Auction; showDivider: b
 
 export function ChristiesAuctions() {
   return (
-    <section className="christies-auctions w-full px-6 pt-[60px] pb-6 max-[767px]:px-3 max-[767px]:pt-9 max-[767px]:pb-3">
+    <section className="christies-auctions w-full px-6 pt-[60px] pb-6 max-[767px]:px-3 max-[767px]:pt-9 max-[767px]:pb-3" style={{ backgroundColor: '#5D5D5D' }}>
       <div
         className="w-full max-w-[1392px] mx-auto rounded-[24px] px-12 py-[60px] max-[767px]:px-6 max-[767px]:py-9"
         style={{ backgroundColor: tokens.cardBg }}

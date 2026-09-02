@@ -18,6 +18,8 @@
 
 import * as React from 'react';
 
+const imgBackgroundFooter = 'https://www.figma.com/api/mcp/asset/df0d9680-8b25-4661-b22f-b0b4dca7faa3.png';
+
 const DEPARTMENTS = [
   { name: 'DEPARTMENT', links: ['Category name', 'Category name', 'Category name'] },
   { name: 'DEPARTMENT', links: ['Category name', 'Category name', 'Category name'] },
@@ -37,13 +39,18 @@ const tokens = {
 
 export function ChristiesFooter() {
   return (
-    <footer className="christies-footer w-full px-6 pb-6 max-[767px]:px-3 max-[767px]:pb-3">
+    <footer className="christies-footer w-full px-6 pb-6 max-[767px]:px-3 max-[767px]:pb-3" style={{ backgroundColor: '#5D5D5D' }}>
       <div
         className="relative w-full max-w-[1392px] mx-auto rounded-[24px] px-10 py-[60px] flex flex-col gap-12 overflow-hidden max-[767px]:px-6 max-[767px]:py-9"
-        // Solid placeholder bg pending a real environment/gallery photo for this section
-        style={{ backgroundColor: '#2d2d2d' }}
+        style={{
+          backgroundColor: '#5D5D5D',
+          backgroundImage: `url(${imgBackgroundFooter})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
       >
-        <div className="flex flex-col gap-6 max-w-[603px]">
+        <div className="absolute inset-0 bg-[rgba(0,0,0,0.35)] rounded-[24px]" />
+        <div className="relative z-10 flex flex-col gap-6 max-w-[603px]">
           <p className="m-0" style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: '3.75rem', lineHeight: '1.067', color: tokens.textColor }}>
             Browse every category
           </p>
@@ -53,7 +60,7 @@ export function ChristiesFooter() {
         </div>
 
         <div
-          className="rounded-2xl px-8 pt-12 pb-12 flex gap-4 max-[767px]:flex-col max-[767px]:gap-9"
+          className="relative z-10 rounded-2xl px-8 pt-12 pb-12 flex gap-4 max-[767px]:flex-col max-[767px]:gap-9"
           style={{ backgroundColor: tokens.panelBg, backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
         >
           {DEPARTMENTS.map((dept, i) => (
