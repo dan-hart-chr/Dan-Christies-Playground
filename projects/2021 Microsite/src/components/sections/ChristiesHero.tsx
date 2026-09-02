@@ -160,7 +160,7 @@ export function ChristiesHero() {
   return (
     <section
       ref={sectionRef}
-      className="christies-hero relative flex justify-start items-end"
+      className="christies-hero relative flex justify-start"
       style={{ minHeight: 'clamp(400px, 90vh, 100vh)', color: tokens.textColor, top: 0 }}
     >
       {/* Background Video — outer box is oversized (top offset + extra height)

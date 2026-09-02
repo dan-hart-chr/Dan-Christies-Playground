@@ -157,7 +157,7 @@ export function ChristiesShowcase() {
 
   return (
     <section className="christies-showcase w-full overflow-hidden" style={{ background: tokens.sectionBg }}>
-      <div className="showcase-top max-w-[705px] mx-auto px-[15px] pt-[72px] pb-12 flex flex-col items-start text-left max-[767px]:pt-12 max-[767px]:pb-[30px] max-[479px]:pt-8 max-[479px]:pb-6 max-[479px]:px-6">
+      <div className="showcase-top max-w-[705px] mx-auto px-[15px] pt-[72px] pb-12 flex flex-col items-start text-left max-[767px]:pt-12 max-[767px]:pb-[48px] max-[479px]:pt-8 max-[479px]:pb-6 max-[479px]:px-6">
         {/* Heading */}
         <h2
           ref={headingRef}
@@ -200,7 +200,7 @@ export function ChristiesShowcase() {
       </div>
 
       {/* Marquee strip */}
-      <div className="showcase-marquee-wrap relative w-full overflow-hidden pb-12 max-[767px]:pb-[30px]">
+      <div className="showcase-marquee-wrap relative w-full overflow-hidden pb-12 max-[767px]:pb-[48px]">
         <div
           className="absolute left-0 top-0 bottom-0 w-[72px] z-10 pointer-events-none"
           style={{ background: `linear-gradient(to right, #2d2d2d, transparent)` }}

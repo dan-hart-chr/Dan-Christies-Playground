@@ -226,7 +226,7 @@ export function ChristiesTestimonials() {
 
   return (
     <section
-      className="christies-testimonials relative z-[2] py-[120px] overflow-hidden"
+      className="christies-testimonials relative z-[2] py-[28px] overflow-hidden"
       style={{ background: tokens.sectionBg, color: tokens.sectionText }}
     >
       {/* Main container */}
@@ -395,7 +395,7 @@ export function ChristiesTestimonials() {
 
                   {/* Card — mobile slate layout */}
                   <div
-                    className="hidden max-[767px]:flex flex-col justify-between gap-[30px] items-center w-full h-full p-[18px]"
+                    className="hidden max-[767px]:flex flex-col justify-between gap-[20px] items-center w-full h-full p-[18px]"
                     style={{
                       backgroundColor: tokens.cardBg,
                       backdropFilter: `blur(${tokens.cardBlur})`,
@@ -420,12 +420,12 @@ export function ChristiesTestimonials() {
                       </div>
 
                       {/* Name + Job Title/Label — centered */}
-                      <div className="flex flex-col items-center gap-[3px] text-center mt-[9px] w-[144px]">
+                      <div className="flex flex-col items-center gap-[3px] text-center mt-[9px] w-[240px]">
                         <p
                           style={{
                             fontFamily: tokens.fontFlare,
                             fontWeight: 300,
-                            fontSize: '1.125rem',
+                            fontSize: '1.5rem',
                             lineHeight: '1.2',
                             color: tokens.cardText,
                             margin: 0,
@@ -437,7 +437,7 @@ export function ChristiesTestimonials() {
                           style={{
                             fontFamily: tokens.fontSans,
                             fontWeight: 300,
-                            fontSize: '0.625rem',
+                            fontSize: '1rem',
                             lineHeight: '1.4',
                             color: tokens.cardText,
                             margin: 0,
@@ -456,7 +456,7 @@ export function ChristiesTestimonials() {
                         style={{
                           fontFamily: tokens.fontSans,
                           fontWeight: 300,
-                          fontSize: '0.75rem',
+                          fontSize: '1rem',
                           lineHeight: '1.4',
                           color: tokens.cardText,
                           margin: 0,
@@ -465,9 +465,9 @@ export function ChristiesTestimonials() {
                         {slide.quote}
                       </p>
 
-                      {/* CTAs — single row; connect button flexes/truncates to fit */}
+                      {/* CTAs — single row; connect button fills the row, icons stay fixed-size */}
                       <div className="w-full mt-[18px] flex flex-row gap-[9px] items-center">
-                        <Button type="Secondary" mode="Dark" className="!w-auto !px-3 !h-9 !gap-1.5 !text-[10px]">
+                        <Button type="Secondary" mode="Dark" className="!flex-1 !w-full !px-3 !h-9 !gap-1.5 !text-[10px]">
                           <MailIcon />
                           CONNECT
                         </Button>

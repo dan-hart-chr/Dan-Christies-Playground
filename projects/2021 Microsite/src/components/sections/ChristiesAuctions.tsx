@@ -148,7 +148,7 @@ export function ChristiesAuctions() {
   return (
     <section className="christies-auctions w-full px-6 pt-[60px] pb-6 max-[767px]:px-3 max-[767px]:pt-9 max-[767px]:pb-3 max-[479px]:!bg-white max-[479px]:px-0 max-[479px]:pt-0 max-[479px]:pb-0" style={{ backgroundColor: '#5D5D5D' }}>
       <div
-        className="w-full max-w-[1392px] mx-auto rounded-[24px] px-12 py-[60px] max-[767px]:px-6 max-[767px]:py-9 max-[479px]:!rounded-none max-[479px]:!bg-white max-[479px]:px-4 max-[479px]:py-12"
+        className="w-full max-w-[1392px] mx-auto rounded-[24px] px-12 py-[60px] max-[767px]:px-6 max-[767px]:py-9 max-[479px]:!rounded-none max-[479px]:!bg-white max-[479px]:px-4 max-[479px]:pt-8 max-[479px]:pb-12"
         style={{ backgroundColor: tokens.cardBg }}
       >
         <div className="flex items-center justify-between mb-6 max-[479px]:flex-col max-[479px]:items-start max-[479px]:gap-3">
