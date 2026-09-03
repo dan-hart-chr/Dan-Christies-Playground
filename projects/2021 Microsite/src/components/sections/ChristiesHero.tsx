@@ -315,7 +315,7 @@ function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: num
 
       {/* Watch Video text — visible on all breakpoints, centered positioning */}
       <span
-        className="uppercase flex-1 text-center"
+        className="uppercase flex-1 text-center flex items-center justify-center"
         style={{ 
           fontFamily: tokens.fontSans, 
           fontWeight: 500, 
