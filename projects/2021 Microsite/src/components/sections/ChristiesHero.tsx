@@ -222,7 +222,7 @@ export function ChristiesHero() {
           </div>
 
           {/* Bottom row: animated heading (buttons removed per request) + Watch Video button */}
-          <div className="flex flex-row items-end justify-between gap-6 w-full max-[767px]:flex-col max-[767px]:items-start max-[767px]:gap-4">
+          <div className="flex flex-row items-end justify-between gap-6 w-full max-[767px]:flex-col max-[767px]:items-start max-[767px]:gap-8">
             {/* columnGap scales with viewport instead of stepping down via gap-x-* so word spacing never collapses on narrow screens */}
             <div ref={headingRef} className="hero-words flex flex-wrap" style={{ maxWidth: '540px', columnGap: 'clamp(6px, 2.3vw, 9px)' }}>
               {words.map((word, i) => (
