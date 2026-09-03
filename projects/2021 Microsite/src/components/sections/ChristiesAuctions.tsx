@@ -97,7 +97,7 @@ function AuctionRow({ auction, showDivider }: { auction: Auction; showDivider: b
           <img src={auction.thumbnail} loading="lazy" alt="" className="w-full h-full object-cover" />
         </div>
 
-        <div className="flex flex-col gap-3 items-start shrink-0 w-[54px]">
+        <div className="flex flex-col gap-3 items-start shrink-0" style={{ width: '75px' }}>
           <p className="m-0" style={{ fontFamily: tokens.fontSerif, fontWeight: 300, fontSize: `clamp(18px, 3vw, 24px)`, lineHeight: '1.2', color: tokens.titleColor }}>
             {auction.day}
           </p>

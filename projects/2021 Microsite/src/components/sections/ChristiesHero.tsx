@@ -269,7 +269,7 @@ function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: num
   return (
     <button
       type="button"
-      className="watch-video-btn flex flex-col max-[767px]:flex-row items-center shrink-0 transition-all duration-700 ease-out max-[767px]:w-full"
+      className="watch-video-btn flex flex-col max-[767px]:flex-row items-center shrink-0 transition-all duration-700 ease-out max-[767px]:!w-full"
       style={{
         width: '252px',
         height: 'auto',
