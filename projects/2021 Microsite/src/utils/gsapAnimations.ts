@@ -26,7 +26,7 @@ export const animateTextReveal = (
 
   const {
     duration = 0.8,
-    delay = 0,
+    delay = 0.3,
     stagger = 0.1,
     yOffset = 20,
   } = options;

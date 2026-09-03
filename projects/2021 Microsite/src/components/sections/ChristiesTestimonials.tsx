@@ -119,7 +119,6 @@ export function ChristiesTestimonials() {
     // Animate heading with GSAP
     animateTextReveal(headingRef.current, {
       duration: 0.8,
-      delay: 0,
       stagger: 0.1,
       yOffset: 20,
     });

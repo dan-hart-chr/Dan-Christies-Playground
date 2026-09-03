@@ -132,7 +132,6 @@ export function ChristiesShowcase() {
     // Animate heading with GSAP
     animateTextReveal(headingRef.current, {
       duration: 0.8,
-      delay: 0,
       stagger: 0.1,
       yOffset: 20,
     });
@@ -181,13 +180,15 @@ export function ChristiesShowcase() {
         </h2>
 
         {/* Body */}
-        <div ref={bodyRef}>
+        <div ref={bodyRef} className="text-center max-[767px]:text-left">
           <p
-            className="m-0 leading-relaxed max-w-[420px]"
+            className="m-0 max-w-[420px] mx-auto max-[767px]:mx-0"
             style={{ 
               fontFamily: tokens.fontSans, 
-              fontSize: `clamp(14px, 2.2vw, 15px)`,
+              fontSize: `clamp(14px, 2.2vw, 16px)`,
               fontWeight: 300, 
+              lineHeight: '1.6',
+              letterSpacing: 'normal',
               color: tokens.bodyColor 
             }}
           >

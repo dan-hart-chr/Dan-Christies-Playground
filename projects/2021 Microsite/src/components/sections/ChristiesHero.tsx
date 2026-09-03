@@ -94,14 +94,13 @@ export function ChristiesHero() {
     // Animate heading text reveal with GSAP
     animateTextReveal(headingRef.current, {
       duration: 0.8,
-      delay: 0,
       stagger: 0.1,
       yOffset: 20,
     });
 
     // Setup parallax for video background with GSAP
     if (parallaxRef.current) {
-      animateParallax(parallaxRef.current, { speed: 0.5 });
+      animateParallax(parallaxRef.current, { speed: 0.2 });
     }
 
     // Fade in watch button after text animation
@@ -144,7 +143,7 @@ export function ChristiesHero() {
         <div
           ref={parallaxRef}
           className="absolute left-0 w-full"
-          style={{ top: '-25%', height: '125%' }}
+          style={{ top: '-30%', height: '130%' }}
         >
           <video
             autoPlay
