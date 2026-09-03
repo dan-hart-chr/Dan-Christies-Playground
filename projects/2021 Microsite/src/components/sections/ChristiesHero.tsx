@@ -269,8 +269,9 @@ function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: num
   return (
     <button
       type="button"
-      className="watch-video-btn flex flex-col max-[767px]:flex-row items-start max-[767px]:items-center shrink-0 transition-all duration-700 ease-out w-[252px] max-[767px]:w-full max-[767px]:max-h-[83px]"
+      className="watch-video-btn flex flex-col max-[767px]:flex-row items-center shrink-0 transition-all duration-700 ease-out max-[767px]:w-full"
       style={{
+        width: '252px',
         height: 'auto',
         padding: '8px',
         gap: '8px',
@@ -314,19 +315,18 @@ function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: num
       </div>
 
       {/* Watch Video text — visible on all breakpoints, centered positioning */}
-      <span
-        className="uppercase flex-1 text-center flex items-center justify-center"
+      <p
+        className="uppercase text-center w-full m-0"
         style={{ 
           fontFamily: tokens.fontSans, 
           fontWeight: 500, 
           fontSize: '14px',
           lineHeight: '1.2', 
           color: '#000000',
-          minWidth: 0,
         }}
       >
         Watch Video
-      </span>
+      </p>
     </button>
   );
 }
