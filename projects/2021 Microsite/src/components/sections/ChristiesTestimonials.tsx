@@ -231,7 +231,7 @@ export function ChristiesTestimonials() {
     >
       {/* Main container */}
       <div
-        className="relative z-[2] w-full mx-auto px-9 max-[991px]:px-6 max-[767px]:px-[15px]"
+        className="relative z-[2] w-full mx-auto px-9 max-[991px]:px-6 max-[767px]:px-6"
         style={{ maxWidth: '1600px' }}
       >
         {/* Headline + arrows row */}

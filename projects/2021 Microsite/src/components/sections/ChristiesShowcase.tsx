@@ -157,7 +157,7 @@ export function ChristiesShowcase() {
 
   return (
     <section className="christies-showcase w-full overflow-hidden" style={{ background: tokens.sectionBg }}>
-      <div className="showcase-top max-w-[705px] mx-auto px-[15px] pt-[72px] pb-12 flex flex-col items-center text-center max-[767px]:items-start max-[767px]:text-left max-[767px]:pt-12 max-[767px]:pb-[48px] max-[479px]:pt-8 max-[479px]:pb-6 max-[479px]:px-6">
+      <div className="showcase-top max-w-[705px] mx-auto px-[15px] pt-[72px] pb-12 flex flex-col items-center text-center max-[767px]:items-start max-[767px]:text-left max-[767px]:pt-12 max-[767px]:pb-10 max-[479px]:pt-8 max-[479px]:pb-6 max-[479px]:px-6">
         {/* Heading */}
         <h2
           ref={headingRef}
