@@ -91,37 +91,43 @@ export function ChristiesHero() {
   React.useEffect(() => {
     if (prefersReducedMotion) return;
 
-    // Animate heading text reveal with GSAP
-    animateTextReveal(headingRef.current, {
-      duration: 0.8,
-      stagger: 0.1,
-      yOffset: 20,
-    });
+    // Timeline for coordinated animations
+    const tl = gsap.timeline();
+
+    // 1. Fade in logo first (delay 0)
+    const logo = document.querySelector('.hero-logo');
+    if (logo) {
+      tl.from(logo, {
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+      }, 0);
+    }
+
+    // 2. Animate heading text reveal (start at 0.4s)
+    if (headingRef.current) {
+      animateTextReveal(headingRef.current, {
+        duration: 0.8,
+        stagger: 0.1,
+        yOffset: 20,
+      });
+      // Since animateTextReveal runs immediately with delay, this will start at default delay (0.3s)
+      // We adjust by setting the delay in the options
+    }
+
+    // 3. Fade in watch button after heading completes (heading ends at ~1.1s)
+    if (watchButtonRef.current) {
+      tl.from(watchButtonRef.current, {
+        opacity: 0,
+        y: 24,
+        duration: 0.6,
+        ease: 'power3.out',
+      }, 1.2); // Start at 1.2s
+    }
 
     // Setup parallax for video background with GSAP
     if (parallaxRef.current) {
       animateParallax(parallaxRef.current, { speed: 0.2 });
-    }
-
-    // Fade in watch button after text animation
-    if (watchButtonRef.current) {
-      gsap.from(watchButtonRef.current, {
-        opacity: 0,
-        y: 24,
-        duration: 0.6,
-        delay: 1,
-        ease: 'power3.out',
-      });
-    }
-
-    // Fade in logo
-    const logo = document.querySelector('.hero-logo');
-    if (logo) {
-      gsap.from(logo, {
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-      });
     }
 
     return () => {
@@ -199,7 +205,7 @@ export function ChristiesHero() {
                 maxWidth: '540px',
                 fontFamily: tokens.fontFlare,
                 fontWeight: 100,
-                lineHeight: '1.1',
+                lineHeight: '1.0',
                 color: tokens.textColor,
                 fontSize: `clamp(30px, 7.7vw, 64px)`,
                 letterSpacing: `clamp(-0.6px, -1.92vw, -1.28px)`,

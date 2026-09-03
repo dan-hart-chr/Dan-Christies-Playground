@@ -12,6 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 /**
  * Stagger text reveal animation - splits text into words/lines and animates in
  * Useful for: Hero headings, section titles
+ * Set triggerOnScroll=true to activate on scroll into view instead of immediately
  */
 export const animateTextReveal = (
   element: HTMLElement | null,
@@ -20,6 +21,7 @@ export const animateTextReveal = (
     delay?: number;
     stagger?: number;
     yOffset?: number;
+    triggerOnScroll?: boolean;
   } = {}
 ) => {
   if (!element) return;
@@ -29,6 +31,7 @@ export const animateTextReveal = (
     delay = 0.3,
     stagger = 0.1,
     yOffset = 20,
+    triggerOnScroll = false,
   } = options;
 
   const words = element.innerText.split(' ');
@@ -37,14 +40,36 @@ export const animateTextReveal = (
     .join(' ');
 
   const spans = element.querySelectorAll('span span');
-  gsap.from(spans, {
-    opacity: 0,
-    y: yOffset,
-    duration,
-    delay,
-    stagger,
-    ease: 'power3.out',
-  });
+  
+  if (triggerOnScroll) {
+    // Create a timeline for ScrollTrigger
+    gsap.to(spans, {
+      scrollTrigger: {
+        trigger: element,
+        start: 'top 80%',
+        once: true,
+      },
+      opacity: 1,
+      y: 0,
+      duration,
+      delay,
+      stagger,
+      ease: 'power3.out',
+      overwrite: 'auto',
+    });
+    // Set initial state
+    gsap.set(spans, { opacity: 0, y: yOffset });
+  } else {
+    // Immediate animation (for hero and initial loads)
+    gsap.from(spans, {
+      opacity: 0,
+      y: yOffset,
+      duration,
+      delay,
+      stagger,
+      ease: 'power3.out',
+    });
+  }
 };
 
 /**

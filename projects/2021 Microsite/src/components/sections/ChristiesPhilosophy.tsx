@@ -32,19 +32,21 @@ export function ChristiesPhilosophy() {
   React.useEffect(() => {
     if (prefersReducedMotion) return;
 
-    // Animate title with GSAP
+    // Animate title with GSAP (scroll-triggered)
     animateTextReveal(titleRef.current, {
       duration: 0.8,
       stagger: 0.1,
       yOffset: 20,
+      triggerOnScroll: true,
     });
 
-    // Animate body with delay after title
+    // Animate body with delay after title (scroll-triggered)
     animateTextReveal(bodyRef.current, {
       duration: 0.8,
       delay: 0.4,
       stagger: 0.05,
       yOffset: 20,
+      triggerOnScroll: true,
     });
 
     return () => {

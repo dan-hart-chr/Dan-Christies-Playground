@@ -116,19 +116,21 @@ export function ChristiesTestimonials() {
   React.useEffect(() => {
     if (prefersReducedMotion) return;
 
-    // Animate heading with GSAP
+    // Animate heading with GSAP (scroll-triggered)
     animateTextReveal(headingRef.current, {
       duration: 0.8,
       stagger: 0.1,
       yOffset: 20,
+      triggerOnScroll: true,
     });
 
-    // Animate subcopy with delay
+    // Animate subcopy with delay (scroll-triggered)
     animateTextReveal(subcopyRef.current, {
       duration: 0.8,
       delay: 0.2,
       stagger: 0.05,
       yOffset: 20,
+      triggerOnScroll: true,
     });
 
     return () => {

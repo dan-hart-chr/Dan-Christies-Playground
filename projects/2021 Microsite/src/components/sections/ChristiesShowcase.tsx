@@ -129,19 +129,21 @@ export function ChristiesShowcase() {
   React.useEffect(() => {
     if (prefersReducedMotion) return;
 
-    // Animate heading with GSAP
+    // Animate heading with GSAP (scroll-triggered)
     animateTextReveal(headingRef.current, {
       duration: 0.8,
       stagger: 0.1,
       yOffset: 20,
+      triggerOnScroll: true,
     });
 
-    // Animate body with slight delay
+    // Animate body with slight delay (scroll-triggered)
     animateTextReveal(bodyRef.current, {
       duration: 0.8,
       delay: 0.15,
       stagger: 0.05,
       yOffset: 20,
+      triggerOnScroll: true,
     });
 
     // Fade in marquee cards with staggered animation
@@ -182,14 +184,16 @@ export function ChristiesShowcase() {
         {/* Body */}
         <div ref={bodyRef} className="text-center max-[767px]:text-left">
           <p
-            className="m-0 max-w-[420px] mx-auto max-[767px]:mx-0"
-            style={{ 
-              fontFamily: tokens.fontSans, 
-              fontSize: `clamp(14px, 2.2vw, 16px)`,
-              fontWeight: 300, 
-              lineHeight: '1.6',
-              letterSpacing: 'normal',
-              color: tokens.bodyColor 
+            className="m-0"
+            style={{
+              fontFamily: tokens.fontSans,
+              fontSize: `clamp(14px, 2vw, 16px)`,
+              fontWeight: 300,
+              lineHeight: '1.4',
+              color: tokens.bodyColor,
+              maxWidth: '484px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
             }}
           >
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
