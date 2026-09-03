@@ -30,6 +30,7 @@
 import * as React from 'react';
 // @ts-ignore
 import Button from '@christies-ds/molecules/button/Button.jsx';
+import { animateTextReveal, animateFadeInOnScroll, cleanupGSAPAnimations } from '../../utils/gsapAnimations';
 import surrealism1 from '../../assets/images/categories/surrealism-1.jpg';
 import popArt from '../../assets/images/categories/pop-art.jpg';
 import impressionism from '../../assets/images/categories/impressionism.jpg';
@@ -93,7 +94,7 @@ function MarqueeSet() {
   return (
     <div className="flex flex-row gap-4 flex-shrink-0 items-start">
       {MARQUEE_IMAGES.map((img, i) => (
-        <div key={i} className="flex flex-col flex-shrink-0">
+        <div key={i} className="flex flex-col flex-shrink-0 marquee-card">
           <div
             className="relative overflow-hidden rounded-2xl flex-shrink-0"
             style={{ width: `clamp(200px, 72vw, ${SLATE_WIDTH}px)`, height: `clamp(240px, 86vw, ${SLATE_HEIGHT}px)`, aspectRatio: `${SLATE_WIDTH}/${SLATE_HEIGHT}` }}
@@ -121,39 +122,44 @@ function GridViewIcon() {
 
 export function ChristiesShowcase() {
   const headingRef = React.useRef<HTMLHeadingElement>(null);
-  const [headingVisible, setHeadingVisible] = React.useState(false);
-
   const bodyRef = React.useRef<HTMLDivElement>(null);
-  const [bodyVisible, setBodyVisible] = React.useState(false);
+  const marqueeRef = React.useRef<HTMLDivElement>(null);
+  const [prefersReducedMotion] = React.useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   React.useEffect(() => {
-    const observers: IntersectionObserver[] = [];
+    if (prefersReducedMotion) return;
 
-    const makeObs = (
-      ref: React.RefObject<HTMLElement | null>,
-      setter: (v: boolean) => void,
-      delay: number
-    ) => {
-      const el = ref.current;
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => setter(true), delay);
-            obs.disconnect();
-          }
-        },
-        { threshold: 0.1 }
-      );
-      obs.observe(el);
-      observers.push(obs);
+    // Animate heading with GSAP
+    animateTextReveal(headingRef.current, {
+      duration: 0.8,
+      delay: 0,
+      stagger: 0.1,
+      yOffset: 20,
+    });
+
+    // Animate body with slight delay
+    animateTextReveal(bodyRef.current, {
+      duration: 0.8,
+      delay: 0.15,
+      stagger: 0.05,
+      yOffset: 20,
+    });
+
+    // Fade in marquee cards with staggered animation
+    const slideElements = marqueeRef.current?.querySelectorAll('.marquee-card');
+    if (slideElements) {
+      slideElements.forEach((el, i) => {
+        animateFadeInOnScroll(el as HTMLElement, {
+          duration: 0.8,
+          yOffset: 30,
+        });
+      });
+    }
+
+    return () => {
+      cleanupGSAPAnimations();
     };
-
-    makeObs(headingRef, setHeadingVisible, 0);
-    makeObs(bodyRef, setBodyVisible, 150);
-
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <section className="christies-showcase w-full overflow-hidden" style={{ background: tokens.sectionBg }}>
@@ -161,9 +167,7 @@ export function ChristiesShowcase() {
         {/* Heading */}
         <h2
           ref={headingRef}
-          className={`showcase-heading leading-[1.1] transition-all duration-700 ease-out ${
-            headingVisible ? 'opacity-100 blur-0' : 'opacity-0 blur-[12px]'
-          }`}
+          className="showcase-heading leading-[1.1]"
           style={{ 
             fontFamily: tokens.fontFlare, 
             fontWeight: 100, 
@@ -177,13 +181,7 @@ export function ChristiesShowcase() {
         </h2>
 
         {/* Body */}
-        <div
-          ref={bodyRef}
-          className={`transition-all duration-700 ease-out ${
-            bodyVisible ? 'opacity-100 blur-0' : 'opacity-0 blur-[12px]'
-          }`}
-          style={{ transitionDelay: '150ms' }}
-        >
+        <div ref={bodyRef}>
           <p
             className="m-0 leading-relaxed max-w-[420px]"
             style={{ 
@@ -200,7 +198,7 @@ export function ChristiesShowcase() {
       </div>
 
       {/* Marquee strip */}
-      <div className="showcase-marquee-wrap relative w-full overflow-hidden pb-12 max-[767px]:pb-[48px]">
+      <div className="showcase-marquee-wrap relative w-full overflow-hidden pb-12 max-[767px]:pb-[48px]" ref={marqueeRef}>
         <div
           className="absolute left-0 top-0 bottom-0 w-[72px] z-10 pointer-events-none"
           style={{ background: `linear-gradient(to right, #2d2d2d, transparent)` }}

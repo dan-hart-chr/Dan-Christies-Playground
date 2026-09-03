@@ -16,18 +16,7 @@
  */
 
 import * as React from 'react';
-
-const titleWords = ['Two', 'Centuries,', 'One', 'Philosophy'];
-
-const bodyWords = [
-  'At', "Christie's,", 'we', 'believe', 'collecting', 'crosses', 'boundaries',
-  'of', 'all', 'kinds,', 'limited', 'only', 'by', 'imagination', 'and', 'desire.',
-  'In', 'that', 'spirit,', 'we', 'created', '20/21,', 'a', 'first-of-its-kind',
-  'department', 'that', 'combines', 'the', 'art', 'and', 'objects', 'across', 'the',
-  'twentieth', 'and', 'twenty-first', 'centuries,', 'culminating', 'in', 'two', 'annual',
-  'marquee', 'weeks,', 'celebrating', 'the', 'very', 'best', 'the', 'art', 'market',
-  'has', 'to', 'offer.',
-];
+import { animateTextReveal, cleanupGSAPAnimations } from '../../utils/gsapAnimations';
 
 const tokens = {
   sectionBg: '#530000',
@@ -36,48 +25,36 @@ const tokens = {
 };
 
 export function ChristiesPhilosophy() {
-  const sectionRef = React.useRef<HTMLElement>(null);
-  const titleWordRefs = React.useRef<(HTMLDivElement | null)[]>([]);
-  const bodyWordRefs = React.useRef<(HTMLDivElement | null)[]>([]);
+  const titleRef = React.useRef<HTMLHeadingElement>(null);
+  const bodyRef = React.useRef<HTMLDivElement>(null);
   const [prefersReducedMotion] = React.useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-  const revealWords = React.useCallback(
-    (refs: React.MutableRefObject<(HTMLDivElement | null)[]>, startDelay: number) => {
-      refs.current.forEach((el, i) => {
-        if (!el) return;
-        if (prefersReducedMotion) {
-          el.style.transform = 'translate3d(0, 0%, 0)';
-          return;
-        }
-        el.animate(
-          [{ transform: 'translate3d(0, 200%, 0)' }, { transform: 'translate3d(0, 0%, 0)' }],
-          { duration: 700, delay: startDelay + i * 80, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' }
-        );
-      });
-    },
-    [prefersReducedMotion]
-  );
-
   React.useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          revealWords(titleWordRefs, 0);
-          revealWords(bodyWordRefs, 400);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [revealWords]);
+    if (prefersReducedMotion) return;
+
+    // Animate title with GSAP
+    animateTextReveal(titleRef.current, {
+      duration: 0.8,
+      delay: 0,
+      stagger: 0.1,
+      yOffset: 20,
+    });
+
+    // Animate body with delay after title
+    animateTextReveal(bodyRef.current, {
+      duration: 0.8,
+      delay: 0.4,
+      stagger: 0.05,
+      yOffset: 20,
+    });
+
+    return () => {
+      cleanupGSAPAnimations();
+    };
+  }, [prefersReducedMotion]);
 
   return (
     <section
-      ref={sectionRef}
       className="christies-philosophy relative py-[80px] max-[991px]:py-12 max-[767px]:py-8 max-[479px]:py-7"
       style={{ backgroundColor: tokens.sectionBg, color: tokens.textColor }}
     >
@@ -85,75 +62,44 @@ export function ChristiesPhilosophy() {
         <div className="flex gap-[114px] max-[991px]:gap-12 max-[767px]:flex-col max-[767px]:gap-[100px]">
           {/* Title column — left side */}
           <div className="flex items-start justify-center min-w-max max-[767px]:min-w-0">
-            {/* columnGap scales with viewport instead of stepping down via gap-x-* so word spacing never collapses on narrow screens */}
-            <div className="philosophy-title flex flex-wrap" style={{ maxWidth: '600px', columnGap: 'clamp(8px, 2.3vw, 9px)' }}>
-              {titleWords.map((word, i) => {
-                // Responsive sizing: 56px → 38px → 28px → 22px
-                const desktopSize = 56;
-                const tabletSize = 38;
-                const mobileSize = 28;
-                const smallMobileSize = 22;
-                
-                return (
-                  <div
-                    key={i}
-                    className="overflow-hidden"
-                    style={{ marginBottom: '-11px', paddingBottom: '11px' }}
-                  >
-                    <div
-                      ref={(el) => {
-                        titleWordRefs.current[i] = el;
-                      }}
-                      className="philosophy-word"
-                      style={{
-                        fontFamily: tokens.fontFlare,
-                        fontWeight: 100,
-                        lineHeight: '1.1',
-                        color: tokens.textColor,
-                        transform: 'translate3d(0, 200%, 0)',
-                        whiteSpace: 'nowrap',
-                        fontSize: `clamp(${smallMobileSize}px, 12vw, ${desktopSize}px)`,
-                        letterSpacing: `clamp(-0.44px, -2.4vw, -1.12px)`,
-                      }}
-                    >
-                      {word}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            <h2
+              ref={titleRef}
+              className="philosophy-title"
+              style={{
+                maxWidth: '600px',
+                fontFamily: tokens.fontFlare,
+                fontWeight: 100,
+                lineHeight: '1.1',
+                color: tokens.textColor,
+                fontSize: `clamp(22px, 12vw, 56px)`,
+                letterSpacing: `clamp(-0.44px, -2.4vw, -1.12px)`,
+                margin: 0,
+              }}
+            >
+              Two Centuries, One Philosophy
+            </h2>
           </div>
 
           {/* Body column — right side */}
           <div className="flex-1 flex items-start" style={{ maxWidth: '840px' }}>
-            <div className="philosophy-body flex flex-wrap gap-x-[4px] gap-y-0" style={{ wordBreak: 'break-word' }}>
-              {bodyWords.map((word, i) => (
-                <div
-                  key={i}
-                  className="overflow-hidden"
-                  style={{ marginBottom: '-11px', paddingBottom: '11px' }}
-                >
-                  <div
-                    ref={(el) => {
-                      bodyWordRefs.current[i] = el;
-                    }}
-                    className="philosophy-body-word"
-                    style={{
-                      fontFamily: tokens.fontFlare,
-                      fontWeight: 300,
-                      lineHeight: '1.4',
-                      color: tokens.textColor,
-                      transform: 'translate3d(0, 200%, 0)',
-                      display: 'inline',
-                      fontSize: `clamp(16px, 5.4vw, 24px)`,
-                      letterSpacing: `clamp(-0.28px, -1.4vw, -0.48px)`,
-                    }}
-                  >
-                    {word}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <p
+              ref={bodyRef}
+              className="philosophy-body"
+              style={{
+                fontFamily: tokens.fontFlare,
+                fontWeight: 300,
+                lineHeight: '1.4',
+                color: tokens.textColor,
+                fontSize: `clamp(16px, 5.4vw, 24px)`,
+                letterSpacing: `clamp(-0.28px, -1.4vw, -0.48px)`,
+                margin: 0,
+              }}
+            >
+              At Christie's, we believe collecting crosses boundaries of all kinds, limited only by imagination and desire.
+              In that spirit, we created 20/21, a first-of-its-kind department that combines the art and objects across the
+              twentieth and twenty-first centuries, culminating in two annual marquee weeks, celebrating the very best the art market
+              has to offer.
+            </p>
           </div>
         </div>
       </div>

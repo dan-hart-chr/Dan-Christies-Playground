@@ -31,6 +31,7 @@
 import * as React from 'react';
 // @ts-ignore
 import Button from '@christies-ds/molecules/button/Button.jsx';
+import { animateTextReveal, cleanupGSAPAnimations } from '../../utils/gsapAnimations';
 import alexRotterImg from '../../assets/images/specialists/alex-rotter.jpg';
 import maxCarterImg from '../../assets/images/specialists/max-carter.jpg';
 import saraFriedlanderImg from '../../assets/images/specialists/sara-friedlander.jpg';
@@ -107,20 +108,34 @@ export function ChristiesTestimonials() {
   // Desktop card boxes only (mobile slate is unaffected by the blur/opacity effect)
   const cardRefs = React.useRef<(HTMLDivElement | null)[]>([]);
 
-  // Heading entrance animation (unchanged from BYQ original)
+  // Heading entrance animation — using GSAP
   const headingRef = React.useRef<HTMLHeadingElement>(null);
-  const [headingVisible, setHeadingVisible] = React.useState(false);
+  const subcopyRef = React.useRef<HTMLParagraphElement>(null);
+  const [prefersReducedMotion] = React.useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   React.useEffect(() => {
-    const el = headingRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setHeadingVisible(true); obs.disconnect(); } },
-      { threshold: 0.1 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+    if (prefersReducedMotion) return;
+
+    // Animate heading with GSAP
+    animateTextReveal(headingRef.current, {
+      duration: 0.8,
+      delay: 0,
+      stagger: 0.1,
+      yOffset: 20,
+    });
+
+    // Animate subcopy with delay
+    animateTextReveal(subcopyRef.current, {
+      duration: 0.8,
+      delay: 0.2,
+      stagger: 0.05,
+      yOffset: 20,
+    });
+
+    return () => {
+      cleanupGSAPAnimations();
+    };
+  }, [prefersReducedMotion]);
 
   // Measure card width for pixel-based translation (unchanged)
   React.useEffect(() => {
@@ -240,9 +255,7 @@ export function ChristiesTestimonials() {
             {/* H2 — Christie's Flare heading */}
             <h2
               ref={headingRef}
-              className={`team-heading m-0 transition-all duration-700 ease-out ${
-                headingVisible ? 'opacity-100 blur-0' : 'opacity-0 blur-[20px]'
-              }`}
+              className="team-heading m-0"
               style={{
                 fontFamily: tokens.fontFlare,
                 lineHeight: '1.067',
@@ -257,6 +270,7 @@ export function ChristiesTestimonials() {
 
             {/* Sub-paragraph */}
             <p
+              ref={subcopyRef}
               className="team-subcopy m-0"
               style={{
                 fontFamily: tokens.fontSans,

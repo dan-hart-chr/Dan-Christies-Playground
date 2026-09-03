@@ -51,22 +51,17 @@
  */
 
 import * as React from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { animateTextReveal, animateParallax, cleanupGSAPAnimations } from '../../utils/gsapAnimations';
 import logo2021 from '../../assets/images/2021-full-logo.svg';
 import gavelSlamVideo from '../../assets/videos/gavelslam.mp4';
 import watchVideoThumbnail from '../../assets/images/watch-video-thumbnail.jpg';
 import playIcon from '../../assets/icons/play.svg';
 
-const PARALLAX_MAX_PERCENT = 18;
-const ZOOM_OUT_DURATION_MS = 2200;
+gsap.registerPlugin(ScrollTrigger);
 
-const words = [
-  'Extraordinary',
-  'art',
-  'deserves',
-  'an',
-  'extraordinary',
-  'stage',
-];
+const ZOOM_OUT_DURATION_MS = 2200;
 
 const tokens = {
   overlayColor: '#000000', // colors.black
@@ -81,81 +76,59 @@ const tokens = {
 
 export function ChristiesHero() {
   const headingRef = React.useRef<HTMLDivElement>(null);
-  const wordRefs = React.useRef<(HTMLDivElement | null)[]>([]);
-  const [wordsVisible, setWordsVisible] = React.useState(false);
-
   const sectionRef = React.useRef<HTMLElement>(null);
   const parallaxRef = React.useRef<HTMLDivElement>(null);
+  const watchButtonRef = React.useRef<HTMLButtonElement>(null);
   const [zoomedOut, setZoomedOut] = React.useState(false);
   const [prefersReducedMotion] = React.useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-  // Word reveal — a single JS-driven pass over the word elements (Web
-  // Animations API), matching the reference site's mask+translateY line
-  // reveal (one script orchestrating every line) instead of N separate CSS
-  // transitions each carrying their own hardcoded transition-delay.
-  const revealWords = React.useCallback(() => {
-    wordRefs.current.forEach((el, i) => {
-      if (!el) return;
-      if (prefersReducedMotion) {
-        el.style.transform = 'translate3d(0, 0%, 0)';
-        return;
-      }
-      el.animate(
-        [{ transform: 'translate3d(0, 200%, 0)' }, { transform: 'translate3d(0, 0%, 0)' }],
-        { duration: 700, delay: i * 80, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' }
-      );
-    });
-  }, [prefersReducedMotion]);
-
-  React.useEffect(() => {
-    const el = headingRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setWordsVisible(true);
-          revealWords();
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [revealWords]);
-
-  // Zoom-out intro — one-time. useEffect (unlike useLayoutEffect) already
-  // fires after the browser paints, so the zoomed-in start state is visible
-  // for a frame before this flips it, giving the transition something to animate.
+  // Zoom-out intro — one-time CSS transition
   React.useEffect(() => {
     setZoomedOut(true);
   }, []);
 
-  // Scroll parallax — the video lags behind the page scroll as the hero
-  // passes by, capped once the section has fully scrolled out of view.
-  // Applied directly (no CSS transition, no rAF throttling — a single
-  // getBoundingClientRect + style write per scroll event is cheap) so it
-  // tracks the scroll 1:1 with no rubber-banding or lag; the oversized box
-  // (negative top + extra height) means shifting it down never exposes a
-  // gap at the wrapper's edges.
+  // GSAP animations — text reveal, parallax, and watch button
   React.useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const update = () => {
-      const section = sectionRef.current;
-      const parallax = parallaxRef.current;
-      if (!section || !parallax) return;
-      const rect = section.getBoundingClientRect();
-      const progress = Math.min(1, Math.max(0, -rect.top / rect.height));
-      parallax.style.transform = `translate3d(0, ${progress * PARALLAX_MAX_PERCENT}%, 0)`;
-    };
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
+    if (prefersReducedMotion) return;
+
+    // Animate heading text reveal with GSAP
+    animateTextReveal(headingRef.current, {
+      duration: 0.8,
+      delay: 0,
+      stagger: 0.1,
+      yOffset: 20,
+    });
+
+    // Setup parallax for video background with GSAP
+    if (parallaxRef.current) {
+      animateParallax(parallaxRef.current, { speed: 0.5 });
+    }
+
+    // Fade in watch button after text animation
+    if (watchButtonRef.current) {
+      gsap.from(watchButtonRef.current, {
+        opacity: 0,
+        y: 24,
+        duration: 0.6,
+        delay: 1,
+        ease: 'power3.out',
+      });
+    }
+
+    // Fade in logo
+    const logo = document.querySelector('.hero-logo');
+    if (logo) {
+      gsap.from(logo, {
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+      });
+    }
+
     return () => {
-      window.removeEventListener('scroll', update);
-      window.removeEventListener('resize', update);
+      cleanupGSAPAnimations();
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <section
@@ -171,7 +144,7 @@ export function ChristiesHero() {
         <div
           ref={parallaxRef}
           className="absolute left-0 w-full"
-          style={{ top: `-${PARALLAX_MAX_PERCENT}%`, height: `${100 + PARALLAX_MAX_PERCENT}%` }}
+          style={{ top: '-25%', height: '125%' }}
         >
           <video
             autoPlay
@@ -206,51 +179,38 @@ export function ChristiesHero() {
         }}
       >
         <div className="flex flex-col justify-between items-start w-full h-full">
-          {/* Top: wordmark — reveals left-to-right (wipe + fade), synced with the heading animation below */}
+          {/* Top: wordmark — reveals with fade */}
           <div className="flex flex-col w-full gap-[9px]">
             <div className="w-full overflow-hidden">
               <img
                 src={logo2021}
                 alt="20/21"
-                className="w-full h-auto transition-all duration-1000 ease-out"
-                style={{
-                  clipPath: wordsVisible ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
-                  opacity: wordsVisible ? 1 : 0,
-                }}
+                className="hero-logo w-full h-auto"
               />
             </div>
           </div>
 
-          {/* Bottom row: animated heading (buttons removed per request) + Watch Video button */}
+          {/* Bottom row: animated heading + Watch Video button */}
           <div className="flex flex-row items-end justify-between gap-6 w-full max-[767px]:flex-col max-[767px]:items-start max-[767px]:gap-8">
-            {/* columnGap scales with viewport instead of stepping down via gap-x-* so word spacing never collapses on narrow screens */}
-            <div ref={headingRef} className="hero-words flex flex-wrap" style={{ maxWidth: '540px', columnGap: 'clamp(6px, 2.3vw, 9px)' }}>
-              {words.map((word, i) => (
-                <div
-                  key={i}
-                  className="overflow-hidden"
-                  style={{ marginBottom: '-11px', paddingBottom: '11px' }}
-                >
-                  <div
-                    ref={(el) => { wordRefs.current[i] = el; }}
-                    className="hero-word"
-                    style={{
-                      fontFamily: tokens.fontFlare,
-                      fontWeight: 100,
-                      lineHeight: '1.1',
-                      color: tokens.textColor,
-                      transform: 'translate3d(0, 200%, 0)',
-                      fontSize: `clamp(30px, 7.7vw, 64px)`,
-                      letterSpacing: `clamp(-0.6px, -1.92vw, -1.28px)`,
-                    }}
-                  >
-                    {word}
-                  </div>
-                </div>
-              ))}
-            </div>
+            {/* Simple heading for GSAP text reveal */}
+            <h1
+              ref={headingRef}
+              className="hero-heading"
+              style={{
+                maxWidth: '540px',
+                fontFamily: tokens.fontFlare,
+                fontWeight: 100,
+                lineHeight: '1.1',
+                color: tokens.textColor,
+                fontSize: `clamp(30px, 7.7vw, 64px)`,
+                letterSpacing: `clamp(-0.6px, -1.92vw, -1.28px)`,
+                margin: 0,
+              }}
+            >
+              Extraordinary art deserves an extraordinary stage
+            </h1>
 
-            <WatchVideoButton visible={wordsVisible} delayMs={words.length * 80 + 200} />
+            <WatchVideoButton ref={watchButtonRef} />
           </div>
         </div>
       </div>
@@ -262,14 +222,15 @@ export function ChristiesHero() {
   );
 }
 
-// — Watch Video button (Figma node 21:348) — fades/slides in after the heading words finish
+// — Watch Video button (Figma node 21:348)
 // Mobile (max-767px): horizontal layout with thumbnail left, text right
 // Desktop: vertical layout with thumbnail on top, text below
-function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: number }) {
+const WatchVideoButton = React.forwardRef<HTMLButtonElement>((_props, ref) => {
   return (
     <button
+      ref={ref}
       type="button"
-      className="watch-video-btn flex flex-col max-[767px]:flex-row items-center shrink-0 transition-all duration-700 ease-out max-[767px]:!w-full"
+      className="watch-video-btn flex flex-col max-[767px]:flex-row items-center shrink-0 max-[767px]:!w-full"
       style={{
         width: '252px',
         height: 'auto',
@@ -281,9 +242,6 @@ function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: num
         WebkitBackdropFilter: 'blur(6px)',
         border: 'none',
         cursor: 'pointer',
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(24px)',
-        transitionDelay: `${delayMs}ms`,
       }}
     >
       {/* Thumbnail — full width of the 252px container on desktop, fixed 137px wide on mobile */}
@@ -329,6 +287,6 @@ function WatchVideoButton({ visible, delayMs }: { visible: boolean; delayMs: num
       </p>
     </button>
   );
-}
+});
 
 export default ChristiesHero;
