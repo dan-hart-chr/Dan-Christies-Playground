@@ -164,7 +164,7 @@ export function ChristiesShowcase() {
 
   return (
     <section className="christies-showcase w-full overflow-hidden" style={{ background: tokens.sectionBg }}>
-      <div className="showcase-top max-w-[705px] mx-auto px-[15px] pt-[72px] pb-12 flex flex-col items-center text-center max-[767px]:items-start max-[767px]:text-left max-[767px]:pt-12 max-[767px]:pb-10 max-[479px]:pt-8 max-[479px]:px-6">
+      <div className="showcase-top max-w-[705px] mx-auto px-[15px] pt-[72px] pb-12 flex flex-col items-center text-center max-[999px]:items-start max-[999px]:text-left max-[999px]:pt-12 max-[999px]:pb-10 max-[479px]:pt-8 max-[479px]:px-6">
         {/* Heading */}
         <h2
           ref={headingRef}
@@ -182,7 +182,7 @@ export function ChristiesShowcase() {
         </h2>
 
         {/* Body */}
-        <div className="text-center text-white max-[767px]:text-left">
+        <div className="text-center text-white max-[999px]:text-left">
           <p
             ref={bodyRef}
             className="m-0"
@@ -203,7 +203,7 @@ export function ChristiesShowcase() {
       </div>
 
       {/* Marquee strip */}
-      <div className="showcase-marquee-wrap relative w-full overflow-hidden pb-12 max-[767px]:pb-[48px]" ref={marqueeRef}>
+      <div className="showcase-marquee-wrap relative w-full overflow-hidden pb-12 max-[999px]:pb-[48px]" ref={marqueeRef}>
         <div
           className="absolute left-0 top-0 bottom-0 w-[72px] z-10 pointer-events-none"
           style={{ background: `linear-gradient(to right, #2d2d2d, transparent)` }}
@@ -221,7 +221,7 @@ export function ChristiesShowcase() {
       </div>
 
       {/* See all categories */}
-      <div className="flex justify-center pb-20 max-[767px]:pb-12">
+      <div className="flex justify-center pb-20 max-[999px]:pb-12">
         <Button type="Primary" mode="Light" className="see-all-categories-btn !gap-2">
           <GridViewIcon />
           See all categories

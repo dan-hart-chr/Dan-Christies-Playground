@@ -56,13 +56,13 @@ export function ChristiesPhilosophy() {
 
   return (
     <section
-      className="christies-philosophy relative py-[80px] max-[991px]:py-12 max-[767px]:py-8 max-[479px]:py-7"
+      className="christies-philosophy relative py-[80px] max-[991px]:py-12 max-[999px]:py-8 max-[479px]:py-7"
       style={{ backgroundColor: tokens.sectionBg, color: tokens.textColor }}
     >
-      <div className="w-full max-w-[1600px] mx-auto px-16 max-[991px]:px-8 max-[767px]:px-6 max-[479px]:px-6">
-        <div className="flex gap-[114px] max-[991px]:gap-12 max-[767px]:flex-col max-[767px]:gap-[100px]">
+      <div className="w-full max-w-[1600px] mx-auto px-16 max-[991px]:px-8 max-[999px]:px-6 max-[479px]:px-6">
+        <div className="flex gap-[114px] max-[991px]:gap-12 max-[999px]:flex-col max-[999px]:gap-[100px]">
           {/* Title column — left side */}
-          <div className="flex items-start justify-center min-w-max max-[767px]:min-w-0">
+          <div className="flex items-start justify-center min-w-max max-[999px]:min-w-0">
             <h2
               ref={titleRef}
               className="philosophy-title"

@@ -175,7 +175,7 @@ export function ChristiesHero() {
 
       {/* Main content container */}
       <div
-        className="relative w-full flex flex-col justify-between items-start px-16 max-[991px]:px-8 max-[767px]:px-6 max-[479px]:px-5 pt-[15px] pb-[60px] max-[479px]:pt-5 max-[479px]:pb-5"
+        className="relative w-full flex flex-col justify-between items-start px-16 max-[991px]:px-8 max-[999px]:px-6 max-[479px]:px-5 pt-[15px] pb-[60px] max-[479px]:pt-5 max-[479px]:pb-5"
         style={{
           zIndex: 2,
           maxWidth: '1600px',
@@ -196,7 +196,7 @@ export function ChristiesHero() {
           </div>
 
           {/* Bottom row: animated heading + Watch Video button */}
-          <div className="flex flex-row items-end justify-between gap-6 w-full max-[767px]:flex-col max-[767px]:items-start max-[767px]:gap-8">
+          <div className="flex flex-row items-end justify-between gap-6 w-full max-[999px]:flex-col max-[999px]:items-start max-[999px]:gap-8">
             {/* Simple heading for GSAP text reveal */}
             <h1
               ref={headingRef}
@@ -235,7 +235,7 @@ const WatchVideoButton = React.forwardRef<HTMLButtonElement>((_props, ref) => {
     <button
       ref={ref}
       type="button"
-      className="watch-video-btn flex flex-col max-[767px]:flex-row items-center shrink-0 max-[767px]:!w-full"
+      className="watch-video-btn flex flex-col max-[999px]:flex-row items-center shrink-0 max-[999px]:!w-full"
       style={{
         width: '252px',
         height: 'auto',
@@ -251,7 +251,7 @@ const WatchVideoButton = React.forwardRef<HTMLButtonElement>((_props, ref) => {
     >
       {/* Thumbnail — full width of the 252px container on desktop, fixed 137px wide on mobile */}
       <div 
-        className="relative shrink-0 overflow-hidden w-full max-[767px]:w-[clamp(80px,35vw,137px)]" 
+        className="relative shrink-0 overflow-hidden w-full max-[999px]:w-[clamp(80px,35vw,137px)]" 
         style={{ 
           borderRadius: '8px',
           aspectRatio: '137 / 83',

@@ -247,7 +247,7 @@ export function ChristiesTestimonials() {
     >
       {/* Main container */}
       <div
-        className="relative z-[2] w-full mx-auto px-9 max-[991px]:px-6 max-[767px]:px-6"
+        className="relative z-[2] w-full mx-auto px-9 max-[991px]:px-6 max-[999px]:px-6"
         style={{ maxWidth: '1600px' }}
       >
         {/* Headline + arrows row */}
@@ -288,7 +288,7 @@ export function ChristiesTestimonials() {
           </div>
 
           {/* Arrow buttons */}
-          <div className="flex items-center gap-3 flex-shrink-0 mt-1.5 max-[767px]:hidden">
+          <div className="flex items-center gap-3 flex-shrink-0 mt-1.5 max-[999px]:hidden">
             <SliderButton onClick={handlePrev} direction="prev" />
             <SliderButton onClick={handleNext} direction="next" />
           </div>
@@ -316,7 +316,7 @@ export function ChristiesTestimonials() {
                   {/* Card — desktop / tablet layout */}
                   <div
                     ref={(el) => { cardRefs.current[i] = el; }}
-                    className="w-full flex gap-12 pl-6 pr-12 py-6 h-[560px] max-[991px]:flex-col max-[991px]:gap-9 max-[991px]:h-auto max-[767px]:hidden"
+                    className="w-full flex gap-12 pl-6 pr-12 py-6 h-[560px] max-[991px]:flex-col max-[991px]:gap-9 max-[991px]:h-auto max-[999px]:hidden"
                     style={{
                       backgroundColor: tokens.cardBg,
                       backdropFilter: `blur(${tokens.cardBlur})`,
@@ -410,7 +410,7 @@ export function ChristiesTestimonials() {
 
                   {/* Card — mobile slate layout */}
                   <div
-                    className="hidden max-[767px]:flex flex-col justify-between gap-[20px] items-center w-full h-full p-[18px]"
+                    className="hidden max-[999px]:flex flex-col justify-between gap-[20px] items-center w-full h-full p-[18px]"
                     style={{
                       backgroundColor: tokens.cardBg,
                       backdropFilter: `blur(${tokens.cardBlur})`,
@@ -499,7 +499,7 @@ export function ChristiesTestimonials() {
           </div>
 
           {/* Mobile dot nav */}
-          <div className="testimonials-dot-nav hidden max-[767px]:flex items-center justify-center gap-1.5">
+          <div className="testimonials-dot-nav hidden max-[999px]:flex items-center justify-center gap-1.5">
             {slides.map((_, i) => (
               <button
                 key={i}

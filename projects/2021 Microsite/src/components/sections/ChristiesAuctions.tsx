@@ -92,7 +92,7 @@ function AuctionRow({ auction, showDivider }: { auction: Auction; showDivider: b
   return (
     <div style={{ borderTop: showDivider ? `1px solid ${tokens.dividerColor}` : 'none' }}>
       {/* Tablet/desktop layout — thumbnail + inline row */}
-      <div className="hidden min-[480px]:flex items-center gap-12 py-6 max-[767px]:flex-wrap max-[767px]:gap-4">
+      <div className="hidden min-[480px]:flex items-center gap-12 py-6 max-[999px]:flex-wrap max-[999px]:gap-4">
         <div className="w-[114px] h-[71px] rounded shrink-0 overflow-hidden">
           <img src={auction.thumbnail} loading="lazy" alt="" className="w-full h-full object-cover" />
         </div>
@@ -148,9 +148,9 @@ function AuctionRow({ auction, showDivider }: { auction: Auction; showDivider: b
 
 export function ChristiesAuctions() {
   return (
-    <section className="christies-auctions w-full px-6 pt-[60px] pb-6 max-[767px]:px-3 max-[767px]:pt-9 max-[767px]:pb-3 max-[479px]:!bg-white max-[479px]:px-0 max-[479px]:pt-0 max-[479px]:pb-0" style={{ backgroundColor: '#5D5D5D' }}>
+    <section className="christies-auctions w-full px-6 pt-[60px] pb-6 max-[999px]:px-3 max-[999px]:pt-9 max-[999px]:pb-3 max-[479px]:!bg-white max-[479px]:px-0 max-[479px]:pt-0 max-[479px]:pb-0" style={{ backgroundColor: '#5D5D5D' }}>
       <div
-        className="w-full max-w-[1392px] mx-auto rounded-[24px] px-12 py-[60px] max-[767px]:px-6 max-[767px]:py-9 max-[479px]:!rounded-none max-[479px]:!bg-white max-[479px]:px-4 max-[479px]:pt-8 max-[479px]:pb-12"
+        className="w-full max-w-[1392px] mx-auto rounded-[24px] px-12 py-[60px] max-[999px]:px-6 max-[999px]:py-9 max-[479px]:!rounded-none max-[479px]:!bg-white max-[479px]:px-4 max-[479px]:pt-8 max-[479px]:pb-12"
         style={{ backgroundColor: tokens.cardBg }}
       >
         <div className="flex items-center justify-between mb-6 max-[479px]:flex-col max-[479px]:items-start max-[479px]:gap-3">
