@@ -175,7 +175,7 @@ export function ChristiesHero() {
 
       {/* Main content container */}
       <div
-        className="relative w-full flex flex-col justify-between items-start px-16 max-[991px]:px-8 max-[999px]:px-6 max-[479px]:px-5 pt-[15px] pb-[60px] max-[479px]:pt-5 max-[479px]:pb-5"
+        className="relative w-full flex flex-col justify-between items-start px-16 max-[991px]:px-8 max-[999px]:px-[20px] max-[479px]:px-5 pt-[15px] pb-[60px] max-[999px]:pb-[60px] max-[479px]:pt-5 max-[479px]:pb-5"
         style={{
           zIndex: 2,
           maxWidth: '1600px',
@@ -214,6 +214,17 @@ export function ChristiesHero() {
             >
               Extraordinary art deserves an extraordinary stage
             </h1>
+            
+            {/* Tablet override */}
+            <style>{`
+              @media (max-width: 999px) {
+                .hero-heading {
+                  font-size: 40px !important;
+                  letter-spacing: -0.8px !important;
+                  line-height: 1.1 !important;
+                }
+              }
+            `}</style>
 
             <WatchVideoButton ref={watchButtonRef} />
           </div>

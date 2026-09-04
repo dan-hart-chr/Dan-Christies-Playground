@@ -92,7 +92,7 @@ function AuctionRow({ auction, showDivider }: { auction: Auction; showDivider: b
   return (
     <div style={{ borderTop: showDivider ? `1px solid ${tokens.dividerColor}` : 'none' }}>
       {/* Tablet/desktop layout — thumbnail + inline row */}
-      <div className="hidden min-[480px]:flex items-center gap-12 py-6 max-[999px]:flex-wrap max-[999px]:gap-4">
+      <div className="hidden min-[1000px]:flex items-center gap-12 py-6">
         <div className="w-[114px] h-[71px] rounded shrink-0 overflow-hidden">
           <img src={auction.thumbnail} loading="lazy" alt="" className="w-full h-full object-cover" />
         </div>
@@ -123,8 +123,8 @@ function AuctionRow({ auction, showDivider }: { auction: Auction; showDivider: b
         </div>
       </div>
 
-      {/* Mobile layout (Figma node 21:238) — stacked, no thumbnail, title never truncates */}
-      <div className="flex min-[480px]:hidden flex-col gap-3 py-5">
+      {/* Tablet & Mobile layout (Figma node 46:873 for tablet, 21:238 for mobile) — stacked, no thumbnail */}
+      <div className="flex max-[1000px]:flex-col flex-col gap-3 max-[1000px]:gap-[12px] py-5 max-[1000px]:py-[12px]">
         <div className="flex gap-3 items-center">
           <div
             className="px-[10px] py-1 rounded uppercase text-nowrap"
@@ -148,23 +148,43 @@ function AuctionRow({ auction, showDivider }: { auction: Auction; showDivider: b
 
 export function ChristiesAuctions() {
   return (
-    <section className="christies-auctions w-full px-6 pt-[60px] pb-6 max-[999px]:px-3 max-[999px]:pt-9 max-[999px]:pb-3 max-[479px]:!bg-white max-[479px]:px-0 max-[479px]:pt-0 max-[479px]:pb-0" style={{ backgroundColor: '#5D5D5D' }}>
+    <section className="christies-auctions w-full px-6 pt-[60px] pb-6 max-[999px]:!bg-white max-[999px]:px-[20px] max-[999px]:pt-[32px] max-[999px]:pb-[32px] max-[479px]:!bg-white max-[479px]:px-0 max-[479px]:pt-0 max-[479px]:pb-0" style={{ backgroundColor: '#5D5D5D' }}>
       <div
-        className="w-full max-w-[1392px] mx-auto rounded-[24px] px-12 py-[60px] max-[999px]:px-6 max-[999px]:py-9 max-[479px]:!rounded-none max-[479px]:!bg-white max-[479px]:px-4 max-[479px]:pt-8 max-[479px]:pb-12"
+        className="w-full max-w-[1392px] mx-auto rounded-[24px] px-12 py-[60px] max-[999px]:!bg-white max-[999px]:!rounded-none max-[999px]:px-[20px] max-[999px]:py-[32px] max-[479px]:!rounded-none max-[479px]:!bg-white max-[479px]:px-4 max-[479px]:pt-8 max-[479px]:pb-12"
         style={{ backgroundColor: tokens.cardBg }}
       >
-        <div className="flex items-center justify-between mb-6 max-[479px]:flex-col max-[479px]:items-start max-[479px]:gap-3">
-          <p className="m-0" style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: `clamp(20px, 7.2vw, 32px)`, lineHeight: '1.2', color: tokens.titleColor }}>
+        <div className="flex items-center justify-between mb-6 max-[999px]:mb-[24px] max-[999px]:flex-col max-[999px]:items-start max-[999px]:gap-[16px] max-[479px]:flex-col max-[479px]:items-start max-[479px]:gap-3">
+          <p className="m-0 max-[999px]:text-white" style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: `clamp(20px, 7.2vw, 32px)`, lineHeight: '1.2', color: tokens.titleColor }}>
             Upcoming Auctions
           </p>
+          
+          {/* Tablet override for title */}
+          <style>{`
+            @media (max-width: 999px) {
+              .christies-auctions p:first-of-type {
+                font-size: 28px !important;
+                color: #222222 !important;
+              }
+            }
+          `}</style>
+          
           <a
             href="#"
-            className="flex items-center gap-4 no-underline"
+            className="flex items-center gap-4 no-underline max-[999px]:text-[#222222]"
             style={{ fontFamily: tokens.fontSans, fontWeight: 300, fontSize: `clamp(16px, 3vw, 20px)`, lineHeight: '1.2', color: tokens.titleColor }}
           >
             View auction calendar
             <ArrowRightIcon />
           </a>
+          
+          {/* Tablet override for link */}
+          <style>{`
+            @media (max-width: 999px) {
+              .christies-auctions a {
+                font-size: 16px !important;
+              }
+            }
+          `}</style>
         </div>
 
         <div>

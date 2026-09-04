@@ -242,7 +242,7 @@ export function ChristiesTestimonials() {
 
   return (
     <section
-      className="christies-testimonials relative z-[2] py-[28px] overflow-hidden"
+      className="christies-testimonials relative z-[2] py-[28px] max-[999px]:py-[40px] overflow-hidden"
       style={{ background: tokens.sectionBg, color: tokens.sectionText }}
     >
       {/* Main container */}
@@ -251,12 +251,12 @@ export function ChristiesTestimonials() {
         style={{ maxWidth: '1600px' }}
       >
         {/* Headline + arrows row */}
-        <div className="testimonials-headline-row relative flex items-start justify-between mb-[60px]">
-          <div className="specialists-header flex flex-col gap-6 items-start">
+        <div className="testimonials-headline-row relative flex items-start justify-between mb-[60px] max-[999px]:mb-[48px] max-[999px]:flex-col max-[999px]:items-center">
+          <div className="specialists-header flex flex-col gap-6 max-[999px]:gap-[20px] items-start max-[999px]:items-center max-[999px]:w-full">
             {/* H2 — Christie's Flare heading */}
             <h2
               ref={headingRef}
-              className="team-heading m-0"
+              className="team-heading m-0 max-[999px]:text-center max-[999px]:w-full"
               style={{
                 fontFamily: tokens.fontFlare,
                 lineHeight: '1.067',
@@ -268,11 +268,22 @@ export function ChristiesTestimonials() {
             >
               Meet the team
             </h2>
+            
+            {/* Tablet override for heading */}
+            <style>{`
+              @media (max-width: 999px) {
+                .team-heading {
+                  font-size: 46px !important;
+                  letter-spacing: -0.92px !important;
+                  max-width: none !important;
+                }
+              }
+            `}</style>
 
             {/* Sub-paragraph */}
             <p
               ref={subcopyRef}
-              className="team-subcopy m-0"
+              className="team-subcopy m-0 max-[999px]:text-center max-[999px]:max-w-[510px]"
               style={{
                 fontFamily: tokens.fontSans,
                 fontWeight: 300,
@@ -285,6 +296,15 @@ export function ChristiesTestimonials() {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
               et dolore magna aliqua.
             </p>
+            
+            {/* Tablet override for subtext */}
+            <style>{`
+              @media (max-width: 999px) {
+                .team-subcopy {
+                  font-size: 16px !important;
+                }
+              }
+            `}</style>
           </div>
 
           {/* Arrow buttons */}
