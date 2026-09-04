@@ -182,15 +182,15 @@ export function ChristiesShowcase() {
         </h2>
 
         {/* Body */}
-        <div ref={bodyRef} className="text-center max-[767px]:text-left">
+        <div className="text-center text-white max-[767px]:text-left">
           <p
+            ref={bodyRef}
             className="m-0"
             style={{
               fontFamily: tokens.fontSans,
               fontSize: `clamp(14px, 2vw, 16px)`,
               fontWeight: 300,
               lineHeight: '1.4',
-              color: tokens.bodyColor,
               maxWidth: '484px',
               marginLeft: 'auto',
               marginRight: 'auto',
