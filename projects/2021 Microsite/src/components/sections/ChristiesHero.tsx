@@ -62,6 +62,10 @@ import playIcon from '../../assets/icons/play.svg';
 gsap.registerPlugin(ScrollTrigger);
 
 const ZOOM_OUT_DURATION_MS = 2200;
+// How long the black preload screen holds at minimum, and the hard cap in case
+// the video's 'loadeddata'/'error' events never fire (e.g. blocked autoplay).
+const PRELOAD_MIN_MS = 900;
+const PRELOAD_MAX_MS = 2500;
 
 const tokens = {
   overlayColor: '#000000', // colors.black
@@ -79,7 +83,10 @@ export function ChristiesHero() {
   const sectionRef = React.useRef<HTMLElement>(null);
   const parallaxRef = React.useRef<HTMLDivElement>(null);
   const watchButtonRef = React.useRef<HTMLButtonElement>(null);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const overlayRef = React.useRef<HTMLDivElement>(null);
   const [zoomedOut, setZoomedOut] = React.useState(false);
+  const [assetsReady, setAssetsReady] = React.useState(false);
   const [prefersReducedMotion] = React.useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   // Zoom-out intro — one-time CSS transition
@@ -87,42 +94,88 @@ export function ChristiesHero() {
     setZoomedOut(true);
   }, []);
 
-  // GSAP animations — text reveal, parallax, and watch button
+  // Gate the entrance sequence behind the video actually having data (or a
+  // hard-cap fallback) so the black preload screen isn't just cosmetic —
+  // it genuinely buys the video time to buffer before anything reveals.
   React.useEffect(() => {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion) {
+      setAssetsReady(true);
+      return;
+    }
+
+    let minElapsed = false;
+    let videoLoaded = false;
+    const maybeReady = () => { if (minElapsed && videoLoaded) setAssetsReady(true); };
+
+    const minTimer = window.setTimeout(() => { minElapsed = true; maybeReady(); }, PRELOAD_MIN_MS);
+    const maxTimer = window.setTimeout(() => setAssetsReady(true), PRELOAD_MAX_MS);
+
+    const videoEl = videoRef.current;
+    const onVideoLoaded = () => { videoLoaded = true; maybeReady(); };
+    if (videoEl) {
+      if (videoEl.readyState >= 2) onVideoLoaded();
+      else {
+        videoEl.addEventListener('loadeddata', onVideoLoaded);
+        videoEl.addEventListener('error', onVideoLoaded);
+      }
+    } else {
+      onVideoLoaded();
+    }
+
+    return () => {
+      window.clearTimeout(minTimer);
+      window.clearTimeout(maxTimer);
+      videoEl?.removeEventListener('loadeddata', onVideoLoaded);
+      videoEl?.removeEventListener('error', onVideoLoaded);
+    };
+  }, [prefersReducedMotion]);
+
+  // GSAP animations — preload overlay, logo, heading, and watch button, each
+  // staged in sequence: overlay lift (reveals video) → logo → heading → button
+  React.useEffect(() => {
+    if (prefersReducedMotion || !assetsReady) return;
 
     // Timeline for coordinated animations
     const tl = gsap.timeline();
 
-    // 1. Fade in logo first (delay 0)
+    // 1. Overlay lifts first — everything behind it (the video) has already
+    //    been rendering/playing, so this is effectively "load the video first"
+    if (overlayRef.current) {
+      tl.to(overlayRef.current, {
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power2.out',
+      }, 0);
+    }
+
+    // 2. Fade in logo once the overlay is partway through lifting
     const logo = document.querySelector('.hero-logo');
     if (logo) {
       tl.from(logo, {
         opacity: 0,
         duration: 0.8,
         ease: 'power3.out',
-      }, 0);
+      }, 0.35);
     }
 
-    // 2. Animate heading text reveal (start at 0.4s)
+    // 3. Animate heading text reveal once the logo has mostly settled
     if (headingRef.current) {
       animateTextReveal(headingRef.current, {
         duration: 0.8,
+        delay: 0.95,
         stagger: 0.1,
         yOffset: 20,
       });
-      // Since animateTextReveal runs immediately with delay, this will start at default delay (0.3s)
-      // We adjust by setting the delay in the options
     }
 
-    // 3. Fade in watch button after heading completes (heading ends at ~1.1s)
+    // 4. Fade in watch button last, after the heading has substantially revealed
     if (watchButtonRef.current) {
       tl.from(watchButtonRef.current, {
         opacity: 0,
         y: 24,
         duration: 0.6,
         ease: 'power3.out',
-      }, 1.2); // Start at 1.2s
+      }, 1.9);
     }
 
     // Setup parallax for video background with GSAP
@@ -133,7 +186,7 @@ export function ChristiesHero() {
     return () => {
       cleanupGSAPAnimations();
     };
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, assetsReady]);
 
   return (
     <section
@@ -152,6 +205,7 @@ export function ChristiesHero() {
           style={{ top: '-30%', height: '130%' }}
         >
           <video
+            ref={videoRef}
             autoPlay
             loop
             muted
@@ -167,6 +221,20 @@ export function ChristiesHero() {
         </div>
       </div>
 
+      {/* Preload overlay — solid black until assetsReady flips, then lifts as
+          the first beat of the entrance sequence (see GSAP effect above) */}
+      <div
+        ref={overlayRef}
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          backgroundColor: '#000000',
+          opacity: prefersReducedMotion ? 0 : 1,
+          zIndex: 3,
+          pointerEvents: 'none',
+        }}
+      />
+
       {/* Dark overlay */}
       <div
         className="absolute inset-x-0 top-0 h-full"
@@ -175,7 +243,7 @@ export function ChristiesHero() {
 
       {/* Main content container */}
       <div
-        className="relative w-full flex flex-col justify-between items-start px-16 max-[991px]:px-8 max-[999px]:px-[20px] max-[479px]:px-5 pt-[15px] pb-[60px] max-[999px]:pb-[60px] max-[479px]:pt-5 max-[479px]:pb-5"
+        className="hero-content-container relative w-full flex flex-col justify-between items-start px-16 max-[999px]:px-[20px] max-[479px]:px-5 pt-[15px] pb-[60px] max-[999px]:pb-[60px] max-[479px]:pt-5 max-[479px]:pb-5"
         style={{
           zIndex: 2,
           maxWidth: '1600px',
@@ -196,7 +264,7 @@ export function ChristiesHero() {
           </div>
 
           {/* Bottom row: animated heading + Watch Video button */}
-          <div className="flex flex-row items-end justify-between gap-6 w-full max-[999px]:flex-col max-[999px]:items-start max-[999px]:gap-8">
+          <div className="hero-bottom-row flex flex-row items-end justify-between gap-6 w-full max-[999px]:flex-col max-[999px]:items-start max-[999px]:gap-8">
             {/* Simple heading for GSAP text reveal */}
             <h1
               ref={headingRef}
@@ -215,13 +283,40 @@ export function ChristiesHero() {
               Extraordinary art deserves an extraordinary stage
             </h1>
             
-            {/* Tablet override */}
+            {/* Mobile override (sub-768px) */}
             <style>{`
               @media (max-width: 999px) {
                 .hero-heading {
                   font-size: 40px !important;
                   letter-spacing: -0.8px !important;
                   line-height: 1.1 !important;
+                }
+              }
+
+              /* Tablet override (768-999px, per Figma node 46:1046) — keep
+                 the desktop row layout, just scale down values. Uses
+                 !important + a dedicated media query so it reliably wins
+                 regardless of Tailwind arbitrary-breakpoint class order. */
+              @media (min-width: 768px) and (max-width: 999px) {
+                .hero-content-container {
+                  padding: 20px !important;
+                }
+                .hero-bottom-row {
+                  flex-direction: row !important;
+                  align-items: flex-end !important;
+                  gap: 40px !important;
+                }
+                .hero-heading {
+                  font-size: 44px !important;
+                  letter-spacing: -0.88px !important;
+                  line-height: 1.1 !important;
+                }
+                .hero-watch-btn {
+                  flex-direction: column !important;
+                  width: 252px !important;
+                }
+                .hero-watch-thumb {
+                  width: 100% !important;
                 }
               }
             `}</style>
@@ -246,7 +341,7 @@ const WatchVideoButton = React.forwardRef<HTMLButtonElement>((_props, ref) => {
     <button
       ref={ref}
       type="button"
-      className="watch-video-btn flex flex-col max-[999px]:flex-row items-center shrink-0 max-[999px]:!w-full"
+      className="hero-watch-btn watch-video-btn flex flex-col max-[999px]:flex-row items-center shrink-0 max-[999px]:!w-full"
       style={{
         width: '252px',
         height: 'auto',
@@ -262,7 +357,7 @@ const WatchVideoButton = React.forwardRef<HTMLButtonElement>((_props, ref) => {
     >
       {/* Thumbnail — full width of the 252px container on desktop, fixed 137px wide on mobile */}
       <div 
-        className="relative shrink-0 overflow-hidden w-full max-[999px]:w-[clamp(80px,35vw,137px)]" 
+        className="hero-watch-thumb relative shrink-0 overflow-hidden w-full max-[999px]:w-[clamp(80px,35vw,137px)]" 
         style={{ 
           borderRadius: '8px',
           aspectRatio: '137 / 83',

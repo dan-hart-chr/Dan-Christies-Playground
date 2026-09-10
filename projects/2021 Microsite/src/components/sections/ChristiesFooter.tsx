@@ -39,9 +39,9 @@ const tokens = {
 
 export function ChristiesFooter() {
   return (
-    <footer className="christies-footer w-full px-6 pb-6 max-[767px]:px-3 max-[767px]:pb-3 max-[479px]:px-0 max-[479px]:pb-0" style={{ backgroundColor: '#5D5D5D' }}>
+    <footer className="christies-footer w-full px-6 pb-6 min-[768px]:max-[999px]:px-0 min-[768px]:max-[999px]:pb-0 max-[767px]:px-3 max-[767px]:pb-3 max-[479px]:px-0 max-[479px]:pb-0" style={{ backgroundColor: '#5D5D5D' }}>
       <div
-        className="relative w-full max-w-[1392px] mx-auto rounded-[24px] px-10 py-[60px] flex flex-col gap-12 overflow-hidden max-[767px]:px-6 max-[767px]:py-9"
+        className="relative w-full max-w-[1392px] mx-auto rounded-[24px] px-10 py-[60px] flex flex-col gap-12 overflow-hidden min-[768px]:max-[999px]:!rounded-none min-[768px]:max-[999px]:px-[24px] min-[768px]:max-[999px]:py-[40px] max-[767px]:px-6 max-[767px]:py-9"
         style={{
           backgroundColor: '#5D5D5D',
           backgroundImage: `url(${imgBackgroundFooter})`,
@@ -49,24 +49,40 @@ export function ChristiesFooter() {
           backgroundPosition: 'center',
         }}
       >
-        <div className="absolute inset-0 bg-[rgba(0,0,0,0.35)] rounded-[24px]" />
-        <div className="relative z-10 flex flex-col gap-6 max-w-[603px]">
-          <p className="m-0" style={{ fontFamily: tokens.fontFlare, fontWeight: 100, fontSize: `clamp(28px, 12vw, 60px)`, lineHeight: '1.067', color: tokens.textColor }}>
+        <div className="absolute inset-0 bg-[rgba(0,0,0,0.35)] min-[768px]:max-[999px]:rounded-none rounded-[24px]" />
+        <div className="footer-heading-wrap relative z-10 flex flex-col gap-6 max-w-[603px] min-[768px]:max-[999px]:max-w-[510px] min-[768px]:max-[999px]:items-center min-[768px]:max-[999px]:mx-auto">
+          <p className="footer-heading m-0 min-[768px]:max-[999px]:text-center" style={{ fontFamily: tokens.fontFlare, fontWeight: 100, fontSize: `clamp(28px, 12vw, 60px)`, lineHeight: '1.067', color: tokens.textColor }}>
             Browse every category
           </p>
-          <p className="m-0" style={{ fontFamily: tokens.fontSans, fontWeight: 300, fontSize: `clamp(14px, 2.2vw, 16px)`, lineHeight: '1.4', color: tokens.textColor }}>
-            A Webflow template crafted for forward-thinking companies and businesses who value clarity, warmth, and adaptability.
+          <p className="m-0 min-[768px]:max-[999px]:text-center" style={{ fontFamily: tokens.fontSans, fontWeight: 300, fontSize: `clamp(14px, 2.2vw, 16px)`, lineHeight: '1.4', color: tokens.textColor }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
         </div>
 
+        {/* Tablet override (768-999px, per Figma node 46:1177) — the clamp()
+            above saturates at its max well before 768px, so it never reaches
+            the smaller tablet-specified heading size on its own. */}
+        <style>{`
+          @media (min-width: 768px) and (max-width: 999px) {
+            .footer-heading {
+              font-size: 46px !important;
+              letter-spacing: -0.92px !important;
+            }
+            .footer-dept-heading {
+              font-size: 18px !important;
+              letter-spacing: 2.7px !important;
+            }
+          }
+        `}</style>
+
         <div
-          className="relative z-10 rounded-2xl px-8 pt-12 pb-12 flex gap-4 max-[767px]:flex-col max-[767px]:gap-9"
+          className="relative z-10 rounded-2xl px-8 pt-12 pb-12 flex gap-4 min-[768px]:max-[999px]:px-[24px] min-[768px]:max-[999px]:pt-[32px] min-[768px]:max-[999px]:pb-[32px] min-[768px]:max-[999px]:gap-[32px] max-[767px]:flex-col max-[767px]:gap-9"
           style={{ backgroundColor: tokens.panelBg, backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
         >
           {DEPARTMENTS.map((dept, i) => (
             <div key={i} className="flex flex-col gap-5 flex-1 min-w-0">
               <p
-                className="m-0 uppercase"
+                className="footer-dept-heading m-0 uppercase"
                 style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: '1.25rem', lineHeight: '1.056', letterSpacing: '0.1875rem', color: tokens.linkHeading }}
               >
                 {dept.name}

@@ -75,13 +75,13 @@ function SlateCaption({ text }: { text: string }) {
       style={{ width: `clamp(200px, 72vw, ${SLATE_WIDTH}px)` }}
     >
       <p
-        className="m-0 uppercase"
+        className="showcase-caption-label m-0 uppercase"
         style={{ fontFamily: tokens.fontFlare, fontWeight: 300, fontSize: `clamp(16px, 2vw, 20px)`, lineHeight: '1.056', letterSpacing: '0.1875rem', color: tokens.cardText }}
       >
         {label}
       </p>
       <p
-        className="m-0"
+        className="showcase-caption-desc m-0"
         style={{ fontFamily: tokens.fontSans, fontWeight: 300, fontSize: `clamp(14px, 1.5vw, 16px)`, lineHeight: '1.4', color: tokens.cardText }}
       >
         {description}
@@ -182,7 +182,7 @@ export function ChristiesShowcase() {
         </h2>
 
         {/* Body */}
-        <div className="text-center text-white max-[999px]:text-left">
+        <div className="showcase-body-wrap text-center text-white max-[999px]:text-left">
           <p
             ref={bodyRef}
             className="m-0"
@@ -201,6 +201,38 @@ export function ChristiesShowcase() {
           </p>
         </div>
       </div>
+
+      {/* Tablet override (768-999px, per Figma node 46:1063) — stays
+          centered like desktop (was flipping to left-aligned), and pins
+          font sizes the clamp() formulas don't reach at this width. */}
+      <style>{`
+        @media (min-width: 768px) and (max-width: 999px) {
+          .showcase-top {
+            align-items: center !important;
+            text-align: center !important;
+            padding-top: 40px !important;
+            padding-bottom: 60px !important;
+          }
+          .showcase-body-wrap {
+            text-align: center !important;
+          }
+          .showcase-heading {
+            font-size: 40px !important;
+          }
+          .showcase-caption-label {
+            font-size: 20px !important;
+          }
+          .showcase-caption-desc {
+            font-size: 16px !important;
+          }
+          .showcase-marquee-wrap {
+            padding-bottom: 60px !important;
+          }
+          .showcase-btn-row {
+            padding-bottom: 40px !important;
+          }
+        }
+      `}</style>
 
       {/* Marquee strip */}
       <div className="showcase-marquee-wrap relative w-full overflow-hidden pb-12 max-[999px]:pb-[48px]" ref={marqueeRef}>
@@ -221,7 +253,7 @@ export function ChristiesShowcase() {
       </div>
 
       {/* See all categories */}
-      <div className="flex justify-center pb-20 max-[999px]:pb-12">
+      <div className="showcase-btn-row flex justify-center pb-20 max-[999px]:pb-12">
         <Button type="Primary" mode="Light" className="see-all-categories-btn !gap-2">
           <GridViewIcon />
           See all categories

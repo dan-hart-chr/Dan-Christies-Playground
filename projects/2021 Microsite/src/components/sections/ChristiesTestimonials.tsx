@@ -31,11 +31,15 @@
 import * as React from 'react';
 // @ts-ignore
 import Button from '@christies-ds/molecules/button/Button.jsx';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { animateTextReveal, cleanupGSAPAnimations } from '../../utils/gsapAnimations';
 import alexRotterImg from '../../assets/images/specialists/alex-rotter.jpg';
 import maxCarterImg from '../../assets/images/specialists/max-carter.jpg';
 import saraFriedlanderImg from '../../assets/images/specialists/sara-friedlander.jpg';
 import johannaFlaumImg from '../../assets/images/specialists/johanna-flaum.jpg';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // ─── Christie's content ───────────────────────────────────────────────────────
 const slides = [
@@ -105,8 +109,9 @@ export function ChristiesTestimonials() {
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [stepPx, setStepPx] = React.useState(0);
   const trackRef = React.useRef<HTMLDivElement>(null);
-  // Desktop card boxes only (mobile slate is unaffected by the blur/opacity effect)
+  // Desktop card boxes (mobile slate has its own parallel ref array below)
   const cardRefs = React.useRef<(HTMLDivElement | null)[]>([]);
+  const slateCardRefs = React.useRef<(HTMLDivElement | null)[]>([]);
 
   // Heading entrance animation — using GSAP
   const headingRef = React.useRef<HTMLHeadingElement>(null);
@@ -138,6 +143,42 @@ export function ChristiesTestimonials() {
     };
   }, [prefersReducedMotion]);
 
+  // Carousel entrance — the active card comes in first, then the partly
+  // off-screen neighbor follows, once the slider scrolls into view. Animates
+  // whichever card variant (desktop or mobile slate) is visible at the
+  // current breakpoint; the other stays hidden via CSS regardless.
+  React.useEffect(() => {
+    if (prefersReducedMotion) return;
+    const trigger = trackRef.current;
+    if (!trigger) return;
+
+    const active = [cardRefs.current[0], slateCardRefs.current[0]].filter(Boolean) as HTMLDivElement[];
+    const neighbor = [cardRefs.current[1], slateCardRefs.current[1]].filter(Boolean) as HTMLDivElement[];
+
+    // Hidden from mount (not just from the trigger callback) so a slow
+    // scroll doesn't reveal the cards early and then flash them back out.
+    gsap.set([...active, ...neighbor], { opacity: 0, y: 30 });
+
+    const revealTo = (els: HTMLDivElement[], toOpacity: number, toFilter: string, delay: number) => {
+      if (!els.length) return;
+      gsap.to(els, { opacity: toOpacity, y: 0, filter: toFilter, duration: 0.8, delay, ease: 'power3.out' });
+    };
+
+    const st = ScrollTrigger.create({
+      trigger,
+      start: 'top 80%',
+      once: true,
+      onEnter: () => {
+        revealTo(active, 1, 'none', 0);
+        revealTo(neighbor, NEIGHBOR_OPACITY, `blur(${NEIGHBOR_BLUR_PX}px)`, 0.25);
+      },
+    });
+
+    return () => {
+      st.kill();
+    };
+  }, [prefersReducedMotion]);
+
   // Measure card width for pixel-based translation (unchanged)
   React.useEffect(() => {
     const measure = () => {
@@ -156,18 +197,22 @@ export function ChristiesTestimonials() {
   const currentSlideRef = React.useRef(currentSlide);
   React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-  // Applies the blur/opacity treatment to every desktop card, given a
-  // (possibly fractional) index representing what's currently centered —
+  // Applies the blur/opacity treatment to every card (both the desktop and
+  // mobile-slate variants — only one is visible per breakpoint, but keeping
+  // both in sync means swapping breakpoints never shows a stale blur), given
+  // a (possibly fractional) index representing what's currently centered —
   // fractional during a drag so the effect tracks the finger continuously.
   // Only used to override the declarative per-card style below while an
   // actual drag gesture is in progress; JSX handles the settled state.
   const applyCardVisualState = (continuousIndex: number, animated: boolean) => {
-    cardRefs.current.forEach((el, i) => {
-      if (!el) return;
-      const distance = Math.min(1, Math.abs(i - continuousIndex));
-      el.style.transition = animated ? CARD_TRANSITION : 'none';
-      el.style.filter = distance === 0 ? 'none' : `blur(${distance * NEIGHBOR_BLUR_PX}px)`;
-      el.style.opacity = String(1 - distance * (1 - NEIGHBOR_OPACITY));
+    [cardRefs.current, slateCardRefs.current].forEach((refs) => {
+      refs.forEach((el, i) => {
+        if (!el) return;
+        const distance = Math.min(1, Math.abs(i - continuousIndex));
+        el.style.transition = animated ? CARD_TRANSITION : 'none';
+        el.style.filter = distance === 0 ? 'none' : `blur(${distance * NEIGHBOR_BLUR_PX}px)`;
+        el.style.opacity = String(1 - distance * (1 - NEIGHBOR_OPACITY));
+      });
     });
   };
 
@@ -237,8 +282,16 @@ export function ChristiesTestimonials() {
     setCurrentSlide(next);
   };
 
-  const handlePrev = () => setCurrentSlide((s) => Math.max(0, s - 1));
-  const handleNext = () => setCurrentSlide((s) => Math.min(slides.length - 1, s + 1));
+  const handlePrev = () => {
+    const next = Math.max(0, currentSlideRef.current - 1);
+    applyCardVisualState(next, true);
+    setCurrentSlide(next);
+  };
+  const handleNext = () => {
+    const next = Math.min(slides.length - 1, currentSlideRef.current + 1);
+    applyCardVisualState(next, true);
+    setCurrentSlide(next);
+  };
 
   return (
     <section
@@ -251,12 +304,12 @@ export function ChristiesTestimonials() {
         style={{ maxWidth: '1600px' }}
       >
         {/* Headline + arrows row */}
-        <div className="testimonials-headline-row relative flex items-start justify-between mb-[60px] max-[999px]:mb-[48px] max-[999px]:flex-col max-[999px]:items-center">
-          <div className="specialists-header flex flex-col gap-6 max-[999px]:gap-[20px] items-start max-[999px]:items-center max-[999px]:w-full">
+        <div className="testimonials-headline-row relative flex items-start justify-between mb-[60px] max-[999px]:mb-[48px] max-[999px]:flex-col min-[768px]:max-[999px]:items-center">
+          <div className="specialists-header flex flex-col gap-6 max-[999px]:gap-[20px] items-start min-[768px]:max-[999px]:items-center max-[999px]:w-full">
             {/* H2 — Christie's Flare heading */}
             <h2
               ref={headingRef}
-              className="team-heading m-0 max-[999px]:text-center max-[999px]:w-full"
+              className="team-heading m-0 min-[768px]:max-[999px]:text-center max-[999px]:w-full"
               style={{
                 fontFamily: tokens.fontFlare,
                 lineHeight: '1.067',
@@ -283,14 +336,13 @@ export function ChristiesTestimonials() {
             {/* Sub-paragraph */}
             <p
               ref={subcopyRef}
-              className="team-subcopy m-0 max-[999px]:text-center max-[999px]:max-w-[510px]"
+              className="team-subcopy m-0 max-w-[484px] min-[768px]:max-[999px]:text-center min-[768px]:max-[999px]:max-w-[510px]"
               style={{
                 fontFamily: tokens.fontSans,
                 fontWeight: 300,
                 fontSize: `clamp(14px, 2vw, 16px)`,
                 lineHeight: '1.4',
                 color: tokens.sectionText,
-                maxWidth: '484px',
               }}
             >
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
@@ -332,7 +384,7 @@ export function ChristiesTestimonials() {
               }}
             >
               {slides.map((slide, i) => (
-                <div key={i} className="w-full flex-shrink-0" style={{ maxWidth: 'clamp(280px, 90vw, 1033px)' }}>
+                <div key={i} className="testimonial-slide w-full flex-shrink-0" style={{ maxWidth: 'clamp(280px, 90vw, 1033px)' }}>
                   {/* Card — desktop / tablet layout */}
                   <div
                     ref={(el) => { cardRefs.current[i] = el; }}
@@ -430,20 +482,25 @@ export function ChristiesTestimonials() {
 
                   {/* Card — mobile slate layout */}
                   <div
-                    className="hidden max-[999px]:flex flex-col justify-between gap-[20px] items-center w-full h-full p-[18px]"
+                    ref={(el) => { slateCardRefs.current[i] = el; }}
+                    className="testimonial-slate-card hidden max-[999px]:flex flex-col justify-between gap-[20px] items-center w-full h-full p-[18px]"
                     style={{
                       backgroundColor: tokens.cardBg,
                       backdropFilter: `blur(${tokens.cardBlur})`,
                       WebkitBackdropFilter: `blur(${tokens.cardBlur})`,
                       color: tokens.cardText,
                       borderRadius: tokens.cardRadius,
+                      // Settled state (also the initial paint); drag/arrow/dot navigation overrides this imperatively
+                      transition: CARD_TRANSITION,
+                      filter: i === currentSlide ? 'none' : `blur(${NEIGHBOR_BLUR_PX}px)`,
+                      opacity: i === currentSlide ? 1 : NEIGHBOR_OPACITY,
                     }}
                   >
                     {/* Top group — image + name/title, anchored top */}
                     <div className="flex flex-col items-center w-full">
                       {/* Circular portrait */}
                       <div
-                        className="rounded-full overflow-hidden shrink-0 w-[153px] h-[153px]"
+                        className="rounded-full overflow-hidden shrink-0 w-[153px] h-[153px] min-[768px]:max-[999px]:w-[204px] min-[768px]:max-[999px]:h-[204px]"
                       >
                         <img
                           src={slide.image}
@@ -469,6 +526,7 @@ export function ChristiesTestimonials() {
                           {slide.authorName}
                         </p>
                         <p
+                          className="testimonial-handle"
                           style={{
                             fontFamily: tokens.fontSans,
                             fontWeight: 300,
@@ -484,7 +542,7 @@ export function ChristiesTestimonials() {
                     </div>
 
                     {/* Bottom group — bio + button, anchored bottom */}
-                    <div className="flex flex-col w-full">
+                    <div className="testimonial-bottom-group flex flex-col w-full">
                       {/* Bio — left aligned */}
                       <p
                         className="w-full text-left"
@@ -501,7 +559,7 @@ export function ChristiesTestimonials() {
                       </p>
 
                       {/* CTAs — single row; connect button fills the row, icons stay fixed-size */}
-                      <div className="w-full mt-[18px] flex flex-row gap-[9px] items-center">
+                      <div className="testimonial-cta-row w-full mt-[18px] flex flex-row gap-[9px] items-center">
                         <Button type="Secondary" mode="Dark" className="!flex-1 !w-full !px-3 !h-9 !gap-1.5 !text-[10px]">
                           <MailIcon />
                           CONNECT
@@ -541,6 +599,30 @@ export function ChristiesTestimonials() {
 
       <style>{`
         .testimonials-dot-nav { margin-top: 1.5rem; }
+
+        /* Tablet override (768-999px, per Figma node 46:1075) — the slate
+           card here uses the same fixed 510px width, larger avatar, and
+           roomier internal spacing as the reference card, not the mobile
+           sizing it was inheriting by default. */
+        @media (min-width: 768px) and (max-width: 999px) {
+          .testimonial-slide {
+            max-width: 510px !important;
+          }
+          .testimonial-slate-card {
+            gap: 32px !important;
+            padding: 19px 20px !important;
+            border-radius: 24px !important;
+          }
+          .testimonial-bottom-group {
+            gap: 32px !important;
+          }
+          .testimonial-cta-row {
+            margin-top: 0 !important;
+          }
+          .testimonial-handle {
+            font-size: 14px !important;
+          }
+        }
       `}</style>
     </section>
   );

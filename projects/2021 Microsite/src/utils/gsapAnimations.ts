@@ -36,7 +36,12 @@ export const animateTextReveal = (
 
   const words = element.innerText.split(' ');
   element.innerHTML = words
-    .map((word) => `<span style="display: inline-block; overflow: hidden;"><span style="display: inline-block;">${word}</span></span>`)
+    // The reveal mask (overflow: hidden) clips to the box's own height, which at
+    // tight line-heights is shorter than the font's true descender depth — cutting
+    // off "y"/"g"/"p" etc. padding-bottom buys that room back; margin-bottom
+    // cancels the padding so it doesn't push the following line down, leaving the
+    // element's overall line-height/flow unchanged.
+    .map((word) => `<span style="display: inline-block; overflow: hidden; padding-bottom: 0.3em; margin-bottom: -0.3em;"><span style="display: inline-block;">${word}</span></span>`)
     .join(' ');
 
   const spans = element.querySelectorAll('span span');
@@ -60,15 +65,20 @@ export const animateTextReveal = (
     // Set initial state
     gsap.set(spans, { opacity: 0, y: yOffset });
   } else {
-    // Immediate animation (for hero and initial loads)
-    gsap.from(spans, {
-      opacity: 0,
-      y: yOffset,
-      duration,
-      delay,
-      stagger,
-      ease: 'power3.out',
-    });
+    // Immediate animation (for hero and initial loads) — explicit fromTo,
+    // see the fromTo note in animateFadeInOnScroll for why plain .from()
+    // is unsafe here.
+    gsap.fromTo(spans,
+      { opacity: 0, y: yOffset },
+      {
+        opacity: 1,
+        y: 0,
+        duration,
+        delay,
+        stagger,
+        ease: 'power3.out',
+      }
+    );
   }
 };
 
@@ -88,18 +98,28 @@ export const animateFadeInOnScroll = (
 
   const { duration = 0.8, delay = 0, yOffset = 30 } = options;
 
-  gsap.from(element, {
-    scrollTrigger: {
-      trigger: element,
-      start: 'top 80%',
-      once: true,
-    },
-    opacity: 0,
-    y: yOffset,
-    duration,
-    delay,
-    ease: 'power3.out',
-  });
+  // fromTo (not from) — an implicit .from() end-target is captured from the
+  // element's *current* value when the tween is created. On initial mount
+  // this effect is exposed to React 18 StrictMode's dev-only double-invoke,
+  // and the first invocation's immediate-render already zeroes opacity
+  // before the second invocation's tween is created, so its implicit target
+  // would be captured as 0 too (animating 0 -> 0, "completing" while staying
+  // invisible). Explicit from/to values are immune to that.
+  gsap.fromTo(element,
+    { opacity: 0, y: yOffset },
+    {
+      scrollTrigger: {
+        trigger: element,
+        start: 'top 80%',
+        once: true,
+      },
+      opacity: 1,
+      y: 0,
+      duration,
+      delay,
+      ease: 'power3.out',
+    }
+  );
 };
 
 /**
@@ -233,10 +253,17 @@ export const createAnimationTimeline = () => {
 };
 
 /**
- * Cleanup function - kill all GSAP animations and ScrollTriggers
- * Call this when components unmount
+ * Cleanup function, called from each section's useEffect teardown.
+ *
+ * This is intentionally a no-op. Every section on this page is permanent —
+ * nothing here ever really unmounts — so the only thing that ever invokes
+ * this teardown is React 18 StrictMode's dev-only double-invoke of effects.
+ * Killing ScrollTriggers or tweens at that point is actively harmful: killing
+ * a ScrollTrigger-tied `.from()` tween mid-flight leaves the element frozen
+ * at its "from" value (e.g. opacity 0), and the *next* (surviving) tween
+ * then captures that already-corrupted value as its own implicit end target,
+ * so it "completes" without ever visually animating. If a component ever
+ * needs real unmount cleanup, it should kill only the specific tween/
+ * ScrollTrigger it created, not reach for a shared global nuke.
  */
-export const cleanupGSAPAnimations = () => {
-  ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-  gsap.killTweensOf('*');
-};
+export const cleanupGSAPAnimations = () => {};

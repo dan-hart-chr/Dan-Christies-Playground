@@ -1,0 +1,252 @@
+/* Christie typography tokens and Arizona font registrations */
+:root {
+  --font-family-arizona-sans: "Arizona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-family-arizona-serif: "Arizona Serif", Georgia, "Times New Roman", Times, serif;
+  --font-family-arizona-flare: "Arizona Flare", "Times New Roman", Georgia, serif;
+
+  --font-weight-thin: 100;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+}
+
+@font-face {
+  font-family: "Arizona Sans";
+  src: url("./arizona-sans-thin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Sans";
+  src: url("./arizona-sans-thin-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Sans";
+  src: url("./arizona-sans-light.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Sans";
+  src: url("./arizona-sans-light-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Sans";
+  src: url("./arizona-sans-regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Sans";
+  src: url("./arizona-sans-regular-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Sans";
+  src: url("./arizona-sans-medium.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Sans";
+  src: url("./arizona-sans-medium-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Sans";
+  src: url("./arizona-sans-bold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Sans";
+  src: url("./arizona-sans-bold-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Serif";
+  src: url("./arizona-serif-thin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Serif";
+  src: url("./arizona-serif-thin-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Serif";
+  src: url("./arizona-serif-light.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Serif";
+  src: url("./arizona-serif-light-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Serif";
+  src: url("./arizona-serif-regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Serif";
+  src: url("./arizona-serif-regular-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Serif";
+  src: url("./arizona-serif-medium.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Serif";
+  src: url("./arizona-serif-medium-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Serif";
+  src: url("./arizona-serif-bold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Serif";
+  src: url("./arizona-serif-bold-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Flare";
+  src: url("./arizona-flare-thin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Flare";
+  src: url("./arizona-flare-thin-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Flare";
+  src: url("./arizona-flare-light.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Flare";
+  src: url("./arizona-flare-light-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Flare";
+  src: url("./arizona-flare-regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Flare";
+  src: url("./arizona-flare-regular-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Flare";
+  src: url("./arizona-flare-medium.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Flare";
+  src: url("./arizona-flare-medium-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Flare";
+  src: url("./arizona-flare-bold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arizona Flare";
+  src: url("./arizona-flare-bold-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+}
